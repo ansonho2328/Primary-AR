@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/LTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="20dp"
+        android:text="Primary AR"
+        android:textColor="#000"
+        android:textSize="40sp"
+        />
+
+    <EditText
+        android:id="@+id/logName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="25dp"
+        android:hint="Name"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/logPw"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="35dp">
+
+        <android.widget.Button
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="#2196F3"
+            android:elevation="4dp"
+            android:paddingLeft="35dp"
+            android:paddingRight="30dp"
+            android:text="Login"
+            android:layout_marginLeft="50dp"
+            android:textColor="#FFF" />
+
+        <android.widget.Button
+            android:id="@+id/lSignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="#2196F3"
+            android:elevation="4dp"
+            android:paddingLeft="35dp"
+            android:paddingRight="30dp"
+            android:text="Sign Up"
+            android:layout_marginLeft="35dp"
+            android:textColor="#FFF" />
+
+
+    </LinearLayout>
+</LinearLayout>
