@@ -2,9 +2,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="hk.edu.ouhk.arprimary.MainActivity">
+
     <item
-        android:id="@+id/action_settings"
+        android:title=""
+        android:icon="@drawable/more_icon"
+        app:showAsAction="always">
+        <menu>
+    <item
+        android:id="@+id/profile"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/profile"
+        android:icon="@drawable/profile_icon"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/leaderboard"
+        android:orderInCategory="100"
+        android:title="@string/leaderboard"
+        android:icon="@drawable/leaderboard_icon"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/review"
+        android:orderInCategory="100"
+        android:title="Review"
+        android:icon="@drawable/review_icon"
+        app:showAsAction="never" />
+
+            <item
+                android:id="@+id/about"
+                android:orderInCategory="100"
+                android:title="@string/about"
+                android:icon="@drawable/about_icon"
+                app:showAsAction="never" />
+
+        </menu>
+    </item>
 </menu>
