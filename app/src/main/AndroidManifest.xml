@@ -11,7 +11,7 @@
         android:theme="@style/Theme.ARPrimary">
         <activity
             android:name=".UnitActivity"
-            android:exported="false" />
+            android:exported="false" /> 
         <activity
             android:name=".UserProfile"
             android:exported="false" />
