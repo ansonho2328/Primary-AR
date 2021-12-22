@@ -31,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        
+
         aniIcon = findViewById(R.id.aniIcon);
         appTitle = findViewById(R.id.appTitle);
         startBtn = findViewById(R.id.startBtn);
