@@ -30,9 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        
         aniIcon = findViewById(R.id.aniIcon);
         appTitle = findViewById(R.id.appTitle);
         startBtn = findViewById(R.id.startBtn);
