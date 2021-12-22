@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         new Handler().postDelayed(new Runnable() {  // set the splash screen timeout.
             @Override
             public void run() {
