@@ -1,27 +1,19 @@
 package hk.edu.ouhk.arprimary;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity {
 
     Button journalBtn;
     Button multiplayerBtn;
-    Button profileBtn;
-
+    Button leaderboardBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +22,22 @@ public class HomeActivity extends AppCompatActivity {
 
         journalBtn = findViewById(R.id.start_journal_button);
         multiplayerBtn = findViewById(R.id.start_multiplayer_button);
-        profileBtn = findViewById(R.id.profile_button);
+        leaderboardBtn = findViewById(R.id.leaderboard_button);
 
         journalBtn.setOnClickListener(view -> {
             Intent startIntent = new Intent(this, TopicActivity.class);
             startActivity(startIntent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        });
+
+        multiplayerBtn.setOnClickListener(v -> {
+            //TODO add multiplayer activity
+            Toast.makeText(this, "not finished yet", Toast.LENGTH_LONG).show();
+        });
+
+        leaderboardBtn.setOnClickListener(v -> {
+            //TODO add leaderboard activity
+            Toast.makeText(this, "not finished yet", Toast.LENGTH_LONG).show();
         });
 
 
@@ -49,21 +51,14 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
-        switch(id){
-            case R.id.about:
-                Intent aboutIntent = new Intent(HomeActivity.this, AboutActivity.class);
-                startActivity(aboutIntent);
-                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
-            case R.id.leaderboard:
+    public void onEnterProfile(MenuItem item) {
+        //TODO add profile activity
+        Toast.makeText(this, "not finished yet", Toast.LENGTH_LONG).show();
+    }
 
-
-            default:
-        }
-
-        return super.onOptionsItemSelected(item);
+    public void onEnterAbout(MenuItem item) {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
     }
 }

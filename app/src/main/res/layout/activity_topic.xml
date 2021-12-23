@@ -7,7 +7,15 @@
     android:background="@color/oBlue"
     >
 
-    <include layout="@layout/app_bar" />
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/app_bar" />
+
+    </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/topic_refresh_layout"

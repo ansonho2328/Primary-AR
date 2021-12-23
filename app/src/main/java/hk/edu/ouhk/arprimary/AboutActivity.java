@@ -1,12 +1,13 @@
 package hk.edu.ouhk.arprimary;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AboutActivity extends AppCompatActivity {
-    TextView aDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,10 +17,13 @@ public class AboutActivity extends AppCompatActivity {
         setSupportActionBar(findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        aDesc = findViewById(R.id.aDesc);
-        aDesc.setText(R.string.about_description);
-
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() != android.R.id.home) return false;
+        onBackPressed();
+        return true;
+    }
 }

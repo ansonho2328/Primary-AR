@@ -9,8 +9,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Handler;
 
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import javax.inject.Inject;
+
+import hk.edu.ouhk.arprimary.manager.SQLiteManager;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -19,6 +24,8 @@ public class SplashActivity extends AppCompatActivity {
     ImageView aniIcon;
     TextView appTitle;
 
+    SQLiteManager sqLiteManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +33,10 @@ public class SplashActivity extends AppCompatActivity {
 
         aniIcon = findViewById(R.id.imageView);
         appTitle = findViewById(R.id.appTitle);
+
+        sqLiteManager = ((PrimaryARApplication)getApplicationContext()).appComponent.sqliteManager();
+
+        Log.v("SplashEntity", "sqliteManager is null: "+(sqLiteManager == null));
 
         // make the animation for application icon
         PropertyValuesHolder rotationY = PropertyValuesHolder.ofFloat("rotationY",0.0F,360.0F);
