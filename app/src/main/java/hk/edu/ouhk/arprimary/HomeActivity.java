@@ -1,57 +1,45 @@
 package hk.edu.ouhk.arprimary;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 public class HomeActivity extends AppCompatActivity {
 
-    ImageView aniIcon;
-    TextView appTitle;
-    Button startBtn;
+    Button journalBtn;
+    Button multiplayerBtn;
+    Button leaderboardBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        journalBtn = findViewById(R.id.start_journal_button);
+        multiplayerBtn = findViewById(R.id.start_multiplayer_button);
+        leaderboardBtn = findViewById(R.id.leaderboard_button);
 
-        aniIcon = findViewById(R.id.aniIcon);
-        appTitle = findViewById(R.id.appTitle);
-        startBtn = findViewById(R.id.startBtn);
-
-        // make the animation for application icon
-        PropertyValuesHolder rotationY = PropertyValuesHolder.ofFloat("rotationY",0.0F,360.0F);
-        PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat("scaleX",0.0F,0,1F);
-        PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat("scaleY",0.0F,0,1F);
-        ObjectAnimator.ofPropertyValuesHolder(aniIcon,rotationY,scaleX,scaleY).setDuration(3000).start();
-        ObjectAnimator.ofPropertyValuesHolder(appTitle,rotationY,scaleX,scaleY).setDuration(3000).start();
-
-        startBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent startIntent = new Intent(HomeActivity.this, TopicActivity.class);
-                startActivity(startIntent);
-                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
-                finish();
-            }
+        journalBtn.setOnClickListener(view -> {
+            Intent startIntent = new Intent(this, TopicActivity.class);
+            startActivity(startIntent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
+
+        multiplayerBtn.setOnClickListener(v -> {
+            //TODO add multiplayer activity
+            Toast.makeText(this, "not finished yet", Toast.LENGTH_LONG).show();
+        });
+
+        leaderboardBtn.setOnClickListener(v -> {
+            //TODO add leaderboard activity
+            Toast.makeText(this, "not finished yet", Toast.LENGTH_LONG).show();
+        });
+
 
     }
 
@@ -63,22 +51,14 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
-        switch(id){
-            case R.id.about:
-                Intent aboutIntent = new Intent(HomeActivity.this, AboutActivity.class);
-                startActivity(aboutIntent);
-                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
-                finish();
-            case R.id.leaderboard:
+    public void onEnterProfile(MenuItem item) {
+        //TODO add profile activity
+        Toast.makeText(this, "not finished yet", Toast.LENGTH_LONG).show();
+    }
 
-
-            default:
-        }
-
-        return super.onOptionsItemSelected(item);
+    public void onEnterAbout(MenuItem item) {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
     }
 }

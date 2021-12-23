@@ -12,4 +12,13 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="about_description">Primary AR is a English Learning mobile application that provides game with AR technology \nfor primary students learning English. \nApplication is developed by: \n\n Suen Chi Hong 12523232\n Ho Chun Hei 12529734 \n Ng Wai Pang 12601411\n Lam Chak Wai 12628712</string>
+    <string name="loading">Loading...</string>
+    <string name="my_journal">My Journal</string>
+    <string name="play_multiplayer">Play MultiPlayer</string>
+    <string name="my_profile">My Profile</string>
+    <string name="primary_ar">Primary AR</string>
+    <string name="logo">logo</string>
+    <string name="this_list_is_empty">This list is empty</string>
+    <string name="image">image</string>
 </resources>

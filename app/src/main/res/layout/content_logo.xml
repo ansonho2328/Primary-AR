@@ -15,14 +15,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/app_icon" />
+        app:srcCompat="@drawable/app_icon"
+        android:contentDescription="@string/logo" />
 
     <TextView
         android:id="@+id/appTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Primary AR"
-        android:textSize="28dp"
+        android:text="@string/primary_ar"
+        android:textSize="28sp"
         android:textColor="@color/white"
         android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"

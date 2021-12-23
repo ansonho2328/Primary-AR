@@ -1,43 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/oBlue"
-    android:padding="16dp">
+    >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/sTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="105dp"
-        android:layout_marginBottom="20dp"
-        android:text="Sign Up"
-        android:textColor="#fff"
-        android:textSize="40sp"
-        />
+        <TextView
+            android:id="@+id/sTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="105dp"
+            android:layout_marginBottom="20dp"
+            android:text="Sign Up"
+            android:textColor="#fff"
+            android:textSize="40sp" />
 
-    <TextView
-        android:id="@+id/sSubTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:text="Sign Up for an new account."
-        android:textColor="#fff"
-        android:textSize="20sp"
-        />
+        <TextView
+            android:id="@+id/sSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="Sign Up for an new account."
+            android:textColor="#fff"
+            android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/sigName"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:hint="Username"
-        android:inputType="text" />
+        <EditText
+            android:id="@+id/sigName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Username"
+            android:inputType="text" />
 
 
         <android.widget.Button
@@ -53,6 +55,11 @@
             android:text="Sign Up"
             android:textColor="#FFF" />
 
+    </LinearLayout>
 
+    <include
+        android:id="@+id/view_loading"
+        layout="@layout/loading_overlay"
+        android:visibility="gone" />
 
-</LinearLayout>
+</RelativeLayout>
