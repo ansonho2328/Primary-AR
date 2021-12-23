@@ -99,14 +99,16 @@
             android:text="Unit-4"
             android:textColor="#FFF" />
     </LinearLayout>
+
     <android.widget.Button
-        android:id="@+id/Back"
+        android:id="@+id/back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:background="#2196F3"
         android:elevation="4dp"
+        android:onClick="back"
         android:paddingLeft="35dp"
         android:paddingRight="30dp"
         android:text="Back"

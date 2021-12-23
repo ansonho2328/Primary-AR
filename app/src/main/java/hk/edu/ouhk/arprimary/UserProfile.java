@@ -15,13 +15,11 @@ public class UserProfile extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
         back = findViewById(R.id.Back);
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent signUpIntent = new Intent(UserProfile.this, HomeActivity.class);
-                startActivity(signUpIntent);
-                finish();
-            }
-        });
+
+    }
+    public void Back(View v) {
+        Intent HomeIntent = new Intent(UserProfile.this, HomeActivity.class);
+        startActivity(HomeIntent);
+        finish();
     }
 }
