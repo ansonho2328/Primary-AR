@@ -5,10 +5,9 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,41 +16,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 public class HomeActivity extends AppCompatActivity {
 
-    ImageView aniIcon;
-    TextView appTitle;
-    Button startBtn;
+    Button journalBtn;
+    Button multiplayerBtn;
+    Button profileBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        journalBtn = findViewById(R.id.start_journal_button);
+        multiplayerBtn = findViewById(R.id.start_multiplayer_button);
+        profileBtn = findViewById(R.id.profile_button);
 
-        aniIcon = findViewById(R.id.aniIcon);
-        appTitle = findViewById(R.id.appTitle);
-        startBtn = findViewById(R.id.startBtn);
-
-        // make the animation for application icon
-        PropertyValuesHolder rotationY = PropertyValuesHolder.ofFloat("rotationY",0.0F,360.0F);
-        PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat("scaleX",0.0F,0,1F);
-        PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat("scaleY",0.0F,0,1F);
-        ObjectAnimator.ofPropertyValuesHolder(aniIcon,rotationY,scaleX,scaleY).setDuration(3000).start();
-        ObjectAnimator.ofPropertyValuesHolder(appTitle,rotationY,scaleX,scaleY).setDuration(3000).start();
-
-        startBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent startIntent = new Intent(HomeActivity.this, TopicActivity.class);
-                startActivity(startIntent);
-                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
-                finish();
-            }
+        journalBtn.setOnClickListener(view -> {
+            Intent startIntent = new Intent(this, TopicActivity.class);
+            startActivity(startIntent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
+
 
     }
 
@@ -72,7 +58,6 @@ public class HomeActivity extends AppCompatActivity {
                 Intent aboutIntent = new Intent(HomeActivity.this, AboutActivity.class);
                 startActivity(aboutIntent);
                 overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
-                finish();
             case R.id.leaderboard:
 
 
