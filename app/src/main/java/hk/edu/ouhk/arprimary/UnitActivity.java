@@ -18,19 +18,16 @@ public class UnitActivity extends AppCompatActivity {
         u2 = findViewById(R.id.u2);
         u3 = findViewById(R.id.u3);
         u4 = findViewById(R.id.u4);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent signUpIntent = new Intent(UnitActivity.this, HomeActivity.class);
-                startActivity(signUpIntent);
-                finish();
-            }
-        });
 
         u1.setText("test1");
         u2.setText("test2");
         u3.setText("test3");
         u4.setText("test4");
 
+    }
+    public void back(View view) {
+        Intent HomeIntent = new Intent(UnitActivity.this, HomeActivity.class);
+        startActivity(HomeIntent);
+        finish();
     }
 }
