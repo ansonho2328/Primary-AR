@@ -3,6 +3,7 @@
     package="hk.edu.ouhk.arprimary">
 
     <application
+        android:name=".PrimaryARApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Primary AR"
@@ -10,12 +11,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ARPrimary">
         <activity
-            android:name=".UnitActivity"
-            android:exported="false" />
-        <activity
-            android:name=".UserProfile"
-            android:exported="false" />
+            android:name=".SignUpActivity" />
+        <activity android:name=".AboutActivity"
+            android:theme="@style/Theme.ARPrimary.NoActionBar"/>
+        <activity android:name=".TopicActivity"
+            android:theme="@style/Theme.ARPrimary.NoActionBar"/>
         <activity android:name=".HomeActivity" />
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/Theme.ARPrimary.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
