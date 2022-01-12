@@ -11,11 +11,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ARPrimary">
         <activity
-            android:name=".SignUpActivity" />
-        <activity android:name=".AboutActivity"
-            android:theme="@style/Theme.ARPrimary.NoActionBar"/>
-        <activity android:name=".TopicActivity"
-            android:theme="@style/Theme.ARPrimary.NoActionBar"/>
+            android:name=".SpeachToTextActivity"
+            android:exported="false" />
+        <activity android:name=".SignUpActivity" />
+        <activity
+            android:name=".AboutActivity"
+            android:theme="@style/Theme.ARPrimary.NoActionBar" />
+        <activity
+            android:name=".TopicActivity"
+            android:theme="@style/Theme.ARPrimary.NoActionBar" />
         <activity android:name=".HomeActivity" />
         <activity
             android:name=".SplashActivity"
