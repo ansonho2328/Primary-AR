@@ -15,7 +15,7 @@ public class HomeActivity extends AppCompatActivity {
     Button multiplayerBtn;
     Button leaderboardBtn;
 
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
