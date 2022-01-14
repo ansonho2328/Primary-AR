@@ -10,19 +10,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ARPrimary">
+        <activity android:name=".SignUpActivity"></activity>
         <activity
             android:name=".leaderboard"
             android:exported="false" />
         <activity
             android:name=".AboutActivity"
-            android:theme="@style/Theme.ARPrimary.NoActionBar" />
+            android:theme="@style/Theme.ARPrimary.NoActionBar"
+            android:label="About" />
         <activity
             android:name=".TopicActivity"
-            android:theme="@style/Theme.ARPrimary.NoActionBar" />
+            android:theme="@style/Theme.ARPrimary.NoActionBar"
+            android:label="Topic"/>
+
+        <activity
+            android:name=".UnitActivity"
+            android:label="Unit"/>
+
+        <activity
+            android:name=".UserProfile"
+            android:label="Profile"/>
+
         <activity android:name=".HomeActivity" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/Theme.ARPrimary.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

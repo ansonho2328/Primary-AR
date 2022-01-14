@@ -16,8 +16,9 @@
 
     <android.widget.Button
         android:id="@+id/start_journal_button"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="40dp"
+        android:padding="10dp"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="400dp"
         android:background="@color/colorBlue"
@@ -25,19 +26,22 @@
         android:text="@string/my_journal"
         android:textColor="@color/white"
         android:textSize="15sp"
+        android:drawableLeft="@drawable/journalbtn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/include"
-        app:layout_constraintVertical_bias="0.024" />
+        app:layout_constraintVertical_bias="0.069" />
 
     <android.widget.Button
         android:id="@+id/start_multiplayer_button"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="40dp"
+        android:padding="10dp"
         android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="3dp"
         android:background="@color/colorBlue"
+        android:drawableLeft="@drawable/multiplayer"
         android:gravity="center"
         android:text="@string/play_multiplayer"
         android:textColor="@color/white"
@@ -51,18 +55,20 @@
 
     <android.widget.Button
         android:id="@+id/leaderboard_button"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:padding="10dp"
         android:layout_marginHorizontal="40dp"
         android:background="@color/colorBlue"
         android:gravity="center"
         android:text="@string/leaderboard"
+        android:drawableLeft="@drawable/leaderboardbtn"
         android:textColor="@color/white"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/include"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toBottomOf="@+id/start_multiplayer_button"
         app:layout_constraintVertical_bias="0.069" />
 

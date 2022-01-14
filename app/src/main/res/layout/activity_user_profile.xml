@@ -14,10 +14,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="105dp"
+        android:layout_marginTop="60dp"
         android:layout_marginBottom="20dp"
         android:text="User Profile"
-        android:textColor="#C62828"
+        android:textColor="#fff"
         android:textSize="40sp" />
 
     <ImageView
@@ -97,19 +97,6 @@
 
 
     </LinearLayout>
-
-    <android.widget.Button
-        android:id="@+id/Back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:background="#2196F3"
-        android:elevation="4dp"
-        android:paddingLeft="35dp"
-        android:paddingRight="30dp"
-        android:text="Back"
-        android:textColor="#FFF" />
 
 
 </LinearLayout>
