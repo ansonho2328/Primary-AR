@@ -13,7 +13,6 @@
         <activity
             android:name=".leaderboard"
             android:exported="false" />
-        <activity android:name=".SignUpActivity" />
         <activity
             android:name=".AboutActivity"
             android:theme="@style/Theme.ARPrimary.NoActionBar" />
