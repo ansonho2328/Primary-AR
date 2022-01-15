@@ -22,9 +22,9 @@
             android:name=".TopicActivity"
             android:theme="@style/Theme.ARPrimary.NoActionBar"
             android:label="Topic"/>
-
         <activity
             android:name=".UnitActivity"
+            android:theme="@style/Theme.ARPrimary.NoActionBar"
             android:label="Unit"/>
 
         <activity

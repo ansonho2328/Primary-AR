@@ -16,16 +16,16 @@ import java.util.List;
 import hk.edu.ouhk.arprimary.R;
 import hk.edu.ouhk.arprimary.viewmodel.ListExtendableAdapter;
 
-public class TopicUnitAdapter extends ListExtendableAdapter<TopicUnitView, TopicUnitAdapter.ViewHolder> {
+public class TopicAdapter extends ListExtendableAdapter<TopicView, TopicAdapter.ViewHolder> {
 
-    public TopicUnitAdapter(List<TopicUnitView> list, Context context, View.OnClickListener onClickListener) {
+    public TopicAdapter(List<TopicView> list, Context context, View.OnClickListener onClickListener) {
         super(list, context, onClickListener);
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.recycleview_topics, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.recyclerview_topics, parent, false);
         view.setOnClickListener(onClickListener);
         return new ViewHolder(view);
     }
@@ -37,12 +37,12 @@ public class TopicUnitAdapter extends ListExtendableAdapter<TopicUnitView, Topic
 
     @Override
     public int getLayout() {
-        return R.layout.recycleview_topics;
+        return R.layout.recyclerview_topics;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        TopicUnitView unit = list.get(position);
+        TopicView unit = list.get(position);
         holder.topicTitle.setText(unit.getTitle());
         holder.topicImage.setImageDrawable(AppCompatResources.getDrawable(context, unit.getDrawable()));
     }
