@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -73,6 +74,10 @@ public class UnitActivity extends AppCompatActivity {
                     int pos = recyclerView.getChildAdapterPosition(v);
                     UnitView unitView = unit.list.get(pos);
                     Toast.makeText(UnitActivity.this, unitView.getNo()+"-"+unitView.getType(), Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(UnitActivity.this, LessonActivity.class);
+                    intent.putExtra("topic", topic);
+                    intent.putExtra("unit-no", unitView.getNo());
+                    startActivity(intent);
                 });
                 recyclerView.setAdapter(adapter);
                 adapter.notifyItemRangeInserted(0, unit.list.size());
@@ -102,9 +107,9 @@ public class UnitActivity extends AppCompatActivity {
         refreshLayout.setRefreshing(true);
         ListExtendableAdapter<?, ?> adapter = (ListExtendableAdapter<?, ?>) recyclerView.getAdapter();
         if (adapter != null) adapter.resetAll();
-        //viewModel.reset();
+        viewModel.reset();
         // Test Fake load with delay
-        new Handler().postDelayed(viewModel::reset, 3000);
+        //new Handler().postDelayed(viewModel::reset, 3000);
     }
 
 

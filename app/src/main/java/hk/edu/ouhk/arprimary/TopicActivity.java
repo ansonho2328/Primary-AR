@@ -103,9 +103,9 @@ public class TopicActivity extends AppCompatActivity {
         refreshLayout.setRefreshing(true);
         ListExtendableAdapter<?, ?> adapter = (ListExtendableAdapter<?, ?>) recyclerView.getAdapter();
         if (adapter != null) adapter.resetAll();
-        //viewModel.reset();
+        viewModel.reset();
         // Test Fake load with delay
-        new Handler().postDelayed(viewModel::reset, 3000);
+        //new Handler().postDelayed(viewModel::reset, 3000);
     }
 
 
