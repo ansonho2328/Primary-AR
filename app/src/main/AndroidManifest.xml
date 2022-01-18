@@ -2,6 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="hk.edu.ouhk.arprimary">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.camera.ar"
+        android:required="true" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
     <application
         android:name=".PrimaryARApplication"
         android:allowBackup="true"
@@ -10,32 +25,40 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ARPrimary">
-        <activity android:name=".SignUpActivity"></activity>
+
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="required" />
+
+        <activity
+            android:name=".LessonActivity"
+            android:exported="false" />
+
+
+
+        <activity android:name=".SignUpActivity" />
         <activity
             android:name=".leaderboard"
             android:exported="false" />
         <activity
             android:name=".AboutActivity"
-            android:theme="@style/Theme.ARPrimary.NoActionBar"
-            android:label="About" />
+            android:label="About"
+            android:theme="@style/Theme.ARPrimary.NoActionBar" />
         <activity
             android:name=".TopicActivity"
-            android:theme="@style/Theme.ARPrimary.NoActionBar"
-            android:label="Topic"/>
-
+            android:label="Topic"
+            android:theme="@style/Theme.ARPrimary.NoActionBar" />
         <activity
             android:name=".UnitActivity"
-            android:label="Unit"/>
-
+            android:label="Unit"
+            android:theme="@style/Theme.ARPrimary.NoActionBar" />
         <activity
             android:name=".UserProfile"
-            android:label="Profile"/>
-
+            android:label="Profile" />
         <activity android:name=".HomeActivity" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/Theme.ARPrimary.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
