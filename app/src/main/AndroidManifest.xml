@@ -17,13 +17,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ARPrimary">
-        <activity
-            android:name=".LessonActivity"
-            android:exported="false" />
 
         <meta-data
             android:name="com.google.ar.core"
             android:value="required" />
+
+        <activity
+            android:name=".LessonActivity"
+            android:exported="false" />
+
+
 
         <activity android:name=".SignUpActivity" />
         <activity

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".LessonActivity">
 
-    <fragment
+    <fragment android:name="com.google.ar.sceneform.ux.ArFragment"
         android:id="@+id/lesson_arfragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

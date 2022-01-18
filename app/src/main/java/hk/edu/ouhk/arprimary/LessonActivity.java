@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -24,6 +25,7 @@ import com.google.ar.sceneform.ux.TransformableNode;
 
 public class LessonActivity extends AppCompatActivity {
 
+    private static final double MIN_OPENGL_VERSION = 3.0;
     private static final String TAG = LessonActivity.class.getSimpleName();
 
 
@@ -43,7 +45,7 @@ public class LessonActivity extends AppCompatActivity {
         topic = getIntent().getExtras().getString("topic");
         unitNo = getIntent().getExtras().getInt("unit-no");
 
-        //if (!isSupported(this)) return;
+        if (!checkIsSupportedDeviceOrFinish(this)) return;
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.lesson_arfragment);
 
@@ -80,15 +82,22 @@ public class LessonActivity extends AppCompatActivity {
         node.select();
     }
 
-    public static boolean isSupported(final Activity activity) {
+    public static boolean checkIsSupportedDeviceOrFinish(final Activity activity)
+    {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
+        {
+            Log.e(TAG, "Sceneform requires Android N or later");
+            Toast.makeText(activity, "Sceneform requires Android N or later", Toast.LENGTH_LONG).show();
+            activity.finish();
+            return false;
+        }
         String openGlVersionString =
                 ((ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE))
-                        .getDeviceConfigurationInfo()
-                        .getGlEsVersion();
-        if (Double.parseDouble(openGlVersionString) < 3.0) {
+                        .getDeviceConfigurationInfo().getGlEsVersion();
+        if (Double.parseDouble(openGlVersionString) < MIN_OPENGL_VERSION)
+        {
             Log.e(TAG, "Sceneform requires OpenGL ES 3.0 later");
-            Toast.makeText(activity, "Sceneform requires OpenGL ES 3.0 or later", Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(activity, "Sceneform requires OpenGL ES 3.0 or later", Toast.LENGTH_LONG).show();
             activity.finish();
             return false;
         }
