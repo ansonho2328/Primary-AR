@@ -116,8 +116,8 @@ public class UnitActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() != android.R.id.home) return false;
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         return true;
     }
 }

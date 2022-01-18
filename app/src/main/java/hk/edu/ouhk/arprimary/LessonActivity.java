@@ -75,16 +75,16 @@ public class LessonActivity extends AppCompatActivity {
         });
 
 
-
-
     }
 
     private void addNodeToScene(ArFragment arFragment, Anchor anchor, Renderable renderable) {
         AnchorNode anchorNode = new AnchorNode(anchor);
+        anchorNode.setParent(arFragment.getArSceneView().getScene());
         TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
-        node.setRenderable(renderable);
+        node.getScaleController().setMaxScale(0.16f);
+        node.getScaleController().setMinScale(0.06f);
         node.setParent(anchorNode);
-        arFragment.getArSceneView().getScene().addChild(anchorNode);
+        node.setRenderable(renderable);
         node.select();
     }
 
