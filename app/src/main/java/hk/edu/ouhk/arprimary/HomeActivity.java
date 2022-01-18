@@ -60,8 +60,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
     public void onEnterProfile(MenuItem item) {
-        //TODO add profile activity
-        Toast.makeText(this, "not finished yet", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, UserProfile.class);
+        startActivity(intent);
     }
 
     public void onEnterAbout(MenuItem item) {
