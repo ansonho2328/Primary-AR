@@ -51,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
-
+    
     public void onEnterProfile(MenuItem item) {
         Intent intent = new Intent(this, UserProfile.class);
         startActivity(intent);
