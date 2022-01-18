@@ -58,7 +58,17 @@ public class LessonActivity extends AppCompatActivity {
         ModelRenderable.builder()
                 .setSource(this, R.raw.apple)
                 .build()
-                .thenAcceptAsync(modelRenderable -> apple = modelRenderable)
+                .thenAccept(model -> {
+
+                    arFragment.setOnTapArPlaneListener(
+                            (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
+                                Anchor anchor = hitResult.createAnchor();
+                                addNodeToScene(arFragment, anchor, model);
+                            });
+
+                    Toast.makeText(LessonActivity.this, "you are ready to tap", Toast.LENGTH_LONG).show();
+
+                })
         .exceptionally(ex -> {
             Toast.makeText(arFragment.getContext(), "Error:" + ex.getMessage(), Toast.LENGTH_LONG).show();
             return null;
@@ -66,11 +76,7 @@ public class LessonActivity extends AppCompatActivity {
 
 
 
-        arFragment.setOnTapArPlaneListener(
-                (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-                    Anchor anchor = hitResult.createAnchor();
-                    addNodeToScene(arFragment, anchor, apple);
-                });
+
     }
 
     private void addNodeToScene(ArFragment arFragment, Anchor anchor, Renderable renderable) {
