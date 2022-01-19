@@ -34,6 +34,10 @@
             android:name=".TextToSpeechActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".SpeechToTextActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.ar.core"
             android:value="required" />

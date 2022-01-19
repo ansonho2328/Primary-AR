@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-public class SpeachToTextActivity extends AppCompatActivity {
+public class SpeechToTextActivity extends AppCompatActivity {
 
     ImageView speachButton;
     EditText speachText;

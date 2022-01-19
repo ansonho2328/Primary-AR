@@ -2,7 +2,6 @@ package hk.edu.ouhk.arprimary;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -44,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         speachBtn.setOnClickListener(v ->{
-            Intent startIntent = new Intent(this, SpeachToTextActivity.class);
+            Intent startIntent = new Intent(this, SpeechToTextActivity.class);
             startActivity(startIntent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
