@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,6 +34,8 @@ import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+import java.util.Locale;
+
 public class LessonActivity extends AppCompatActivity {
 
     private static final double MIN_OPENGL_VERSION = 3.0;
@@ -46,6 +49,7 @@ public class LessonActivity extends AppCompatActivity {
     TextView txt_name;
     ViewRenderable name_models,speaker;
     ModelRenderable apple;
+    private TextToSpeech mTTS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,7 @@ public class LessonActivity extends AppCompatActivity {
             });
             tips.show();
         });
+
 
 
         if (!checkIsSupportedDeviceOrFinish(this)) return;
@@ -133,24 +138,6 @@ public class LessonActivity extends AppCompatActivity {
         addSpeaker(anchorNode, node);
     }
 
-    private void addSpeaker(AnchorNode anchorNode,TransformableNode model){
-        TransformableNode speakerView = new TransformableNode(arFragment.getTransformationSystem());
-        speakerView.setLocalPosition(new Vector3(0.2f, model.getLocalPosition().y+0.5f,0));
-        speakerView.getScaleController().setMaxScale(1f);
-        speakerView.getScaleController().setMinScale(0.5f);
-        speakerView.setParent(anchorNode);
-        speakerView.setRenderable(speaker);
-        speakerView.select();
-
-        speakerBtn = (ImageButton) speaker.getView();
-        speakerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(LessonActivity.this, "speaker clicked", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
     private void addName(AnchorNode anchorNode,TransformableNode model,String name ){
         TransformableNode nameView = new TransformableNode(arFragment.getTransformationSystem());
         nameView.setLocalPosition(new Vector3(0f, model.getLocalPosition().y+0.5f,0));
@@ -163,6 +150,47 @@ public class LessonActivity extends AppCompatActivity {
         txt_name = (TextView) name_models.getView();
         txt_name.setText(name);
     }
+
+    private void addSpeaker(AnchorNode anchorNode,TransformableNode model){
+        TransformableNode speakerView = new TransformableNode(arFragment.getTransformationSystem());
+        speakerView.setLocalPosition(new Vector3(0.2f, model.getLocalPosition().y+0.5f,0));
+        speakerView.getScaleController().setMaxScale(1f);
+        speakerView.getScaleController().setMinScale(0.5f);
+        speakerView.setParent(anchorNode);
+        speakerView.setRenderable(speaker);
+        speakerView.select();
+
+        mTTS = new TextToSpeech(LessonActivity.this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = mTTS.setLanguage(Locale.ENGLISH);
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA
+                            || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "Language not supported");
+                    } else {
+                        speakerBtn.setEnabled(true);
+                    }
+                } else {
+                    Log.e("TTS", "Initialization failed");
+                }
+            }
+        });
+
+        speakerBtn = (ImageButton) speaker.getView();
+        speakerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { speak(); }
+        });
+    }
+
+    private void speak() {
+        String text = txt_name.getText().toString();
+        mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+
 
     public static boolean checkIsSupportedDeviceOrFinish(final Activity activity)
     {
