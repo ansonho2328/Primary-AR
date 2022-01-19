@@ -78,6 +78,7 @@ public class UnitActivity extends AppCompatActivity {
                     intent.putExtra("topic", topic);
                     intent.putExtra("unit-no", unitView.getNo());
                     startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 });
                 recyclerView.setAdapter(adapter);
                 adapter.notifyItemRangeInserted(0, unit.list.size());
