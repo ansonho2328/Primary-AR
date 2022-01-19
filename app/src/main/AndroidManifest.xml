@@ -31,7 +31,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ARPrimary">
         <activity
-            android:name=".SplashActivity"
+            android:name=".TextToSpeechActivity"
             android:exported="false" />
 
         <meta-data
@@ -62,7 +62,7 @@
             android:label="Profile" />
         <activity android:name=".HomeActivity" />
         <activity
-            android:name=".TextToSpeechActivity"
+            android:name=".SplashActivity"
             android:theme="@style/Theme.ARPrimary.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
