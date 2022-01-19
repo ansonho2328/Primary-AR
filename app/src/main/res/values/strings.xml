@@ -22,4 +22,6 @@
     <string name="logo">logo</string>
     <string name="this_list_is_empty">This list is empty</string>
     <string name="image">image</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

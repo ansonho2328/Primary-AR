@@ -1,5 +1,6 @@
 package hk.edu.ouhk.arprimary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -16,16 +17,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import hk.edu.ouhk.arprimary.viewmodel.ListExtendableAdapter;
 import hk.edu.ouhk.arprimary.viewmodel.ViewListAction;
-import hk.edu.ouhk.arprimary.viewmodel.topic.TopicUnitAdapter;
-import hk.edu.ouhk.arprimary.viewmodel.topic.TopicUnitView;
-import hk.edu.ouhk.arprimary.viewmodel.topic.TopicUnitViewModel;
+import hk.edu.ouhk.arprimary.viewmodel.topic.TopicAdapter;
+import hk.edu.ouhk.arprimary.viewmodel.topic.TopicView;
+import hk.edu.ouhk.arprimary.viewmodel.topic.TopicViewModel;
 
 public class TopicActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = TopicActivity.class.getSimpleName();
 
-    TopicUnitViewModel viewModel;
+    TopicViewModel viewModel;
     RecyclerView recyclerView;
     SwipeRefreshLayout refreshLayout;
 
@@ -38,17 +40,17 @@ public class TopicActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        refreshLayout = findViewById(R.id.topic_refresh_layout);
+        refreshLayout = findViewById(R.id.refresh_layout);
         refreshLayout.setOnRefreshListener(this::onUpdateView);
 
-        viewModel = new ViewModelProvider(this).get(TopicUnitViewModel.class);
-        recyclerView = findViewById(R.id.recycle_topics);
+        viewModel = new ViewModelProvider(this).get(TopicViewModel.class);
+        recyclerView = findViewById(R.id.recycle_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ProgressBar loadMore = findViewById(R.id.topic_list_loading_more);
+        ProgressBar loadMore = findViewById(R.id.list_loading_more);
 
         viewModel.getViewList().observe(this, topic -> {
-            TopicUnitAdapter adapter = (TopicUnitAdapter) recyclerView.getAdapter();
+            TopicAdapter adapter = (TopicAdapter) recyclerView.getAdapter();
             if (adapter != null) {
                 if (topic.action == ViewListAction.Action.ADD) { // add
                     loadMore.setVisibility(View.GONE);
@@ -63,12 +65,13 @@ public class TopicActivity extends AppCompatActivity {
 
             } else {
                 refreshLayout.setRefreshing(false);
-                adapter = new TopicUnitAdapter(topic.list, this, v -> {
+                adapter = new TopicAdapter(topic.list, this, v -> {
                     int pos = recyclerView.getChildAdapterPosition(v);
-                    TopicUnitView topicUnitView = topic.list.get(pos);
-
-                    //TODO start activity with that topic
-                    Toast.makeText(TopicActivity.this, "Starting Topic " + topicUnitView.getTitle(), Toast.LENGTH_LONG).show();
+                    TopicView topicView = topic.list.get(pos);
+                    Intent intent = new Intent(TopicActivity.this, UnitActivity.class);
+                    intent.putExtra("topic", topicView.getTitle());
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 });
                 recyclerView.setAdapter(adapter);
                 adapter.notifyItemRangeInserted(0, topic.list.size());
@@ -81,7 +84,7 @@ public class TopicActivity extends AppCompatActivity {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (recyclerView.getAdapter() == null || recyclerView.getAdapter().getItemCount() < TopicUnitViewModel.AMOUNT_PER_PAGE)
+                if (recyclerView.getAdapter() == null || recyclerView.getAdapter().getItemCount() < TopicViewModel.AMOUNT_PER_PAGE)
                     return;
                 if (!recyclerView.canScrollVertically(1)) {
                     loadMore.setVisibility(View.VISIBLE);
@@ -98,11 +101,11 @@ public class TopicActivity extends AppCompatActivity {
 
     private void onUpdateView() {
         refreshLayout.setRefreshing(true);
-        TopicUnitAdapter adapter = (TopicUnitAdapter) recyclerView.getAdapter();
+        ListExtendableAdapter<?, ?> adapter = (ListExtendableAdapter<?, ?>) recyclerView.getAdapter();
         if (adapter != null) adapter.resetAll();
-        //viewModel.reset();
+        viewModel.reset();
         // Test Fake load with delay
-        new Handler().postDelayed(viewModel::reset, 3000);
+        //new Handler().postDelayed(viewModel::reset, 3000);
     }
 
 
@@ -110,6 +113,7 @@ public class TopicActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() != android.R.id.home) return false;
         onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         return true;
     }
 }

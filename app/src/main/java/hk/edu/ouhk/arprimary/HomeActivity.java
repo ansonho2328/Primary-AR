@@ -17,6 +17,7 @@ public class HomeActivity extends AppCompatActivity {
     Button leaderboardBtn;
     Button speachBtn;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,14 +59,16 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
-
+    
     public void onEnterProfile(MenuItem item) {
         Intent intent = new Intent(this, UserProfile.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     public void onEnterAbout(MenuItem item) {
         Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 }
