@@ -13,8 +13,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -32,6 +34,8 @@ import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+import java.util.Locale;
+
 public class LessonActivity extends AppCompatActivity {
 
     private static final double MIN_OPENGL_VERSION = 3.0;
@@ -40,11 +44,12 @@ public class LessonActivity extends AppCompatActivity {
 
     String topic;
     int unitNo;
-    ImageButton tipsBtn;
+    ImageButton tipsBtn,speakerBtn;
     ArFragment arFragment;
     TextView txt_name;
-    ViewRenderable name_models;
+    ViewRenderable name_models,speaker;
     ModelRenderable apple;
+    private TextToSpeech mTTS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +74,7 @@ public class LessonActivity extends AppCompatActivity {
         });
 
 
+
         if (!checkIsSupportedDeviceOrFinish(this)) return;
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.lesson_arfragment);
@@ -79,10 +85,22 @@ public class LessonActivity extends AppCompatActivity {
             return;
         }
 
+
+        createModel();
+
+
+    }
+
+    private void createModel(){
         ViewRenderable.builder()
                 .setView(this, R.layout.name_models)
                 .build()
                 .thenAccept(renderable -> name_models = renderable);
+
+        ViewRenderable.builder()
+                .setView(this, R.layout.speaker)
+                .build()
+                .thenAccept(renderable -> speaker = renderable);
 
         ModelRenderable.builder()
                 .setSource(this, R.raw.apple)
@@ -98,10 +116,10 @@ public class LessonActivity extends AppCompatActivity {
                     Toast.makeText(LessonActivity.this, "you are ready to tap", Toast.LENGTH_LONG).show();
 
                 })
-        .exceptionally(ex -> {
-            Toast.makeText(arFragment.getContext(), "Error:" + ex.getMessage(), Toast.LENGTH_LONG).show();
-            return null;
-        });
+                .exceptionally(ex -> {
+                    Toast.makeText(arFragment.getContext(), "Error:" + ex.getMessage(), Toast.LENGTH_LONG).show();
+                    return null;
+                });
 
 
     }
@@ -117,11 +135,14 @@ public class LessonActivity extends AppCompatActivity {
         node.select();
 
         addName(anchorNode, node, "Apple");
+        addSpeaker(anchorNode, node);
     }
 
     private void addName(AnchorNode anchorNode,TransformableNode model,String name ){
         TransformableNode nameView = new TransformableNode(arFragment.getTransformationSystem());
         nameView.setLocalPosition(new Vector3(0f, model.getLocalPosition().y+0.5f,0));
+        nameView.getScaleController().setMaxScale(1f);
+        nameView.getScaleController().setMinScale(0.5f);
         nameView.setParent(anchorNode);
         nameView.setRenderable(name_models);
         nameView.select();
@@ -129,6 +150,47 @@ public class LessonActivity extends AppCompatActivity {
         txt_name = (TextView) name_models.getView();
         txt_name.setText(name);
     }
+
+    private void addSpeaker(AnchorNode anchorNode,TransformableNode model){
+        TransformableNode speakerView = new TransformableNode(arFragment.getTransformationSystem());
+        speakerView.setLocalPosition(new Vector3(0.2f, model.getLocalPosition().y+0.5f,0));
+        speakerView.getScaleController().setMaxScale(1f);
+        speakerView.getScaleController().setMinScale(0.5f);
+        speakerView.setParent(anchorNode);
+        speakerView.setRenderable(speaker);
+        speakerView.select();
+
+        mTTS = new TextToSpeech(LessonActivity.this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = mTTS.setLanguage(Locale.ENGLISH);
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA
+                            || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "Language not supported");
+                    } else {
+                        speakerBtn.setEnabled(true);
+                    }
+                } else {
+                    Log.e("TTS", "Initialization failed");
+                }
+            }
+        });
+
+        speakerBtn = (ImageButton) speaker.getView();
+        speakerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { speak(); }
+        });
+    }
+
+    private void speak() {
+        String text = txt_name.getText().toString();
+        mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+
 
     public static boolean checkIsSupportedDeviceOrFinish(final Activity activity)
     {
