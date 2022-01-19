@@ -43,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         speachBtn.setOnClickListener(v ->{
-            Intent startIntent = new Intent(this, SpeechToTextActivity.class);
+            Intent startIntent = new Intent(this, TextToSpeechActivity.class);
             startActivity(startIntent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
