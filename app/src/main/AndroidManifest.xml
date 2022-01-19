@@ -4,15 +4,20 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-
     <uses-feature
         android:name="android.hardware.camera.ar"
         android:required="true" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
@@ -25,6 +30,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ARPrimary">
+        <activity
+            android:name=".SplashActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.ar.core"
@@ -33,9 +41,6 @@
         <activity
             android:name=".LessonActivity"
             android:exported="false" />
-
-
-
         <activity android:name=".SignUpActivity" />
         <activity
             android:name=".leaderboard"
@@ -57,7 +62,7 @@
             android:label="Profile" />
         <activity android:name=".HomeActivity" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".TextToSpeechActivity"
             android:theme="@style/Theme.ARPrimary.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
