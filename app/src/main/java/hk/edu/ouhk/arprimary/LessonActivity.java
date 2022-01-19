@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.ar.core.Anchor;
@@ -24,8 +25,10 @@ import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.ArSceneView;
+import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.Renderable;
+import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
@@ -39,8 +42,8 @@ public class LessonActivity extends AppCompatActivity {
     int unitNo;
     ImageButton tipsBtn;
     ArFragment arFragment;
-
-
+    TextView txt_name;
+    ViewRenderable name_models;
     ModelRenderable apple;
 
     @Override
@@ -76,6 +79,11 @@ public class LessonActivity extends AppCompatActivity {
             return;
         }
 
+        ViewRenderable.builder()
+                .setView(this, R.layout.name_models)
+                .build()
+                .thenAccept(renderable -> name_models = renderable);
+
         ModelRenderable.builder()
                 .setSource(this, R.raw.apple)
                 .build()
@@ -107,6 +115,19 @@ public class LessonActivity extends AppCompatActivity {
         node.setParent(anchorNode);
         node.setRenderable(renderable);
         node.select();
+
+        addName(anchorNode, node, "Apple");
+    }
+
+    private void addName(AnchorNode anchorNode,TransformableNode model,String name ){
+        TransformableNode nameView = new TransformableNode(arFragment.getTransformationSystem());
+        nameView.setLocalPosition(new Vector3(0f, model.getLocalPosition().y+0.5f,0));
+        nameView.setParent(anchorNode);
+        nameView.setRenderable(name_models);
+        nameView.select();
+
+        txt_name = (TextView) name_models.getView();
+        txt_name.setText(name);
     }
 
     public static boolean checkIsSupportedDeviceOrFinish(final Activity activity)
