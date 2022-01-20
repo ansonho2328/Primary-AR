@@ -99,6 +99,19 @@ public class LessonActivity extends AppCompatActivity {
             }
         }
 
+        if(topic.equals("Stationary")){
+
+            switch (unitNo){
+                case 1: modelName = "Book";
+                    modelid = getApplicationContext().getResources()
+                            .getIdentifier("book"
+                                    ,"raw"
+                                    ,getPackageName());
+
+                    break;
+
+            }
+        }
         tipsBtn.setOnClickListener(view -> {
             AlertDialog.Builder tips = new AlertDialog.Builder(LessonActivity.this);
             tips.setIcon(ContextCompat.getDrawable(LessonActivity.this,R.drawable.tips));
