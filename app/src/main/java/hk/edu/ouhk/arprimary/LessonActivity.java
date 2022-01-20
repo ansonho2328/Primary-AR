@@ -47,6 +47,8 @@ public class LessonActivity extends AppCompatActivity {
 
 
     String topic;
+    String modelName;
+    int modelid;
     int unitNo;
     ImageButton tipsBtn,speakerBtn,microphone;
     ArFragment arFragment;
@@ -54,6 +56,7 @@ public class LessonActivity extends AppCompatActivity {
     EditText editText;
     ViewRenderable name_models,speaker;
     ModelRenderable apple;
+
     private TextToSpeech mTTS;
     private static final int RECOGNIZER_RESULT = 1;
 
@@ -63,10 +66,38 @@ public class LessonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lesson);
 
         topic = getIntent().getExtras().getString("topic");
-        unitNo = getIntent().getExtras().getInt("unit-no");
+        unitNo = getIntent().getIntExtra("unit-no",1);
         tipsBtn = findViewById(R.id.tipsBtn);
         microphone = findViewById(R.id.microphone);
         editText = findViewById(R.id.editText);
+
+        Toast.makeText(LessonActivity.this, String.valueOf(unitNo), Toast.LENGTH_LONG).show();
+
+        if(topic.equals("Fruit")){
+
+            switch (unitNo){
+                case 1: modelName = "Apple";
+                    modelid = getApplicationContext().getResources()
+                            .getIdentifier("apple"
+                                    ,"raw"
+                                    ,getPackageName());
+
+                    break;
+                case 2: modelName = "Eggplant";
+                    modelid = getApplicationContext().getResources()
+                            .getIdentifier("eggplant"
+                                    ,"raw"
+                                    ,getPackageName());
+                    break;
+                case 3: modelName = "Grape";
+                    modelid = getApplicationContext().getResources()
+                            .getIdentifier("grape_purlple"
+                                    ,"raw"
+                                    ,getPackageName());
+                    break;
+
+            }
+        }
 
         tipsBtn.setOnClickListener(view -> {
             AlertDialog.Builder tips = new AlertDialog.Builder(LessonActivity.this);
@@ -119,7 +150,7 @@ public class LessonActivity extends AppCompatActivity {
                 .thenAccept(renderable -> speaker = renderable);
 
         ModelRenderable.builder()
-                .setSource(this, R.raw.apple)
+                .setSource(this, modelid)
                 .build()
                 .thenAccept(model -> {
 
@@ -150,7 +181,7 @@ public class LessonActivity extends AppCompatActivity {
         node.setRenderable(renderable);
         node.select();
 
-        addName(anchorNode, node, "Apple");
+        addName(anchorNode, node, modelName);
         addSpeaker(anchorNode, node);
     }
 
