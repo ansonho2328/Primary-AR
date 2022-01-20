@@ -76,6 +76,7 @@ public class UnitActivity extends AppCompatActivity {
                     Toast.makeText(UnitActivity.this, unitView.getNo()+"-"+unitView.getType(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(UnitActivity.this, LessonActivity.class);
                     intent.putExtra("topic", topic);
+                    intent.putExtra("unit-type", unitView.getType());
                     intent.putExtra("unit-no", unitView.getNo());
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

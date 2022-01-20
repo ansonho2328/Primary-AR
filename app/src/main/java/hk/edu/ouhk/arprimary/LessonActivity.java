@@ -89,9 +89,15 @@ public class LessonActivity extends AppCompatActivity {
                                     ,"raw"
                                     ,getPackageName());
                     break;
-                case 3: modelName = "Grape";
+                case 4: modelName = "Grape";
                     modelid = getApplicationContext().getResources()
                             .getIdentifier("grape_purlple"
+                                    ,"raw"
+                                    ,getPackageName());
+                    break;
+                case 3: modelName = "Lemon";
+                    modelid = getApplicationContext().getResources()
+                            .getIdentifier("lemon"
                                     ,"raw"
                                     ,getPackageName());
                     break;
