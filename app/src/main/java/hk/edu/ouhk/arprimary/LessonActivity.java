@@ -1,5 +1,6 @@
 package hk.edu.ouhk.arprimary;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -13,11 +14,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +37,7 @@ import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class LessonActivity extends AppCompatActivity {
@@ -44,12 +48,14 @@ public class LessonActivity extends AppCompatActivity {
 
     String topic;
     int unitNo;
-    ImageButton tipsBtn,speakerBtn;
+    ImageButton tipsBtn,speakerBtn,microphone;
     ArFragment arFragment;
     TextView txt_name;
+    EditText editText;
     ViewRenderable name_models,speaker;
     ModelRenderable apple;
     private TextToSpeech mTTS;
+    private static final int RECOGNIZER_RESULT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,8 @@ public class LessonActivity extends AppCompatActivity {
         topic = getIntent().getExtras().getString("topic");
         unitNo = getIntent().getExtras().getInt("unit-no");
         tipsBtn = findViewById(R.id.tipsBtn);
+        microphone = findViewById(R.id.microphone);
+        editText = findViewById(R.id.editText);
 
         tipsBtn.setOnClickListener(view -> {
             AlertDialog.Builder tips = new AlertDialog.Builder(LessonActivity.this);
@@ -73,7 +81,15 @@ public class LessonActivity extends AppCompatActivity {
             tips.show();
         });
 
-
+        microphone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent speachIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                speachIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                speachIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speach to text");
+                startActivityForResult(speachIntent,RECOGNIZER_RESULT);
+            }
+        });
 
         if (!checkIsSupportedDeviceOrFinish(this)) return;
 
@@ -190,7 +206,37 @@ public class LessonActivity extends AppCompatActivity {
         mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
+        if(requestCode == RECOGNIZER_RESULT && resultCode == RESULT_OK){
+            ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            editText.setText(matches.get(0).toString());
+            if (matches.get(0).toString().equals(txt_name.getText().toString())){
+                AlertDialog.Builder tips = new AlertDialog.Builder(LessonActivity.this);
+                tips.setIcon(ContextCompat.getDrawable(LessonActivity.this,R.drawable.happy));
+                tips.setTitle("Congratulations!");
+                tips.setMessage("You have answer correctly!");
+                tips.setPositiveButton("Got It",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {}
+                });
+                tips.show();
+            } else {
+                AlertDialog.Builder tips = new AlertDialog.Builder(LessonActivity.this);
+                tips.setIcon(ContextCompat.getDrawable(LessonActivity.this,R.drawable.unhappy));
+                tips.setTitle("Unfortunately!");
+                tips.setMessage("You have answer wrongly, please try again!");
+                tips.setPositiveButton("Got It",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {}
+                });
+                tips.show();
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     public static boolean checkIsSupportedDeviceOrFinish(final Activity activity)
     {
