@@ -1,0 +1,62 @@
+{
+  animations: [
+    {
+      path: 'fruit/grape_purlple.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: '1texture.009',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: null,
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'fruit/grape_purlple.fbx',
+    name: 'grape_purlple',
+    recenter: 'root',
+    scale: 0.87743000000000004,
+  },
+  version: '0.54:2',
+}

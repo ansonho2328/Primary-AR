@@ -1,0 +1,62 @@
+{
+  animations: [
+    {
+      path: 'fruit/eggplant.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: '1texture.018',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: null,
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'fruit/eggplant.fbx',
+    name: 'eggplant',
+    recenter: 'root',
+    scale: 0.93679500000000004,
+  },
+  version: '0.54:2',
+}

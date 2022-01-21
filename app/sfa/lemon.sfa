@@ -1,0 +1,61 @@
+{
+  animations: [
+    {
+      path: 'fruit/lemon.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: '材質.001',
+      parameters: [
+        {
+          baseColor: [
+            0.80000000000000004,
+            0.79427999999999999,
+            0.045003000000000001,
+            1,
+          ],
+        },
+        {
+          baseColorMap: null,
+        },
+        {
+          normalMap: null,
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'fruit/lemon.fbx',
+    name: 'lemon',
+    recenter: 'root',
+    scale: 0.16320000000000001,
+  },
+  version: '0.54:2',
+}
