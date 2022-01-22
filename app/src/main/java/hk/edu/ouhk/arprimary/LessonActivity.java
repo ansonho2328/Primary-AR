@@ -50,7 +50,7 @@ public class LessonActivity extends AppCompatActivity {
     String modelName;
     int modelid;
     int unitNo;
-    ImageButton tipsBtn,speakerBtn,microphone;
+    ImageButton tipsBtn,speakerBtn,microphone, leave;
     ArFragment arFragment;
     TextView txt_name;
     EditText editText;
@@ -69,10 +69,12 @@ public class LessonActivity extends AppCompatActivity {
         unitNo = getIntent().getIntExtra("unit-no",1);
         tipsBtn = findViewById(R.id.tipsBtn);
         microphone = findViewById(R.id.microphone);
+        leave = findViewById(R.id.leave);
         editText = findViewById(R.id.editText);
 
         Toast.makeText(LessonActivity.this, String.valueOf(unitNo), Toast.LENGTH_LONG).show();
 
+        // locate topic type model
         if(topic.equals("Fruit")){
 
             switch (unitNo){
@@ -118,12 +120,38 @@ public class LessonActivity extends AppCompatActivity {
 
             }
         }
+
+       // Leave button handling for leaving the game
+        leave.setOnClickListener(view -> {
+            AlertDialog.Builder leave = new AlertDialog.Builder(LessonActivity.this);
+            leave.setIcon(ContextCompat.getDrawable(LessonActivity.this,R.drawable.confirm_leave));
+            leave.setTitle("Leave Game");
+            leave.setMessage("Are you sure to leave the game?");
+
+            leave.setNegativeButton("Yes",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    Intent startIntent = new Intent(LessonActivity.this, HomeActivity.class);
+                    startActivity(startIntent);
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                }
+            });
+
+            leave.setPositiveButton("No",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {}
+            });
+            leave.show();
+        });
+
+        // Tips button handling for game tips or rules
         tipsBtn.setOnClickListener(view -> {
             AlertDialog.Builder tips = new AlertDialog.Builder(LessonActivity.this);
             tips.setIcon(ContextCompat.getDrawable(LessonActivity.this,R.drawable.tips));
             tips.setTitle("Shadowing Game Tips");
-            tips.setMessage("1. Click the speaker button for word's pronunciation \n\n" +
-                    "2. Click the microphone button to pronounce the word ");
+            tips.setMessage("1. Please click the speaker button for word's pronunciation \n\n" +
+                    "2. Please click the microphone button to pronounce the word \n\n" +
+                       "3. Get marks when answer correctly.");
             tips.setPositiveButton("Got It",new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {}
@@ -131,6 +159,7 @@ public class LessonActivity extends AppCompatActivity {
             tips.show();
         });
 
+        // Microphone for pronouncing word by player
         microphone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,13 +180,12 @@ public class LessonActivity extends AppCompatActivity {
             return;
         }
 
-
         createModel();
-
 
     }
 
     private void createModel(){
+        // Set up the view e.g name and speaker
         ViewRenderable.builder()
                 .setView(this, R.layout.name_models)
                 .build()
@@ -168,6 +196,7 @@ public class LessonActivity extends AppCompatActivity {
                 .build()
                 .thenAccept(renderable -> speaker = renderable);
 
+        // Set up the model
         ModelRenderable.builder()
                 .setSource(this, modelid)
                 .build()
@@ -204,6 +233,7 @@ public class LessonActivity extends AppCompatActivity {
         addSpeaker(anchorNode, node);
     }
 
+    // Adding model name
     private void addName(AnchorNode anchorNode,TransformableNode model,String name ){
         TransformableNode nameView = new TransformableNode(arFragment.getTransformationSystem());
         nameView.setLocalPosition(new Vector3(0f, model.getLocalPosition().y+0.5f,0));
@@ -217,6 +247,7 @@ public class LessonActivity extends AppCompatActivity {
         txt_name.setText(name);
     }
 
+    // Adding speaker button for model
     private void addSpeaker(AnchorNode anchorNode,TransformableNode model){
         TransformableNode speakerView = new TransformableNode(arFragment.getTransformationSystem());
         speakerView.setLocalPosition(new Vector3(0.2f, model.getLocalPosition().y+0.5f,0));
@@ -256,6 +287,7 @@ public class LessonActivity extends AppCompatActivity {
         mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
 
+    // Answer handling for shadowing game
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
