@@ -1,5 +1,8 @@
 package hk.edu.ouhk.arprimary;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -17,6 +20,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import hk.edu.ouhk.arprimary.model.Lesson;
+import hk.edu.ouhk.arprimary.model.LessonFragment;
 import hk.edu.ouhk.arprimary.viewmodel.ListExtendableAdapter;
 import hk.edu.ouhk.arprimary.viewmodel.ViewListAction;
 import hk.edu.ouhk.arprimary.viewmodel.topic.TopicAdapter;
@@ -33,6 +38,8 @@ public class UnitActivity extends AppCompatActivity {
     SwipeRefreshLayout refreshLayout;
 
     String topic;
+
+    ActivityResultLauncher<Intent> lessonLauncher, quizLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +83,23 @@ public class UnitActivity extends AppCompatActivity {
                     Toast.makeText(UnitActivity.this, unitView.getNo()+"-"+unitView.getType(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(UnitActivity.this, LessonActivity.class);
                     intent.putExtra("topic", topic);
-                    intent.putExtra("unit-type", unitView.getType());
                     intent.putExtra("unit-no", unitView.getNo());
-                    startActivity(intent);
+
+                    // make fake data
+                    LessonFragment[] fragments = {
+                            new LessonFragment("Apple", "apple",
+                                    " (Noun)\na round fruit with firm, white flesh \nand a green, red, or yellow skin"),
+                            new LessonFragment("Eggplant", "eggplant",
+                                    " (Noun)\nan oval, purple vegetable that is white \ninside and is usually eaten cooked"),
+                            new LessonFragment("Grape", "grape_purlple",
+                                    " (Noun)\na small, round, purple or pale green fruit \nthat you can eat or make into wine"),
+                            new LessonFragment("Lemon", "lemon",
+                                    " (Noun)\nan oval fruit that has a thick,\n yellow skin and sour juice")
+                    };
+
+                    Lesson lesson = new Lesson(fragments);
+                    intent.putExtra("lesson", lesson);
+                    lessonLauncher.launch(intent);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 });
                 recyclerView.setAdapter(adapter);
@@ -103,6 +124,21 @@ public class UnitActivity extends AppCompatActivity {
 
         // calling this method for first loading units
         this.onUpdateView();
+        lessonLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onLessonResult);
+        quizLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onQuizResult);
+    }
+
+    public void onLessonResult(ActivityResult result) {
+        if (result.getResultCode() == RESULT_OK) {
+            // passed
+            Toast.makeText(this, "you passed the course!", Toast.LENGTH_LONG).show();
+        } else if (result.getResultCode() == RESULT_CANCELED){
+            // cancelled
+            Toast.makeText(this, "you cancelled the course", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void onQuizResult(ActivityResult result){
     }
 
     private void onUpdateView(){
