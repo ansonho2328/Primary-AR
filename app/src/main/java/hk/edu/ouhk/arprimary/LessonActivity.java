@@ -47,14 +47,14 @@ public class LessonActivity extends AppCompatActivity {
 
 
     String topic;
-    String modelName;
+    String modelName, modelDefin;
     int modelid;
     int unitNo;
     ImageButton tipsBtn,speakerBtn,microphone, leave;
     ArFragment arFragment;
-    TextView txt_name;
+    TextView txt_name,txt_defin;
     EditText editText;
-    ViewRenderable name_models,speaker;
+    ViewRenderable name_models,speaker,definition;
     ModelRenderable apple;
 
     private TextToSpeech mTTS;
@@ -83,25 +83,28 @@ public class LessonActivity extends AppCompatActivity {
                             .getIdentifier("apple"
                                     ,"raw"
                                     ,getPackageName());
-
+                    modelDefin = " (Noun)\na round fruit with firm, white flesh \nand a green, red, or yellow skin";
                     break;
                 case 2: modelName = "Eggplant";
                     modelid = getApplicationContext().getResources()
                             .getIdentifier("eggplant"
                                     ,"raw"
                                     ,getPackageName());
+                    modelDefin = " (Noun)\nan oval, purple vegetable that is white \ninside and is usually eaten cooked";
                     break;
-                case 4: modelName = "Grape";
+                case 3: modelName = "Grape";
                     modelid = getApplicationContext().getResources()
                             .getIdentifier("grape_purlple"
                                     ,"raw"
                                     ,getPackageName());
+                    modelDefin = " (Noun)\na small, round, purple or pale green fruit \nthat you can eat or make into wine";
                     break;
-                case 3: modelName = "Lemon";
+                case 4: modelName = "Lemon";
                     modelid = getApplicationContext().getResources()
                             .getIdentifier("lemon"
                                     ,"raw"
                                     ,getPackageName());
+                    modelDefin = " (Noun)\nan oval fruit that has a thick,\n yellow skin and sour juice";
                     break;
 
             }
@@ -115,7 +118,7 @@ public class LessonActivity extends AppCompatActivity {
                             .getIdentifier("book"
                                     ,"raw"
                                     ,getPackageName());
-
+                    modelDefin = " (Noun) \n a written text that can be \npublished in printed or electronic form";
                     break;
 
             }
@@ -165,7 +168,7 @@ public class LessonActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent speachIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 speachIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                speachIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speach to text");
+                speachIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Pronounce the word");
                 startActivityForResult(speachIntent,RECOGNIZER_RESULT);
             }
         });
@@ -185,11 +188,16 @@ public class LessonActivity extends AppCompatActivity {
     }
 
     private void createModel(){
-        // Set up the view e.g name and speaker
+        // Set up the view e.g name and speaker and definition
         ViewRenderable.builder()
                 .setView(this, R.layout.name_models)
                 .build()
                 .thenAccept(renderable -> name_models = renderable);
+
+        ViewRenderable.builder()
+                .setView(this, R.layout.definition)
+                .build()
+                .thenAccept(renderable -> definition = renderable);
 
         ViewRenderable.builder()
                 .setView(this, R.layout.speaker)
@@ -230,13 +238,14 @@ public class LessonActivity extends AppCompatActivity {
         node.select();
 
         addName(anchorNode, node, modelName);
+        addDefin(anchorNode, node,modelDefin);
         addSpeaker(anchorNode, node);
     }
 
     // Adding model name
     private void addName(AnchorNode anchorNode,TransformableNode model,String name ){
         TransformableNode nameView = new TransformableNode(arFragment.getTransformationSystem());
-        nameView.setLocalPosition(new Vector3(0f, model.getLocalPosition().y+0.5f,0));
+        nameView.setLocalPosition(new Vector3(0f, model.getLocalPosition().y+0.7f,0));
         nameView.getScaleController().setMaxScale(1f);
         nameView.getScaleController().setMinScale(0.5f);
         nameView.setParent(anchorNode);
@@ -247,10 +256,24 @@ public class LessonActivity extends AppCompatActivity {
         txt_name.setText(name);
     }
 
+    // Adding definition for model
+    private void addDefin(AnchorNode anchorNode,TransformableNode model,String name ){
+        TransformableNode definView = new TransformableNode(arFragment.getTransformationSystem());
+        definView.setLocalPosition(new Vector3(0f, model.getLocalPosition().y+0.43f,0));
+        definView.getScaleController().setMaxScale(1f);
+        definView.getScaleController().setMinScale(0.5f);
+        definView.setParent(anchorNode);
+        definView.setRenderable(definition);
+        definView.select();
+
+        txt_defin = (TextView) definition.getView();
+        txt_defin.setText(modelDefin);
+    }
+
     // Adding speaker button for model
     private void addSpeaker(AnchorNode anchorNode,TransformableNode model){
         TransformableNode speakerView = new TransformableNode(arFragment.getTransformationSystem());
-        speakerView.setLocalPosition(new Vector3(0.2f, model.getLocalPosition().y+0.5f,0));
+        speakerView.setLocalPosition(new Vector3(0.35f, model.getLocalPosition().y+0.7f,0));
         speakerView.getScaleController().setMaxScale(1f);
         speakerView.getScaleController().setMinScale(0.5f);
         speakerView.setParent(anchorNode);
@@ -295,26 +318,31 @@ public class LessonActivity extends AppCompatActivity {
             ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             editText.setText(matches.get(0).toString());
             if (matches.get(0).toString().equals(txt_name.getText().toString())){
-                AlertDialog.Builder tips = new AlertDialog.Builder(LessonActivity.this);
-                tips.setIcon(ContextCompat.getDrawable(LessonActivity.this,R.drawable.happy));
-                tips.setTitle("Congratulations!");
-                tips.setMessage("You have answer correctly!");
-                tips.setPositiveButton("Got It",new DialogInterface.OnClickListener() {
+                AlertDialog.Builder answer = new AlertDialog.Builder(LessonActivity.this);
+                answer.setIcon(ContextCompat.getDrawable(LessonActivity.this,R.drawable.happy));
+                answer.setTitle("Congratulations!");
+                answer.setMessage("You have answered correctly!");
+                answer.setPositiveButton("Got It",new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface arg0, int arg1) {}
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Intent startIntent = new Intent(LessonActivity.this, UnitActivity.class);
+                        startActivity(startIntent);
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                    }
                 });
-                tips.show();
+                answer.show();
             } else {
-                AlertDialog.Builder tips = new AlertDialog.Builder(LessonActivity.this);
-                tips.setIcon(ContextCompat.getDrawable(LessonActivity.this,R.drawable.unhappy));
-                tips.setTitle("Unfortunately!");
-                tips.setMessage("You have answer wrongly, please try again!");
-                tips.setPositiveButton("Got It",new DialogInterface.OnClickListener() {
+                AlertDialog.Builder answer = new AlertDialog.Builder(LessonActivity.this);
+                answer.setIcon(ContextCompat.getDrawable(LessonActivity.this,R.drawable.unhappy));
+                answer.setTitle("Unfortunately!");
+                answer.setMessage("You have answered wrongly, please try again!");
+                answer.setPositiveButton("Got It",new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {}
                 });
-                tips.show();
+                answer.show();
             }
+//            matches.remove(matches.get(0));
         }
 
         super.onActivityResult(requestCode, resultCode, data);
