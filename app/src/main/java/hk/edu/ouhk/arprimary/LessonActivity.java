@@ -1,11 +1,5 @@
 package hk.edu.ouhk.arprimary;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -19,26 +13,38 @@ import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
-import com.google.ar.sceneform.ArSceneView;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
-import com.google.ar.sceneform.rendering.Renderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.TreeSet;
+import java.util.concurrent.CompletableFuture;
+
+import hk.edu.ouhk.arprimary.model.Lesson;
+import hk.edu.ouhk.arprimary.model.LessonFragment;
+import hk.edu.ouhk.arprimary.viewmodel.armodel.ArViewModel;
+import hk.edu.ouhk.arprimary.viewmodel.armodel.UnitSection;
 
 public class LessonActivity extends AppCompatActivity {
 
@@ -47,102 +53,69 @@ public class LessonActivity extends AppCompatActivity {
 
 
     String topic;
-    String modelName, modelDefin;
-    int modelid;
     int unitNo;
-    ImageButton tipsBtn,speakerBtn,microphone, leave;
+    Lesson lesson;
+
+    ImageButton tipsBtn, speakerBtn, microphone, leave;
     ArFragment arFragment;
-    TextView txt_name,txt_defin;
-    EditText editText;
-    ViewRenderable name_models,speaker,definition;
-    ModelRenderable apple;
+    TextView txt_name, txt_defin;
+    EditText speechTextShow;
+
+    ViewRenderable name_models, speaker, definition;
+    TransformableNode modelNode, speakerNode, defNode, nameNode;
+    ArViewModel viewModel;
+    ActivityResultLauncher<Intent> speechLauncher;
+
+    Iterator<UnitSection> sectionIterator;
 
     private TextToSpeech mTTS;
-    private static final int RECOGNIZER_RESULT = 1;
+
+    boolean lessonStarted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lesson);
 
+        if (!checkIsSupportedDeviceOrFinish(this)) {
+            Toast.makeText(this, "Your device is not support AR", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         topic = getIntent().getExtras().getString("topic");
-        unitNo = getIntent().getIntExtra("unit-no",1);
+        unitNo = getIntent().getIntExtra("unit-no", 1);
+        lesson = (Lesson) getIntent().getSerializableExtra("lesson");
+
+        viewModel = new ViewModelProvider(this).get(ArViewModel.class);
+
         tipsBtn = findViewById(R.id.tipsBtn);
         microphone = findViewById(R.id.microphone);
         leave = findViewById(R.id.leave);
-        editText = findViewById(R.id.editText);
+        speechTextShow = findViewById(R.id.editText);
 
         Toast.makeText(LessonActivity.this, String.valueOf(unitNo), Toast.LENGTH_LONG).show();
+        speechLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onSpeechResult);
 
-        // locate topic type model
-        if(topic.equals("Fruit")){
-
-            switch (unitNo){
-                case 1: modelName = "Apple";
-                    modelid = getApplicationContext().getResources()
-                            .getIdentifier("apple"
-                                    ,"raw"
-                                    ,getPackageName());
-                    modelDefin = " (Noun)\na round fruit with firm, white flesh \nand a green, red, or yellow skin";
-                    break;
-                case 2: modelName = "Eggplant";
-                    modelid = getApplicationContext().getResources()
-                            .getIdentifier("eggplant"
-                                    ,"raw"
-                                    ,getPackageName());
-                    modelDefin = " (Noun)\nan oval, purple vegetable that is white \ninside and is usually eaten cooked";
-                    break;
-                case 3: modelName = "Grape";
-                    modelid = getApplicationContext().getResources()
-                            .getIdentifier("grape_purlple"
-                                    ,"raw"
-                                    ,getPackageName());
-                    modelDefin = " (Noun)\na small, round, purple or pale green fruit \nthat you can eat or make into wine";
-                    break;
-                case 4: modelName = "Lemon";
-                    modelid = getApplicationContext().getResources()
-                            .getIdentifier("lemon"
-                                    ,"raw"
-                                    ,getPackageName());
-                    modelDefin = " (Noun)\nan oval fruit that has a thick,\n yellow skin and sour juice";
-                    break;
-
-            }
-        }
-
-        if(topic.equals("Stationary")){
-
-            switch (unitNo){
-                case 1: modelName = "Book";
-                    modelid = getApplicationContext().getResources()
-                            .getIdentifier("book"
-                                    ,"raw"
-                                    ,getPackageName());
-                    modelDefin = " (Noun) \n a written text that can be \npublished in printed or electronic form";
-                    break;
-
-            }
-        }
-
-       // Leave button handling for leaving the game
+        // Leave button handling for leaving the game
         leave.setOnClickListener(view -> {
             AlertDialog.Builder leave = new AlertDialog.Builder(LessonActivity.this);
-            leave.setIcon(ContextCompat.getDrawable(LessonActivity.this,R.drawable.confirm_leave));
+            leave.setIcon(ContextCompat.getDrawable(LessonActivity.this, R.drawable.confirm_leave));
             leave.setTitle("Leave Game");
             leave.setMessage("Are you sure to leave the game?");
 
-            leave.setNegativeButton("Yes",new DialogInterface.OnClickListener() {
+            leave.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {
-                    Intent startIntent = new Intent(LessonActivity.this, HomeActivity.class);
-                    startActivity(startIntent);
+                    setResult(RESULT_CANCELED);
+                    finish();
                     overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 }
             });
 
-            leave.setPositiveButton("No",new DialogInterface.OnClickListener() {
+            leave.setPositiveButton("No", new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface arg0, int arg1) {}
+                public void onClick(DialogInterface arg0, int arg1) {
+                }
             });
             leave.show();
         });
@@ -150,14 +123,15 @@ public class LessonActivity extends AppCompatActivity {
         // Tips button handling for game tips or rules
         tipsBtn.setOnClickListener(view -> {
             AlertDialog.Builder tips = new AlertDialog.Builder(LessonActivity.this);
-            tips.setIcon(ContextCompat.getDrawable(LessonActivity.this,R.drawable.tips));
+            tips.setIcon(ContextCompat.getDrawable(LessonActivity.this, R.drawable.tips));
             tips.setTitle("Shadowing Game Tips");
             tips.setMessage("1. Please click the speaker button for word's pronunciation \n\n" +
                     "2. Please click the microphone button to pronounce the word \n\n" +
-                       "3. Get marks when answer correctly.");
-            tips.setPositiveButton("Got It",new DialogInterface.OnClickListener() {
+                    "3. Get marks when answer correctly.");
+            tips.setPositiveButton("Got It", new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface arg0, int arg1) {}
+                public void onClick(DialogInterface arg0, int arg1) {
+                }
             });
             tips.show();
         });
@@ -169,11 +143,10 @@ public class LessonActivity extends AppCompatActivity {
                 Intent speachIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 speachIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
                 speachIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Pronounce the word");
-                startActivityForResult(speachIntent,RECOGNIZER_RESULT);
+                speechLauncher.launch(speachIntent);
             }
         });
 
-        if (!checkIsSupportedDeviceOrFinish(this)) return;
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.lesson_arfragment);
 
@@ -183,103 +156,200 @@ public class LessonActivity extends AppCompatActivity {
             return;
         }
 
-        createModel();
+        // if anything is ready, it will call startLesson
+        prepareArModel();
 
+        viewModel.getUnitSectionMutableLiveData().observe(this, unitSection -> {
+            txt_name.setText(unitSection.getModelName());
+            txt_defin.setText(unitSection.getDefinition());
+            modelNode.setRenderable(unitSection.getModelRenderable());
+            stopLoading();
+            speak(); // speak on each model updated
+        });
     }
 
-    private void createModel(){
-        // Set up the view e.g name and speaker and definition
-        ViewRenderable.builder()
+    private void startLesson() {
+        if (lessonStarted) return;
+        UnitSection section = sectionIterator.next(); // assume not empty
+        viewModel.getUnitSectionMutableLiveData().postValue(section);
+        lessonStarted = true;
+    }
+
+    private int getResourcesFromModel(String id) {
+        return getApplicationContext().getResources()
+                .getIdentifier(id, "raw", getPackageName());
+    }
+
+    private void onSpeechResult(ActivityResult result) {
+        if (result.getResultCode() != RESULT_OK || result.getData() == null) {
+            Toast.makeText(this, "data is null or result is not ok", Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent data = result.getData();
+        String speechText = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
+        speechTextShow.setText(speechText);
+        // "pass" is for testing only
+        if (speechText.equalsIgnoreCase(txt_name.getText().toString()) || speechText.equalsIgnoreCase("pass")) {
+            AlertDialog.Builder answer = new AlertDialog.Builder(LessonActivity.this);
+            answer.setIcon(ContextCompat.getDrawable(LessonActivity.this, R.drawable.happy));
+            answer.setTitle("Congratulations!");
+            answer.setMessage("You have answered correctly!");
+            answer.setCancelable(false);
+
+            // has next section
+            if (sectionIterator.hasNext()) {
+
+                answer.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        UnitSection section = sectionIterator.next();
+                        viewModel.getUnitSectionMutableLiveData().postValue(section);
+                        startLoading();
+                    }
+                });
+
+            } else { // no next
+
+                // clear all
+                nameNode.setRenderable(null);
+                modelNode.setRenderable(null);
+                speakerNode.setRenderable(null);
+                defNode.setRenderable(null);
+
+                answer.setPositiveButton("Finish the lesson", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        // do saving progress before finish ?
+                        finish();
+                    }
+                });
+
+            }
+
+            answer.show();
+        } else {
+            AlertDialog.Builder answer = new AlertDialog.Builder(LessonActivity.this);
+            answer.setIcon(ContextCompat.getDrawable(LessonActivity.this, R.drawable.unhappy));
+            answer.setTitle("Unfortunately!");
+            answer.setMessage("You have answered wrongly, please try again!");
+            answer.setPositiveButton("Okay", (arg0, arg1) -> {
+            });
+            answer.show();
+        }
+    }
+
+
+    private void prepareArModel() {
+
+        startLoading();
+
+        LessonFragment[] fragments = lesson.getFragments();
+        int length = fragments.length;
+        CompletableFuture<Void>[] futures = new CompletableFuture[length + 3];
+        TreeSet<UnitSection> sections = new TreeSet<>();
+        for (int i = 0; i < length; i++) {
+            LessonFragment fragment = fragments[i];
+            final int order = i;
+            futures[i] = ModelRenderable.builder()
+                    .setSource(this, getResourcesFromModel(fragment.getModelResourceName()))
+                    .build()
+                    .thenAccept(renderable -> {
+                        UnitSection section = new UnitSection(order, renderable, fragment.getDefinition(), fragment.getModelName());
+                        sections.add(section);
+                    });
+        }
+
+        // name model
+        futures[length] = ViewRenderable.builder()
                 .setView(this, R.layout.name_models)
                 .build()
                 .thenAccept(renderable -> name_models = renderable);
 
-        ViewRenderable.builder()
+        // def model
+        futures[length + 1] = ViewRenderable.builder()
                 .setView(this, R.layout.definition)
                 .build()
                 .thenAccept(renderable -> definition = renderable);
 
-        ViewRenderable.builder()
+        // speaker model
+        futures[length + 2] = ViewRenderable.builder()
                 .setView(this, R.layout.speaker)
                 .build()
                 .thenAccept(renderable -> speaker = renderable);
 
-        // Set up the model
-        ModelRenderable.builder()
-                .setSource(this, modelid)
-                .build()
-                .thenAccept(model -> {
 
-                    arFragment.setOnTapArPlaneListener(
-                            (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-                                Anchor anchor = hitResult.createAnchor();
-                                addNodeToScene(arFragment, anchor, model);
-                            });
+        CompletableFuture.allOf(futures).whenComplete((v, ex) -> {
 
-                    Toast.makeText(LessonActivity.this, "you are ready to tap", Toast.LENGTH_LONG).show();
+            if (ex != null) {
+                Toast.makeText(this, "Render Model Error: " + ex.getMessage(), Toast.LENGTH_LONG).show();
+                ex.printStackTrace();
+                return;
+            }
 
-                })
-                .exceptionally(ex -> {
-                    Toast.makeText(arFragment.getContext(), "Error:" + ex.getMessage(), Toast.LENGTH_LONG).show();
-                    return null;
-                });
+            // finished loading
+            stopLoading();
+
+            sectionIterator = sections.iterator();
+
+            Toast.makeText(this, "All Models Rendered, You can now tap the screen", Toast.LENGTH_LONG).show();
+
+            arFragment.setOnTapArPlaneListener(
+                    (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
+                        if (lessonStarted) return; // once only
+
+                        startLoading();
+                        Anchor anchor = hitResult.createAnchor();
+                        AnchorNode anchorNode = new AnchorNode(anchor);
+                        anchorNode.setParent(arFragment.getArSceneView().getScene());
+
+                        // set model node
+                        modelNode = new TransformableNode(arFragment.getTransformationSystem());
+                        modelNode.getScaleController().setMaxScale(0.16f);
+                        modelNode.getScaleController().setMinScale(0.06f);
+                        modelNode.setParent(anchorNode);
+                        modelNode.select();
+
+                        // set name node
+                        nameNode = new TransformableNode(arFragment.getTransformationSystem());
+                        nameNode.setLocalPosition(new Vector3(0f, modelNode.getLocalPosition().y + 0.7f, 0));
+                        nameNode.getScaleController().setMaxScale(1f);
+                        nameNode.getScaleController().setMinScale(0.5f);
+                        nameNode.setParent(anchorNode);
+                        nameNode.setRenderable(name_models);
+                        nameNode.select();
+                        txt_name = (TextView) name_models.getView();
+
+                        // set def node
+                        defNode = new TransformableNode(arFragment.getTransformationSystem());
+                        defNode.setLocalPosition(new Vector3(0f, modelNode.getLocalPosition().y + 0.43f, 0));
+                        defNode.getScaleController().setMaxScale(1f);
+                        defNode.getScaleController().setMinScale(0.5f);
+                        defNode.setParent(anchorNode);
+                        defNode.setRenderable(definition);
+                        defNode.select();
+                        txt_defin = (TextView) definition.getView();
+
+                        // set speaker node
+                        speakerNode = new TransformableNode(arFragment.getTransformationSystem());
+                        speakerNode.setLocalPosition(new Vector3(0.35f, nameNode.getLocalPosition().y + 0.7f, 0));
+                        speakerNode.getScaleController().setMaxScale(1f);
+                        speakerNode.getScaleController().setMinScale(0.5f);
+                        speakerNode.setParent(anchorNode);
+                        speakerNode.setRenderable(speaker);
+                        speakerNode.select();
+                        setupSpeaker();
 
 
-    }
-
-    private void addNodeToScene(ArFragment arFragment, Anchor anchor, Renderable renderable) {
-        AnchorNode anchorNode = new AnchorNode(anchor);
-        anchorNode.setParent(arFragment.getArSceneView().getScene());
-        TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
-        node.getScaleController().setMaxScale(0.16f);
-        node.getScaleController().setMinScale(0.06f);
-        node.setParent(anchorNode);
-        node.setRenderable(renderable);
-        node.select();
-
-        addName(anchorNode, node, modelName);
-        addDefin(anchorNode, node,modelDefin);
-        addSpeaker(anchorNode, node);
-    }
-
-    // Adding model name
-    private void addName(AnchorNode anchorNode,TransformableNode model,String name ){
-        TransformableNode nameView = new TransformableNode(arFragment.getTransformationSystem());
-        nameView.setLocalPosition(new Vector3(0f, model.getLocalPosition().y+0.7f,0));
-        nameView.getScaleController().setMaxScale(1f);
-        nameView.getScaleController().setMinScale(0.5f);
-        nameView.setParent(anchorNode);
-        nameView.setRenderable(name_models);
-        nameView.select();
-
-        txt_name = (TextView) name_models.getView();
-        txt_name.setText(name);
-    }
-
-    // Adding definition for model
-    private void addDefin(AnchorNode anchorNode,TransformableNode model,String name ){
-        TransformableNode definView = new TransformableNode(arFragment.getTransformationSystem());
-        definView.setLocalPosition(new Vector3(0f, model.getLocalPosition().y+0.43f,0));
-        definView.getScaleController().setMaxScale(1f);
-        definView.getScaleController().setMinScale(0.5f);
-        definView.setParent(anchorNode);
-        definView.setRenderable(definition);
-        definView.select();
-
-        txt_defin = (TextView) definition.getView();
-        txt_defin.setText(modelDefin);
+                        findViewById(R.id.view_loading).setVisibility(View.GONE);
+                        Toast.makeText(this, "Screen Tapped, lesson is now starting...", Toast.LENGTH_LONG).show();
+                        this.startLesson();
+                    });
+        });
     }
 
     // Adding speaker button for model
-    private void addSpeaker(AnchorNode anchorNode,TransformableNode model){
-        TransformableNode speakerView = new TransformableNode(arFragment.getTransformationSystem());
-        speakerView.setLocalPosition(new Vector3(0.35f, model.getLocalPosition().y+0.7f,0));
-        speakerView.getScaleController().setMaxScale(1f);
-        speakerView.getScaleController().setMinScale(0.5f);
-        speakerView.setParent(anchorNode);
-        speakerView.setRenderable(speaker);
-        speakerView.select();
-
+    // TODO: i can't find the speaker....
+    private void setupSpeaker() {
         mTTS = new TextToSpeech(LessonActivity.this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -299,59 +369,28 @@ public class LessonActivity extends AppCompatActivity {
         });
 
         speakerBtn = (ImageButton) speaker.getView();
-        speakerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { speak(); }
-        });
+        speakerBtn.setOnClickListener(v -> speak());
     }
 
-    private void speak() {
+    private void speak(){
         String text = txt_name.getText().toString();
         mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
 
-    // Answer handling for shadowing game
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if(requestCode == RECOGNIZER_RESULT && resultCode == RESULT_OK){
-            ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            editText.setText(matches.get(0).toString());
-            if (matches.get(0).toString().equals(txt_name.getText().toString())){
-                AlertDialog.Builder answer = new AlertDialog.Builder(LessonActivity.this);
-                answer.setIcon(ContextCompat.getDrawable(LessonActivity.this,R.drawable.happy));
-                answer.setTitle("Congratulations!");
-                answer.setMessage("You have answered correctly!");
-                answer.setPositiveButton("Got It",new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        Intent startIntent = new Intent(LessonActivity.this, UnitActivity.class);
-                        startActivity(startIntent);
-                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-                    }
-                });
-                answer.show();
-            } else {
-                AlertDialog.Builder answer = new AlertDialog.Builder(LessonActivity.this);
-                answer.setIcon(ContextCompat.getDrawable(LessonActivity.this,R.drawable.unhappy));
-                answer.setTitle("Unfortunately!");
-                answer.setMessage("You have answered wrongly, please try again!");
-                answer.setPositiveButton("Got It",new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {}
-                });
-                answer.show();
-            }
-//            matches.remove(matches.get(0));
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
+    // TODO: make better loading screen on AR screen
+    private void startLoading(){
+        findViewById(R.id.view_loading).setVisibility(View.VISIBLE);
     }
 
-    public static boolean checkIsSupportedDeviceOrFinish(final Activity activity)
-    {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-        {
+    // TODO: make better loading screen on AR screen
+    private void stopLoading(){
+        findViewById(R.id.view_loading).setVisibility(View.GONE);
+    }
+
+
+    public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             Log.e(TAG, "Sceneform requires Android N or later");
             Toast.makeText(activity, "Sceneform requires Android N or later", Toast.LENGTH_LONG).show();
             activity.finish();
@@ -360,8 +399,7 @@ public class LessonActivity extends AppCompatActivity {
         String openGlVersionString =
                 ((ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE))
                         .getDeviceConfigurationInfo().getGlEsVersion();
-        if (Double.parseDouble(openGlVersionString) < MIN_OPENGL_VERSION)
-        {
+        if (Double.parseDouble(openGlVersionString) < MIN_OPENGL_VERSION) {
             Log.e(TAG, "Sceneform requires OpenGL ES 3.0 later");
             Toast.makeText(activity, "Sceneform requires OpenGL ES 3.0 or later", Toast.LENGTH_LONG).show();
             activity.finish();

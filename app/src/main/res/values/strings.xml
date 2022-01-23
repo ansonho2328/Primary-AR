@@ -24,4 +24,8 @@
     <string name="image">image</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="leave">leave</string>
+    <string name="tips">tips</string>
+    <string name="microphone">microphone</string>
+    <string name="speech_text_shows_here">Speech Text Shows Here</string>
 </resources>
