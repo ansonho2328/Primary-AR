@@ -93,7 +93,7 @@ public class LessonActivity extends AppCompatActivity {
         leave = findViewById(R.id.leave);
         speechTextShow = findViewById(R.id.editText);
 
-        Toast.makeText(LessonActivity.this, String.valueOf(unitNo), Toast.LENGTH_LONG).show();
+        findViewById(R.id.microphone).setEnabled(false);
         speechLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onSpeechResult);
 
         // Leave button handling for leaving the game
@@ -173,6 +173,7 @@ public class LessonActivity extends AppCompatActivity {
         UnitSection section = sectionIterator.next(); // assume not empty
         viewModel.getUnitSectionMutableLiveData().postValue(section);
         lessonStarted = true;
+        findViewById(R.id.microphone).setEnabled(true);
     }
 
     private int getResourcesFromModel(String id) {
@@ -185,9 +186,11 @@ public class LessonActivity extends AppCompatActivity {
             Toast.makeText(this, "data is null or result is not ok", Toast.LENGTH_LONG).show();
             return;
         }
+
         Intent data = result.getData();
         String speechText = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
         speechTextShow.setText(speechText);
+
         // "pass" is for testing only
         if (speechText.equalsIgnoreCase(txt_name.getText().toString()) || speechText.equalsIgnoreCase("pass")) {
             AlertDialog.Builder answer = new AlertDialog.Builder(LessonActivity.this);
@@ -221,6 +224,7 @@ public class LessonActivity extends AppCompatActivity {
                     public void onClick(DialogInterface arg0, int arg1) {
                         // do saving progress before finish ?
                         finish();
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                     }
                 });
 
@@ -291,7 +295,7 @@ public class LessonActivity extends AppCompatActivity {
 
             sectionIterator = sections.iterator();
 
-            Toast.makeText(this, "All Models Rendered, You can now tap the screen", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "All models are rendered, you can now tap the screen", Toast.LENGTH_LONG).show();
 
             arFragment.setOnTapArPlaneListener(
                     (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
@@ -305,7 +309,7 @@ public class LessonActivity extends AppCompatActivity {
                         // set model node
                         modelNode = new TransformableNode(arFragment.getTransformationSystem());
                         modelNode.getScaleController().setMaxScale(0.16f);
-                        modelNode.getScaleController().setMinScale(0.06f);
+                        modelNode.getScaleController().setMinScale(0.1f);
                         modelNode.setParent(anchorNode);
                         modelNode.select();
 
@@ -331,7 +335,7 @@ public class LessonActivity extends AppCompatActivity {
 
                         // set speaker node
                         speakerNode = new TransformableNode(arFragment.getTransformationSystem());
-                        speakerNode.setLocalPosition(new Vector3(0.35f, nameNode.getLocalPosition().y + 0.7f, 0));
+                        speakerNode.setLocalPosition(new Vector3(0.35f, nameNode.getLocalPosition().y + 0.025f, 0));
                         speakerNode.getScaleController().setMaxScale(1f);
                         speakerNode.getScaleController().setMinScale(0.5f);
                         speakerNode.setParent(anchorNode);

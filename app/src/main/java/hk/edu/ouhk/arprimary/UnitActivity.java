@@ -80,7 +80,7 @@ public class UnitActivity extends AppCompatActivity {
                 adapter = new UnitAdapter(unit.list, this, v -> {
                     int pos = recyclerView.getChildAdapterPosition(v);
                     UnitView unitView = unit.list.get(pos);
-                    Toast.makeText(UnitActivity.this, unitView.getNo()+"-"+unitView.getType(), Toast.LENGTH_LONG).show();
+
                     Intent intent = new Intent(UnitActivity.this, LessonActivity.class);
                     intent.putExtra("topic", topic);
                     intent.putExtra("unit-no", unitView.getNo());
@@ -88,13 +88,15 @@ public class UnitActivity extends AppCompatActivity {
                     // make fake data
                     LessonFragment[] fragments = {
                             new LessonFragment("Apple", "apple",
-                                    " (Noun)\na round fruit with firm, white flesh \nand a green, red, or yellow skin"),
+                                    " (Noun)\nA round fruit with firm, white flesh \nand a green, red, or yellow skin"),
                             new LessonFragment("Eggplant", "eggplant",
-                                    " (Noun)\nan oval, purple vegetable that is white \ninside and is usually eaten cooked"),
+                                    " (Noun)\nAn oval, purple vegetable that is white \ninside and is usually eaten cooked"),
                             new LessonFragment("Grape", "grape_purlple",
-                                    " (Noun)\na small, round, purple or pale green fruit \nthat you can eat or make into wine"),
+                                    " (Noun)\nA small, round, purple or pale green fruit \nthat you can eat or make into wine"),
                             new LessonFragment("Lemon", "lemon",
-                                    " (Noun)\nan oval fruit that has a thick,\n yellow skin and sour juice")
+                                    " (Noun)\nAn oval fruit that has a thick,\n yellow skin and sour juice"),
+//                            new LessonFragment("Book", "book",
+//                                    " (Noun)\nA written text that can be \npublished in printed or electronic form")
                     };
 
                     Lesson lesson = new Lesson(fragments);
@@ -131,10 +133,10 @@ public class UnitActivity extends AppCompatActivity {
     public void onLessonResult(ActivityResult result) {
         if (result.getResultCode() == RESULT_OK) {
             // passed
-            Toast.makeText(this, "you passed the course!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "You passed the course!", Toast.LENGTH_LONG).show();
         } else if (result.getResultCode() == RESULT_CANCELED){
             // cancelled
-            Toast.makeText(this, "you cancelled the course", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "You cancelled the course", Toast.LENGTH_LONG).show();
         }
     }
 
