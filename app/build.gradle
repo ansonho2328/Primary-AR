@@ -57,15 +57,10 @@ sceneform.asset('fruit/apple.fbx', // 'Source Asset Path' specified during impor
         'sfa/apple.sfa',         // '.sfa Output Path' specified during import.
         'src/main/res/raw/apple')              // '.sfb Output Path' specified during import.
 
-sceneform.asset('fruit/eggplant.fbx', // 'Source Asset Path' specified during import.
+sceneform.asset('fruit/banana.fbx', // 'Source Asset Path' specified during import.
         'default',                            // 'Material Path' specified during import.
-        'sfa/eggplant.sfa',         // '.sfa Output Path' specified during import.
-        'src/main/res/raw/eggplant')              // '.sfb Output Path' specified during import.
-
-sceneform.asset('fruit/grape_purlple.fbx', // 'Source Asset Path' specified during import.
-        'default',                            // 'Material Path' specified during import.
-        'sfa/grape_purlple.sfa',         // '.sfa Output Path' specified during import.
-        'src/main/res/raw/grape_purlple')              // '.sfb Output Path' specified during import.
+        'sfa/banana.sfa',         // '.sfa Output Path' specified during import.
+        'src/main/res/raw/banana')              // '.sfb Output Path' specified during import.
 
 sceneform.asset('stationary/book.fbx', // 'Source Asset Path' specified during import.
         'default',                            // 'Material Path' specified during import.
@@ -76,3 +71,8 @@ sceneform.asset('fruit/lemon.fbx', // 'Source Asset Path' specified during impor
         'default',                            // 'Material Path' specified during import.
         'sfa/lemon.sfa',         // '.sfa Output Path' specified during import.
         'src/main/res/raw/lemon')              // '.sfb Output Path' specified during import.
+
+sceneform.asset('fruit/grape.fbx', // 'Source Asset Path' specified during import.
+        'default',                            // 'Material Path' specified during import.
+        'sfa/grape.sfa',         // '.sfa Output Path' specified during import.
+        'src/main/res/raw/grape')              // '.sfb Output Path' specified during import.

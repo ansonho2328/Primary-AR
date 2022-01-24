@@ -89,9 +89,9 @@ public class UnitActivity extends AppCompatActivity {
                     LessonFragment[] fragments = {
                             new LessonFragment("Apple", "apple",
                                     " (Noun)\nA round fruit with firm, white flesh \nand a green, red, or yellow skin"),
-                            new LessonFragment("Eggplant", "eggplant",
+                            new LessonFragment("Banana", "banana",
                                     " (Noun)\nAn oval, purple vegetable that is white \ninside and is usually eaten cooked"),
-                            new LessonFragment("Grape", "grape_purlple",
+                            new LessonFragment("Grape", "grape",
                                     " (Noun)\nA small, round, purple or pale green fruit \nthat you can eat or make into wine"),
                             new LessonFragment("Lemon", "lemon",
                                     " (Noun)\nAn oval fruit that has a thick,\n yellow skin and sour juice"),
