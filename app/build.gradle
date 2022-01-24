@@ -76,3 +76,23 @@ sceneform.asset('fruit/grape.fbx', // 'Source Asset Path' specified during impor
         'default',                            // 'Material Path' specified during import.
         'sfa/grape.sfa',         // '.sfa Output Path' specified during import.
         'src/main/res/raw/grape')              // '.sfb Output Path' specified during import.
+
+sceneform.asset('animals/cow.fbx',
+        'default',
+        'sfa/cow.sfa',
+        'src/main/res/raw/cow')
+
+sceneform.asset('animals/frog.fbx',
+        'default',
+        'sfa/frog.sfa',
+        'src/main/res/raw/frog')
+
+sceneform.asset('animals/shark.fbx',
+        'default',
+        'sfa/shark.sfa',
+        'src/main/res/raw/shark')
+
+sceneform.asset('animals/wolf.fbx',
+        'default',
+        'sfa/wolf.sfa',
+        'src/main/res/raw/wolf')
