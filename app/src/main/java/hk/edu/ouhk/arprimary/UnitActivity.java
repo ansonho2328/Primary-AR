@@ -90,7 +90,7 @@ public class UnitActivity extends AppCompatActivity {
                             new LessonFragment("Apple", "apple",
                                     " (Noun)\nA round fruit with firm, white flesh \nand a green, red, or yellow skin"),
                             new LessonFragment("Banana", "banana",
-                                    " (Noun)\nAn oval, purple vegetable that is white \ninside and is usually eaten cooked"),
+                                    " (Noun)\nA long, curved fruit with a yellow skin \nand soft, sweet, white flesh inside"),
                             new LessonFragment("Grape", "grape",
                                     " (Noun)\nA small, round, purple or pale green fruit \nthat you can eat or make into wine"),
                             new LessonFragment("Lemon", "lemon",

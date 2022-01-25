@@ -126,8 +126,7 @@ public class LessonActivity extends AppCompatActivity {
             tips.setIcon(ContextCompat.getDrawable(LessonActivity.this, R.drawable.tips));
             tips.setTitle("Shadowing Game Tips");
             tips.setMessage("1. Please click the speaker button for word's pronunciation \n\n" +
-                    "2. Please click the microphone button to pronounce the word \n\n" +
-                    "3. Get marks when answer correctly.");
+                    "2. Please click the microphone button to pronounce the word");
             tips.setPositiveButton("Got It", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {
