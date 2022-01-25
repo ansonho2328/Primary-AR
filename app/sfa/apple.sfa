@@ -1,23 +1,18 @@
 {
   animations: [
     {
-      clips: [
-        {
-          name: 'C4D Animation Take',
-        },
-      ],
       path: 'fruit/apple.fbx',
     },
   ],
   materials: [
     {
-      name: 'unnamed material',
+      name: 'texture',
       parameters: [
         {
           baseColor: [
-            1,
-            1,
-            1,
+            0.80000000000000004,
+            0,
+            0.0020500000000000002,
             1,
           ],
         },
@@ -61,7 +56,7 @@
     file: 'fruit/apple.fbx',
     name: 'apple',
     recenter: 'root',
-    scale: 0.37056,
+    scale: 0.24748899999999999,
   },
   version: '0.54:2',
 }
