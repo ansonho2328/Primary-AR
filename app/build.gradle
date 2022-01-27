@@ -96,3 +96,18 @@ sceneform.asset('animals/wolf.fbx',
         'default',
         'sfa/wolf.sfa',
         'src/main/res/raw/wolf')
+
+sceneform.asset('stationary/eraser.fbx',
+        'default',
+        'sfa/eraser.sfa',
+        'src/main/res/raw/eraser')
+
+sceneform.asset('stationary/pencil.fbx',
+        'default',
+        'sfa/pencil.sfa',
+        'src/main/res/raw/pencil')
+
+sceneform.asset('stationary/pencil_sharpener.fbx',
+        'default',
+        'sfa/pencil_sharpener.sfa',
+        'src/main/res/raw/pencil_sharpener')
