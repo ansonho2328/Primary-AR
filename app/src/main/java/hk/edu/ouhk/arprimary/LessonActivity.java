@@ -36,7 +36,6 @@ public class LessonActivity extends ARVocabSectionBased<UnitSection> {
 
     ImageButton tipsBtn, speakerBtn, microphone, leave;
     TextView txt_name, txt_defin;
-    EditText speechTextShow;
 
     ViewRenderable name_models, speaker, definition;
     TransformableNode modelNode, speakerNode, defNode, nameNode;
@@ -52,7 +51,6 @@ public class LessonActivity extends ARVocabSectionBased<UnitSection> {
         tipsBtn = findViewById(R.id.tipsBtn);
         microphone = findViewById(R.id.microphone);
         leave = findViewById(R.id.leave);
-        speechTextShow = findViewById(R.id.editText);
 
         findViewById(R.id.microphone).setEnabled(false);
 

@@ -36,7 +36,6 @@ public class QuizActivity extends ARVocabSectionBased<QuizSection> {
     Quiz quiz;
 
     ImageButton tipsBtn, microphone, leave;
-    EditText speechTextShow;
 
     TransformableNode modelNode;
 
@@ -44,13 +43,12 @@ public class QuizActivity extends ARVocabSectionBased<QuizSection> {
 
     @Override
     protected void onCreateContent(Bundle bundle) {
-
+        setContentView(R.layout.activity_quiz);
         quiz = (Quiz) getIntent().getSerializableExtra("quiz");
 
         tipsBtn = findViewById(R.id.tipsBtn);
         microphone = findViewById(R.id.microphone);
         leave = findViewById(R.id.leave);
-        speechTextShow = findViewById(R.id.editText);
 
         findViewById(R.id.microphone).setEnabled(false);
 
@@ -135,8 +133,15 @@ public class QuizActivity extends ARVocabSectionBased<QuizSection> {
 
         if (result && current != null){
             score += current.getScore();
+            builder.setIcon(ContextCompat.getDrawable(QuizActivity.this, R.drawable.happy));
+            builder.setTitle("Congratulations!");
+            builder.setMessage("You have answered correctly and get 10 marks!");
+        } else {
+            builder.setIcon(ContextCompat.getDrawable(QuizActivity.this, R.drawable.unhappy));
+            builder.setTitle("Unfortunately!");
+            builder.setMessage("You have answered wrongly, please try again!");
         }
-        return true; // no matter correct or incorrect, still need to move into next section
+        return result; // no matter correct or incorrect, still need to move into next section
     }
 
     @Override

@@ -24,7 +24,7 @@ public class ServiceModule {
 
 
         // TODO add data here
-        LessonFragment[] fragments = {
+        LessonFragment[] fruitFragments = {
                 new LessonFragment("Apple", "apple",
                         " (Noun)\nA round fruit with firm, white flesh \nand a green, red, or yellow skin"),
                 new LessonFragment("Banana", "banana",
@@ -32,12 +32,19 @@ public class ServiceModule {
                 new LessonFragment("Grape", "grape",
                         " (Noun)\nA small, round, purple or pale green fruit \nthat you can eat or make into wine"),
                 new LessonFragment("Lemon", "lemon",
-                        " (Noun)\nAn oval fruit that has a thick,\n yellow skin and sour juice"),
-//                            new LessonFragment("Book", "book",
-//                                    " (Noun)\nA written text that can be \npublished in printed or electronic form")
+                        " (Noun)\nAn oval fruit that has a thick,\n yellow skin and sour juice")
         };
 
-        fragmentManager.registerTopicUnit("Fruit", 1, fragments);
+        LessonFragment[] stationaryFragments = {
+                new LessonFragment("Book", "book",
+                        " (Noun)\nA written text that can be \npublished in printed or electronic form"),
+                new LessonFragment("Pencil", "pencil",
+                        " (Noun)\nA long, thin object, usually made of wood, for writing or drawing, " +
+                                "with a sharp black or coloured point at one end")
+        };
+
+        fragmentManager.registerTopicUnit("Fruit", 1, fruitFragments);
+        fragmentManager.registerTopicUnit("Stationary", 1, stationaryFragments);
         return fragmentManager;
     }
 
@@ -48,13 +55,19 @@ public class ServiceModule {
         QuizFragmentManager quizFragmentManager = new QuizFragmentManager();
 
         //TODO add data here
-        QuizFragment[] fragments = {
+        QuizFragment[] fruitQuiz = {
                 new QuizFragment("Apple", "apple"),
                 new QuizFragment("Banana", "banana"),
                 new QuizFragment("Grape", "grape")
         };
 
-        quizFragmentManager.registerTopicUnit("Fruit", 1, fragments);
+        QuizFragment[] stationaryQuiz = {
+                new QuizFragment("Book", "book"),
+                new QuizFragment("Pencil", "pencil")
+        };
+
+        quizFragmentManager.registerTopicUnit("Fruit", 1, fruitQuiz);
+        quizFragmentManager.registerTopicUnit("Stationary", 1, stationaryQuiz);
         return quizFragmentManager;
     }
 
