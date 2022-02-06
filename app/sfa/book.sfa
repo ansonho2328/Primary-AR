@@ -93,7 +93,6 @@
     collision: {},
     file: 'stationary/book.fbx',
     name: 'book',
-	scale: 100.0,
     recenter: 'root',
   },
   version: '0.54:2',
