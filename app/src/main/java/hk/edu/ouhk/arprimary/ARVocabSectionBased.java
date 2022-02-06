@@ -128,6 +128,7 @@ public abstract class ARVocabSectionBased<E extends Vocabulary> extends AppCompa
             return;
         }
         doNext();
+        sessionStarted = true;
     }
 
 

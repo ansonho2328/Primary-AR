@@ -37,7 +37,7 @@ public class ServiceModule {
 //                                    " (Noun)\nA written text that can be \npublished in printed or electronic form")
         };
 
-        fragmentManager.registerTopicUnit("fruit", 1, fragments);
+        fragmentManager.registerTopicUnit("Fruit", 1, fragments);
         return fragmentManager;
     }
 
@@ -54,7 +54,7 @@ public class ServiceModule {
                 new QuizFragment("Grape", "grape")
         };
 
-        quizFragmentManager.registerTopicUnit("fruit", 1, fragments);
+        quizFragmentManager.registerTopicUnit("Fruit", 1, fragments);
         return quizFragmentManager;
     }
 
