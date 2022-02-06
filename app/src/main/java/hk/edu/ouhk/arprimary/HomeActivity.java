@@ -24,7 +24,7 @@ public class HomeActivity extends AppCompatActivity {
         journalBtn = findViewById(R.id.start_journal_button);
         multiplayerBtn = findViewById(R.id.start_multiplayer_button);
         leaderboardBtn = findViewById(R.id.leaderboard_button);
-        speachBtn = findViewById(R.id.text_speach_button);
+//        speachBtn = findViewById(R.id.text_speach_button);
 
         journalBtn.setOnClickListener(view -> {
             Intent startIntent = new Intent(this, TopicActivity.class);
@@ -42,11 +42,11 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "not finished yet", Toast.LENGTH_LONG).show();
         });
 
-        speachBtn.setOnClickListener(v ->{
-            Intent startIntent = new Intent(this, SpeechToTextActivity.class);
-            startActivity(startIntent);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        });
+//        speachBtn.setOnClickListener(v ->{
+//            Intent startIntent = new Intent(this, SpeechToTextActivity.class);
+//            startActivity(startIntent);
+//            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//        });
     }
 
 

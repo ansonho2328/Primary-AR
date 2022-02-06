@@ -164,10 +164,11 @@ public abstract class ARVocabSectionBased<E extends Vocabulary> extends AppCompa
                     overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 });
             }
-        }else{
+        } else {
             builder.setPositiveButton("Okay", (arg0, arg1) -> {
             });
         }
+        builder.show();
     }
 
 
