@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
+@Deprecated
 public class SpeechToTextActivity extends AppCompatActivity {
 
     ImageView speachButton;
