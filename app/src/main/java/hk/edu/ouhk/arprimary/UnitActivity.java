@@ -13,18 +13,23 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.Optional;
+
+import hk.edu.ouhk.arprimary.manager.ApplicationComponent;
+import hk.edu.ouhk.arprimary.manager.LessonFragmentManager;
+import hk.edu.ouhk.arprimary.manager.QuizFragmentManager;
 import hk.edu.ouhk.arprimary.model.Lesson;
 import hk.edu.ouhk.arprimary.model.LessonFragment;
+import hk.edu.ouhk.arprimary.model.Quiz;
+import hk.edu.ouhk.arprimary.model.QuizFragment;
 import hk.edu.ouhk.arprimary.viewmodel.ListExtendableAdapter;
 import hk.edu.ouhk.arprimary.viewmodel.ViewListAction;
-import hk.edu.ouhk.arprimary.viewmodel.topic.TopicAdapter;
 import hk.edu.ouhk.arprimary.viewmodel.unit.UnitAdapter;
 import hk.edu.ouhk.arprimary.viewmodel.unit.UnitView;
 import hk.edu.ouhk.arprimary.viewmodel.unit.UnitViewModel;
@@ -36,6 +41,10 @@ public class UnitActivity extends AppCompatActivity {
     UnitViewModel viewModel;
     RecyclerView recyclerView;
     SwipeRefreshLayout refreshLayout;
+
+
+    LessonFragmentManager lessonFragmentManager;
+    QuizFragmentManager quizFragmentManager;
 
     String topic;
 
@@ -50,6 +59,11 @@ public class UnitActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ApplicationComponent component = ((PrimaryARApplication)getApplicationContext()).appComponent;
+
+        this.quizFragmentManager = component.quizFragmentManager();
+        this.lessonFragmentManager = component.lessonFragmentManager();
 
 
         refreshLayout = findViewById(R.id.refresh_layout);
@@ -81,27 +95,43 @@ public class UnitActivity extends AppCompatActivity {
                     int pos = recyclerView.getChildAdapterPosition(v);
                     UnitView unitView = unit.list.get(pos);
 
-                    Intent intent = new Intent(UnitActivity.this, LessonActivity.class);
-                    intent.putExtra("topic", topic);
-                    intent.putExtra("unit-no", unitView.getNo());
+                    if (unitView.getType() == UnitView.Type.PRACTICE){
+                        Intent intent = new Intent(UnitActivity.this, LessonActivity.class);
 
-                    // make fake data
-                    LessonFragment[] fragments = {
-                            new LessonFragment("Apple", "apple",
-                                    " (Noun)\nA round fruit with firm, white flesh \nand a green, red, or yellow skin"),
-                            new LessonFragment("Banana", "banana",
-                                    " (Noun)\nA long, curved fruit with a yellow skin \nand soft, sweet, white flesh inside"),
-                            new LessonFragment("Grape", "grape",
-                                    " (Noun)\nA small, round, purple or pale green fruit \nthat you can eat or make into wine"),
-                            new LessonFragment("Lemon", "lemon",
-                                    " (Noun)\nAn oval fruit that has a thick,\n yellow skin and sour juice"),
-//                            new LessonFragment("Book", "book",
-//                                    " (Noun)\nA written text that can be \npublished in printed or electronic form")
-                    };
+                        Optional<LessonFragment[]> fragmentsOpt = lessonFragmentManager.getFragmentsByTopicUnit(topic, unitView.getNo());
 
-                    Lesson lesson = new Lesson(fragments);
-                    intent.putExtra("lesson", lesson);
-                    lessonLauncher.launch(intent);
+                        if (fragmentsOpt.isPresent()){
+                            LessonFragment[] fragments = fragmentsOpt.get();
+
+                            Lesson lesson = new Lesson(fragments);
+                            intent.putExtra("lesson", lesson);
+                            lessonLauncher.launch(intent);
+                        }else{
+                            Toast.makeText(this, "Cannot find lesson fragments on "+topic+"-"+unitView.getNo(), Toast.LENGTH_LONG).show();
+                        }
+
+
+                    } else if (unitView.getType() == UnitView.Type.QUIZ){
+
+                        Intent intent = new Intent(UnitActivity.this, QuizActivity.class);
+
+                        Optional<QuizFragment[]> fragmentsOpt = quizFragmentManager.getFragmentsByTopicUnit(topic, unitView.getNo());
+
+                       if (fragmentsOpt.isPresent()){
+                           QuizFragment[] fragments = fragmentsOpt.get();
+                           Quiz quiz = new Quiz(fragments);
+                           intent.putExtra("quiz", quiz);
+                           quizLauncher.launch(intent);
+                       }else{
+                           Toast.makeText(this, "Cannot find quiz fragments on "+topic+"-"+unitView.getNo(), Toast.LENGTH_LONG).show();
+                       }
+
+                    } else {
+                        Toast.makeText(this, "Unknown quiz type", Toast.LENGTH_LONG).show();
+                    }
+
+
+
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 });
                 recyclerView.setAdapter(adapter);
@@ -141,6 +171,18 @@ public class UnitActivity extends AppCompatActivity {
     }
 
     public void onQuizResult(ActivityResult result){
+        if (result.getResultCode() == RESULT_OK) {
+            if (result.getData() == null){
+                Toast.makeText(this, "intent data is null", Toast.LENGTH_LONG).show();
+                return;
+            }
+            int score = result.getData().getIntExtra("scores", 0);
+            // passed
+            Toast.makeText(this, "You score is: "+score, Toast.LENGTH_LONG).show();
+        } else if (result.getResultCode() == RESULT_CANCELED){
+            // cancelled
+            Toast.makeText(this, "You cancelled the course", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void onUpdateView(){

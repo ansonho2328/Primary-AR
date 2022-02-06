@@ -10,7 +10,8 @@ public interface ApplicationComponent {
 
     SQLiteManager sqliteManager();
 
+    LessonFragmentManager lessonFragmentManager();
 
-
+    QuizFragmentManager quizFragmentManager();
 
 }

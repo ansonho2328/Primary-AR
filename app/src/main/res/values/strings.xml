@@ -28,4 +28,5 @@
     <string name="tips">tips</string>
     <string name="microphone">microphone</string>
     <string name="speech_text_shows_here">Speech Text Shows Here</string>
+    <string name="title_activity_quiz">QuizActivity</string>
 </resources>

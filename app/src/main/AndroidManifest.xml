@@ -31,9 +31,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ARPrimary">
         <activity
+            android:name=".QuizActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_quiz"
+            android:theme="@style/Theme.ARPrimary.Fullscreen" />
+        <activity
             android:name=".TextToSpeechActivity"
             android:exported="false" />
-
         <activity
             android:name=".SpeechToTextActivity"
             android:exported="false" />

@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
-
+@Deprecated
 public class TextToSpeechActivity extends AppCompatActivity {
     private TextToSpeech mTTS;
     private EditText mEditText;
