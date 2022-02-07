@@ -80,8 +80,8 @@ public class QuizActivity extends ARVocabSectionBased<QuizSection> {
         tipsBtn.setOnClickListener(view -> {
             AlertDialog.Builder tips = new AlertDialog.Builder(this);
             tips.setIcon(ContextCompat.getDrawable(this, R.drawable.tips));
-            tips.setTitle("Shadowing Game Tips");
-            tips.setMessage("1. Please click the speaker button for word's pronunciation \n\n" +
+            tips.setTitle("Quiz Tips");
+            tips.setMessage("1. Please try to pronounce the word which you have learnt \n\n" +
                     "2. Please click the microphone button to pronounce the word");
             tips.setPositiveButton("Got It", new DialogInterface.OnClickListener() {
                 @Override
@@ -139,9 +139,9 @@ public class QuizActivity extends ARVocabSectionBased<QuizSection> {
         } else {
             builder.setIcon(ContextCompat.getDrawable(QuizActivity.this, R.drawable.unhappy));
             builder.setTitle("Unfortunately!");
-            builder.setMessage("You have answered wrongly, please try again!");
+            builder.setMessage("You have answered wrongly and get no marks!");
         }
-        return result; // no matter correct or incorrect, still need to move into next section
+        return true; // no matter correct or incorrect, still need to move into next section
     }
 
     @Override
