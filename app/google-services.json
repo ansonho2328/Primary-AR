@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "803376881394",
+    "project_id": "primary-ar",
+    "storage_bucket": "primary-ar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803376881394:android:b3d96d00e2a59f4cdf3a6b",
+        "android_client_info": {
+          "package_name": "hk.edu.ouhk.arprimary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "803376881394-d7gbmurt2vio1euut5b06rp4nr88hrbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSrh-ODGVe2qpg2Ka3CxzFCs0DBPaeCU4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "803376881394-d7gbmurt2vio1euut5b06rp4nr88hrbu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
