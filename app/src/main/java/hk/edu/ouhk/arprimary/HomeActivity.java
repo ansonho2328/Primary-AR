@@ -38,8 +38,9 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         leaderboardBtn.setOnClickListener(v -> {
-            //TODO add leaderboard activity
-            Toast.makeText(this, "not finished yet", Toast.LENGTH_LONG).show();
+            Intent startIntent = new Intent(this, leaderboard.class);
+            startActivity(startIntent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
 
 //        speachBtn.setOnClickListener(v ->{
