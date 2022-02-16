@@ -40,12 +40,11 @@
         android:gravity="center"
         android:text="Hot Topic"
         android:textSize="24sp" />
-
-    <androidx.recyclerview.widget.RecyclerView
+    
+    <ListView
         android:id="@+id/hot_topic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
     <android.widget.Button
         android:id="@+id/Back"
         android:layout_width="wrap_content"
