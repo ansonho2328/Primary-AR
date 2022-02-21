@@ -188,7 +188,7 @@ public class LessonActivity extends ARVocabSectionBased<UnitSection> {
         } else {
             answer.setIcon(ContextCompat.getDrawable(LessonActivity.this, R.drawable.unhappy));
             answer.setTitle("Unfortunately!");
-            answer.setMessage("You have answered wrongly, please try again!");
+            answer.setMessage("You answered wrong, please try again!");
         }
         return result;
     }

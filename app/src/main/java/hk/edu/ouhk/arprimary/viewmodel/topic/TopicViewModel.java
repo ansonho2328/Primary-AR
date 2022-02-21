@@ -16,7 +16,7 @@ public class TopicViewModel extends ListViewModel<TopicView> {
     static {
         TOPIC_UNIT_LIST.add(new TopicView("Animal", R.drawable.animal));
         TOPIC_UNIT_LIST.add(new TopicView("Fruit", R.drawable.fruit));
-        TOPIC_UNIT_LIST.add(new TopicView("Stationary", R.drawable.stationary));
+        TOPIC_UNIT_LIST.add(new TopicView("Stationery", R.drawable.stationary));
     }
 
     // each page show 5 topics
