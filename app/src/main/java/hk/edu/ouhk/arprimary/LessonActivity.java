@@ -35,7 +35,7 @@ public class LessonActivity extends ARVocabSectionBased<UnitSection> {
     Lesson lesson;
 
     ImageButton tipsBtn, speakerBtn, microphone, leave;
-    TextView txt_name, txt_defin;
+    TextView txt_name, txt_defin,wordDefin;
 
     ViewRenderable name_models, speaker, definition;
     TransformableNode modelNode, speakerNode, defNode, nameNode;
@@ -51,7 +51,9 @@ public class LessonActivity extends ARVocabSectionBased<UnitSection> {
         tipsBtn = findViewById(R.id.tipsBtn);
         microphone = findViewById(R.id.microphone);
         leave = findViewById(R.id.leave);
+        wordDefin = findViewById(R.id.wordDefin);
 
+        wordDefin.setVisibility(View.INVISIBLE);
         findViewById(R.id.microphone).setEnabled(false);
 
         // Leave button handling for leaving the game
@@ -109,7 +111,7 @@ public class LessonActivity extends ARVocabSectionBased<UnitSection> {
 
         // set name node
         nameNode = new TransformableNode(transformationSystem);
-        nameNode.setLocalPosition(new Vector3(0f, modelNode.getLocalPosition().y + 0.7f, 0));
+        nameNode.setLocalPosition(new Vector3(0f, modelNode.getLocalPosition().y + 0.5f, 0));
         nameNode.getScaleController().setMaxScale(1f);
         nameNode.getScaleController().setMinScale(0.5f);
         nameNode.setParent(anchorNode);
@@ -117,19 +119,19 @@ public class LessonActivity extends ARVocabSectionBased<UnitSection> {
         nameNode.select();
         txt_name = (TextView) name_models.getView();
 
-        // set def node
-        defNode = new TransformableNode(transformationSystem);
-        defNode.setLocalPosition(new Vector3(0f, modelNode.getLocalPosition().y + 0.43f, 0));
-        defNode.getScaleController().setMaxScale(1f);
-        defNode.getScaleController().setMinScale(0.5f);
-        defNode.setParent(anchorNode);
-        defNode.setRenderable(definition);
-        defNode.select();
-        txt_defin = (TextView) definition.getView();
+//        // set def node
+//        defNode = new TransformableNode(transformationSystem);
+//        defNode.setLocalPosition(new Vector3(0f, modelNode.getLocalPosition().y + 0.43f, 0));
+//        defNode.getScaleController().setMaxScale(1f);
+//        defNode.getScaleController().setMinScale(0.5f);
+//        defNode.setParent(anchorNode);
+//        defNode.setRenderable(definition);
+//        defNode.select();
+//        txt_defin = (TextView) definition.getView();
 
         // set speaker node
         speakerNode = new TransformableNode(transformationSystem);
-        speakerNode.setLocalPosition(new Vector3(0.35f, nameNode.getLocalPosition().y + 0.025f, 0));
+        speakerNode.setLocalPosition(new Vector3(0.3f, nameNode.getLocalPosition().y + 0.025f, 0));
         speakerNode.getScaleController().setMaxScale(1f);
         speakerNode.getScaleController().setMinScale(0.5f);
         speakerNode.setParent(anchorNode);
@@ -137,7 +139,7 @@ public class LessonActivity extends ARVocabSectionBased<UnitSection> {
         speakerNode.select();
         setupSpeaker();
 
-
+        wordDefin.setVisibility(View.VISIBLE);
         findViewById(R.id.microphone).setEnabled(true);
     }
 
@@ -184,7 +186,7 @@ public class LessonActivity extends ARVocabSectionBased<UnitSection> {
         if (result) {
             answer.setIcon(ContextCompat.getDrawable(LessonActivity.this, R.drawable.happy));
             answer.setTitle("Congratulations!");
-            answer.setMessage("You have answered correctly!");
+            answer.setMessage("You answered right!");
         } else {
             answer.setIcon(ContextCompat.getDrawable(LessonActivity.this, R.drawable.unhappy));
             answer.setTitle("Unfortunately!");
@@ -205,7 +207,7 @@ public class LessonActivity extends ARVocabSectionBased<UnitSection> {
     @Override
     protected void onVocabularyUpdate(UnitSection updated) {
         txt_name.setText(updated.getVocab());
-        txt_defin.setText(updated.getDefinition());
+        wordDefin.setText(updated.getDefinition());
         modelNode.setRenderable(updated.getModelRenderable());
         speak(); // speak on each model updated
     }

@@ -135,11 +135,11 @@ public class QuizActivity extends ARVocabSectionBased<QuizSection> {
             score += current.getScore();
             builder.setIcon(ContextCompat.getDrawable(QuizActivity.this, R.drawable.happy));
             builder.setTitle("Congratulations!");
-            builder.setMessage("You have answered correctly and get 10 marks!");
+            builder.setMessage("You answered right and get 10 marks!");
         } else {
             builder.setIcon(ContextCompat.getDrawable(QuizActivity.this, R.drawable.unhappy));
             builder.setTitle("Unfortunately!");
-            builder.setMessage("You have answered wrongly and get no marks!");
+            builder.setMessage("You answered wrong and get no marks!");
         }
         return true; // no matter correct or incorrect, still need to move into next section
     }
