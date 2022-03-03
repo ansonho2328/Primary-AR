@@ -40,7 +40,7 @@
         android:gravity="center"
         android:text="Hot Topic"
         android:textSize="24sp" />
-    
+
     <ListView
         android:id="@+id/hot_topic"
         android:layout_width="match_parent"

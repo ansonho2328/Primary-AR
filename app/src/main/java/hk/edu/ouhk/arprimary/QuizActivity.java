@@ -1,14 +1,20 @@
 package hk.edu.ouhk.arprimary;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.google.ar.sceneform.AnchorNode;
@@ -16,6 +22,11 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.TransformableNode;
 import com.google.ar.sceneform.ux.TransformationSystem;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
@@ -32,17 +43,18 @@ import hk.edu.ouhk.arprimary.viewmodel.armodel.quiz.QuizSection;
  */
 public class QuizActivity extends ARVocabSectionBased<QuizSection> {
 
-
+    FirebaseDatabase database = FirebaseDatabase.getInstance("https://primary-ar-default-rtdb.asia-southeast1.firebasedatabase.app");
     Quiz quiz;
 
     ImageButton tipsBtn, microphone, leave;
 
     TransformableNode modelNode;
-
+    DatabaseReference myRef = database.getReference("Leaderboard");
     int score = 0;
 
     @Override
     protected void onCreateContent(Bundle bundle) {
+
         setContentView(R.layout.activity_quiz);
         quiz = (Quiz) getIntent().getSerializableExtra("quiz");
 
@@ -136,6 +148,36 @@ public class QuizActivity extends ARVocabSectionBased<QuizSection> {
             builder.setIcon(ContextCompat.getDrawable(QuizActivity.this, R.drawable.happy));
             builder.setTitle("Congratulations!");
             builder.setMessage("You answered right and get 10 marks!");
+
+            myRef.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w(TAG, "Failed to read value.", error.toException());
+                }
+            });
+
+
         } else {
             builder.setIcon(ContextCompat.getDrawable(QuizActivity.this, R.drawable.unhappy));
             builder.setTitle("Unfortunately!");
