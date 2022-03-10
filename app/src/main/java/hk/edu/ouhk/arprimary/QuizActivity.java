@@ -28,6 +28,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 
@@ -149,8 +152,49 @@ public class QuizActivity extends ARVocabSectionBased<QuizSection> {
             builder.setTitle("Congratulations!");
             builder.setMessage("You answered right and get 10 marks!");
             //insert to firebase data
-            myRef.child(username).setValue(new User(username,10));
+            ArrayList<User> user = new ArrayList<>();
+            myRef.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot,String s) {
+                    User value = dataSnapshot.getValue(User.class);
+                    user.add(value);
+                    User temp = null;
+                    for (User x : user) {
+                        if(x.getUsername().equals(username)){
+                          temp = x;
+                        }
+                    }
+                        if(temp != null){
+                        temp.setScore(temp.getScore()+10);
+                        Map<String,Object> update = new HashMap<>();
+                        update.put(username,temp);
+                        myRef.updateChildren(update);
+                    }else{
+                    myRef.child(username).setValue(new User(username,10));
+                    }
+                }
 
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w(TAG, "Failed to read value.", error.toException());
+                }
+            });
 
         } else {
             builder.setIcon(ContextCompat.getDrawable(QuizActivity.this, R.drawable.unhappy));
