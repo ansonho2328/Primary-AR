@@ -51,7 +51,7 @@ public class QuizActivity extends ARVocabSectionBased<QuizSection> {
     TransformableNode modelNode;
     DatabaseReference myRef = database.getReference("Leaderboard");
     int score = 0;
-
+    String username = "test";
     @Override
     protected void onCreateContent(Bundle bundle) {
 
@@ -148,34 +148,8 @@ public class QuizActivity extends ARVocabSectionBased<QuizSection> {
             builder.setIcon(ContextCompat.getDrawable(QuizActivity.this, R.drawable.happy));
             builder.setTitle("Congratulations!");
             builder.setMessage("You answered right and get 10 marks!");
-
-            myRef.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                }
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.w(TAG, "Failed to read value.", error.toException());
-                }
-            });
+            //insert to firebase data
+            myRef.child(username).setValue(new User(username,10));
 
 
         } else {
