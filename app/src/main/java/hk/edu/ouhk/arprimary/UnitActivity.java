@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -106,6 +107,9 @@ public class UnitActivity extends AppCompatActivity {
                             Lesson lesson = new Lesson(fragments);
                             intent.putExtra("lesson", lesson);
                             lessonLauncher.launch(intent);
+                        }else if(unitView.getNo() == 2){
+                            Intent sentence = new Intent(UnitActivity.this, SentenceActivity.class);
+                            startActivity(sentence);
                         }else{
                             Toast.makeText(this, "Cannot find lesson fragments on "+topic+"-"+unitView.getNo(), Toast.LENGTH_LONG).show();
                         }
