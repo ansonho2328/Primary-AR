@@ -49,9 +49,7 @@ public class SentenceActivity extends AppCompatActivity {
             AlertDialog.Builder tips = new AlertDialog.Builder(SentenceActivity.this);
             tips.setIcon(ContextCompat.getDrawable(SentenceActivity.this, R.drawable.tips));
             tips.setTitle("Sentence-Making Game Tips");
-            tips.setMessage("Present Tense - Subject(S) + Verb(V)/be: e.g I am happy. For 'I' which is subject and 'am' is verb. \n\n" +
-                    "1. select the word by order to make sentence in present tense.\n\n" +
-                    "2. check the grammar for the sentence. ");
+            tips.setMessage("1. ");
             tips.setPositiveButton("Got It", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {
