@@ -40,4 +40,19 @@
         app:srcCompat="@drawable/tips"
         android:contentDescription="@string/tips" />
 
+    <TextView
+        android:id="@+id/sentence"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:textSize="17dp"
+        android:textColor="@color/white"
+        android:background="@color/oBlue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.72"         />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

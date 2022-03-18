@@ -7,10 +7,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class SentenceActivity extends AppCompatActivity {
 
     ImageButton tipsBtn, leave;
+    TextView sentence;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +21,7 @@ public class SentenceActivity extends AppCompatActivity {
 
         tipsBtn = findViewById(R.id.tipsBtn);
         leave = findViewById(R.id.leave);
+        sentence = findViewById(R.id.sentence);
 
         // Leave button handling for leaving the game
         leave.setOnClickListener(view -> {
@@ -59,5 +62,6 @@ public class SentenceActivity extends AppCompatActivity {
             });
             tips.show();
         });
+
     }
 }
