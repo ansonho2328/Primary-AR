@@ -82,7 +82,7 @@
         android:drawableLeft="@drawable/leaderboardbtn"
         android:gravity="center"
         android:padding="10dp"
-        android:text="score"
+        android:text="test insert score"
         android:textColor="@color/white"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/include"

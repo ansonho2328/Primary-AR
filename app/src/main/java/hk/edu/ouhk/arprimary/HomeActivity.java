@@ -77,13 +77,18 @@ public class HomeActivity extends AppCompatActivity {
                             temp = x;
                         }
                     }
+
+                    if(temp == null){
+                        myRef.child(username).setValue(new User(username,0));
+
+                    }
+
                     if(temp != null){
                         temp.setScore(temp.getScore()+10);
                         Map<String,Object> update = new HashMap<>();
                         update.put(username,temp);
                         myRef.updateChildren(update);
-                    }else{
-                        myRef.child(username).setValue(new User(username,10));
+
                     }
                 }
 

@@ -155,22 +155,27 @@ public class QuizActivity extends ARVocabSectionBased<QuizSection> {
             ArrayList<User> user = new ArrayList<>();
             myRef.addChildEventListener(new ChildEventListener() {
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot,String s) {
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     User value = dataSnapshot.getValue(User.class);
                     user.add(value);
                     User temp = null;
                     for (User x : user) {
                         if(x.getUsername().equals(username)){
-                          temp = x;
+                            temp = x;
                         }
                     }
-                        if(temp != null){
+
+                    if(temp == null){
+                        myRef.child(username).setValue(new User(username,0));
+
+                    }
+
+                    if(temp != null){
                         temp.setScore(temp.getScore()+10);
                         Map<String,Object> update = new HashMap<>();
                         update.put(username,temp);
                         myRef.updateChildren(update);
-                    }else{
-                    myRef.child(username).setValue(new User(username,10));
+
                     }
                 }
 
