@@ -28,15 +28,15 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 
-import hk.edu.ouhk.arprimary.viewmodel.armodel.Vocabulary;
+import hk.edu.ouhk.arprimary.viewmodel.armodel.Sectionable;
 
-public abstract class ARVocabSectionBased<E extends Vocabulary> extends AppCompatActivity {
+public abstract class ARVocabSectionBased<E extends Sectionable> extends AppCompatActivity {
 
     private static final double MIN_OPENGL_VERSION = 3.0;
     private static final String TAG = ARVocabSectionBased.class.getSimpleName();
 
 
-    protected View.OnClickListener LAUNCH_SPEECH_TO_TEXT;
+    protected View.OnClickListener onIntentLaunch;
 
     protected ArFragment arFragment;
 
@@ -46,11 +46,19 @@ public abstract class ARVocabSectionBased<E extends Vocabulary> extends AppCompa
     private final MutableLiveData<E> liveData = new MutableLiveData<>();
 
 
-    private ActivityResultLauncher<Intent> speechLauncher;
+    private ActivityResultLauncher<Intent> intentLauncher;
     protected boolean sessionStarted;
 
 
     protected abstract void onCreateContent(Bundle bundle);
+
+    // overridable
+    public Intent createIntent() {
+        Intent speachIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speachIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        speachIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Pronounce the word");
+        return speachIntent;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,15 +70,12 @@ public abstract class ARVocabSectionBased<E extends Vocabulary> extends AppCompa
             return;
         }
 
-        speechLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onSpeechResult);
+        intentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onIntentResult);
 
-        LAUNCH_SPEECH_TO_TEXT = new View.OnClickListener() {
+        onIntentLaunch = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent speachIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                speachIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                speachIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Pronounce the word");
-                speechLauncher.launch(speachIntent);
+                intentLauncher.launch(createIntent());
             }
         };
 
@@ -102,7 +107,7 @@ public abstract class ARVocabSectionBased<E extends Vocabulary> extends AppCompa
             Toast.makeText(this, "All models are rendered, you can now tap the screen", Toast.LENGTH_LONG).show();
 
             arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-                if (sessionStarted)return;
+                if (sessionStarted) return;
 
                 startLoading();
 
@@ -121,9 +126,9 @@ public abstract class ARVocabSectionBased<E extends Vocabulary> extends AppCompa
     }
 
 
-    protected void startLesson(){
+    protected void startLesson() {
         if (sessionStarted) return;
-        if (!iterator.hasNext()){
+        if (!iterator.hasNext()) {
             Toast.makeText(this, "The Section IS Empty!", Toast.LENGTH_LONG).show();
             return;
         }
@@ -136,26 +141,24 @@ public abstract class ARVocabSectionBased<E extends Vocabulary> extends AppCompa
 
     protected abstract CompletableFuture<Void> prepareArModel(TreeSet<E> treeSet);
 
-    // overridable
-    protected boolean isPassResult(String stt){
-        return current != null && current.getVocab().equalsIgnoreCase(stt);
+    // overridable, default is tts
+    public String resultToAnswer(ActivityResult result) {
+        Intent data = result.getData();
+        return data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
     }
 
-    protected void onSpeechResult(ActivityResult result){
-        if (result.getResultCode() != RESULT_OK || result.getData() == null) {
-            Toast.makeText(this, "data is null or result is not ok", Toast.LENGTH_LONG).show();
-            return;
-        }
+    // overridable
+    protected boolean isPassResult(String answer) {
+        return current != null && current.getAnswer().equalsIgnoreCase(answer);
+    }
 
-        Intent data = result.getData();
-        String speechText = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
-
-        boolean passed = isPassResult(speechText);
+    protected void onAnswerResult(String answer) {
+        boolean passed = isPassResult(answer);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
         boolean shouldNext = buildDialogWithResult(builder, passed);
-        if (shouldNext){
-            if (iterator.hasNext()){
+        if (shouldNext) {
+            if (iterator.hasNext()) {
                 builder.setPositiveButton("Next", (arg0, arg1) -> doNext());
             } else {
                 builder.setPositiveButton("Finish", (arg0, arg1) -> {
@@ -171,8 +174,17 @@ public abstract class ARVocabSectionBased<E extends Vocabulary> extends AppCompa
         builder.show();
     }
 
+    protected void onIntentResult(ActivityResult result) {
+        if (result.getResultCode() != RESULT_OK || result.getData() == null) {
+            Toast.makeText(this, "data is null or result is not ok", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String answer = resultToAnswer(result);
+        onAnswerResult(answer);
+    }
 
-    protected void doNext(){
+
+    protected void doNext() {
         E next = iterator.next();
         current = next;
         liveData.postValue(next);

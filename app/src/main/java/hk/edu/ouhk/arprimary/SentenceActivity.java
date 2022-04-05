@@ -1,27 +1,50 @@
 package hk.edu.ouhk.arprimary;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class SentenceActivity extends AppCompatActivity {
+import androidx.core.content.ContextCompat;
+
+import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.math.Vector3;
+import com.google.ar.sceneform.rendering.ViewRenderable;
+import com.google.ar.sceneform.ux.TransformableNode;
+import com.google.ar.sceneform.ux.TransformationSystem;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.TreeSet;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+
+import hk.edu.ouhk.arprimary.viewmodel.armodel.sentence.SentenceSection;
+
+public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
 
     ImageButton tipsBtn, leave;
-    TextView sentence;
+
+    TextView answerDisplay;
+
+    Button finishAnswer;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreateContent(Bundle bundle) {
         setContentView(R.layout.activity_sentence);
 
         tipsBtn = findViewById(R.id.tipsBtn);
         leave = findViewById(R.id.leave);
-        sentence = findViewById(R.id.sentence);
+
+        answerDisplay = findViewById(R.id.sentence);
+        finishAnswer = findViewById(R.id.finish_button);
 
         // Leave button handling for leaving the game
         leave.setOnClickListener(view -> {
@@ -63,5 +86,101 @@ public class SentenceActivity extends AppCompatActivity {
             tips.show();
         });
 
+
+        finishAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String txt = (String) answerDisplay.getText();
+                onAnswerResult(txt);
+            }
+        });
+    }
+
+
+    private final List<String> answering = new ArrayList<>();
+
+    @Override
+    protected void placeSceneModel(AnchorNode anchorNode, TransformationSystem transformationSystem) {
+        for (ViewRenderable viewRenderable : viewRenderables) {
+            TransformableNode wordNode = new TransformableNode(transformationSystem);
+            float place = new Random().nextFloat(); // TODO random spread plcaement
+            wordNode.setLocalPosition(new Vector3(0f, place, 0));
+            wordNode.getScaleController().setMaxScale(1f);
+            wordNode.getScaleController().setMinScale(0.5f);
+            wordNode.setParent(anchorNode);
+            wordNode.setRenderable(viewRenderable);
+            wordNode.select();
+            TextView tv = (TextView) viewRenderable.getView();
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String word = (String) tv.getText();
+                    if (word.isEmpty()) return;
+                    if (answering.contains(word)) {
+                        answering.remove(word);
+                    } else {
+                        answering.add(word);
+                    }
+                    // after edit, update the display
+                    String answer = String.join(" ", answering);
+                    answerDisplay.setText(answer);
+                }
+            });
+        }
+    }
+
+    private ViewRenderable[] viewRenderables;
+
+    @Override
+    protected CompletableFuture<Void> prepareArModel(TreeSet<SentenceSection> treeSet) {
+        int maxWordsSize = treeSet.stream().mapToInt(s -> s.getFragments().size()).max().orElse(0);
+        viewRenderables = new ViewRenderable[maxWordsSize];
+
+        CompletableFuture[] futures = new CompletableFuture[maxWordsSize];
+        for (int i = 0; i < maxWordsSize; i++) {
+            int index = i;
+            futures[i] = ViewRenderable.builder()
+                    .setView(this, new TextView(this))
+                    .build()
+                    .thenAccept(render -> viewRenderables[index] = render);
+        }
+
+        return CompletableFuture.allOf(futures);
+    }
+
+    @Override
+    protected boolean buildDialogWithResult(AlertDialog.Builder answer, boolean result) {
+        if (result) {
+            answer.setIcon(ContextCompat.getDrawable(SentenceActivity.this, R.drawable.happy));
+            answer.setTitle("Congratulations!");
+            answer.setMessage("You answered right!");
+        } else {
+            answer.setIcon(ContextCompat.getDrawable(SentenceActivity.this, R.drawable.unhappy));
+            answer.setTitle("Unfortunately!");
+            answer.setMessage("You answered wrong, please try again!");
+        }
+        return result;
+    }
+
+    @Override
+    protected void beforeFinish(Intent intent) {
+
+    }
+
+    @Override
+    protected void onVocabularyUpdate(SentenceSection updated) {
+        // clear all text first
+        for (ViewRenderable viewRenderable : viewRenderables) {
+            TextView tv = ((TextView)viewRenderable.getView());
+            tv.setText("");
+            tv.setVisibility(View.INVISIBLE);
+        }
+        //assign
+        for (int i = 0; i < updated.getFragments().size(); i++) {
+            String fragment = updated.getFragments().get(i);
+            TextView tv = (TextView)viewRenderables[i].getView();
+            tv.setText(fragment);
+            tv.setVisibility(View.VISIBLE);
+        }
     }
 }
