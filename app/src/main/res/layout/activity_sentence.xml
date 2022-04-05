@@ -44,8 +44,8 @@
         android:id="@+id/sentence"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:textSize="17dp"
+        android:padding="10dp"
+        android:textSize="20dp"
         android:textColor="@color/white"
         android:background="@color/oBlue"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -56,15 +56,34 @@
         app:layout_constraintVertical_bias="0.72"         />
 
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/finish_button"
-        android:layout_width="350dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:text="Finish"
+        android:textSize="15dp"
+        android:textColor="@color/white"
+        android:background="@color/oBlue"
         app:layout_constraintBottom_toBottomOf="@+id/lesson_arfragment"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sentence"
+        app:layout_constraintVertical_bias="0.36" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/reset_button"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:text="Reset"
+        android:textSize="15dp"
+        android:textColor="@color/white"
+        android:background="@color/oBlue"
+        app:layout_constraintBottom_toBottomOf="@+id/lesson_arfragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.940"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sentence"
         app:layout_constraintVertical_bias="0.36" />

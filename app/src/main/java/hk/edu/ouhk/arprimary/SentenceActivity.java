@@ -34,7 +34,7 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
 
     TextView answerDisplay;
 
-    Button finishAnswer;
+    Button finishAnswer,reset_button;
 
     @Override
     protected void onCreateContent(Bundle bundle) {
@@ -45,6 +45,7 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
 
         answerDisplay = findViewById(R.id.sentence);
         finishAnswer = findViewById(R.id.finish_button);
+        reset_button = findViewById(R.id.reset_button);
 
         // Leave button handling for leaving the game
         leave.setOnClickListener(view -> {
@@ -76,7 +77,7 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
             tips.setIcon(ContextCompat.getDrawable(SentenceActivity.this, R.drawable.tips));
             tips.setTitle("Sentence-Making Game Tips");
             tips.setMessage("Present Tense - Subject(S) + Verb(V)/be e.g I am happy. which 'I' is subject and 'am' is verb.\n\n" +
-                    "1. select the word by order to make sentence in present tense." +
+                    "1. select the word by order to make sentence in present tense.\n" +
                     "2. check grammar for the sentence.");
             tips.setPositiveButton("Got It", new DialogInterface.OnClickListener() {
                 @Override
@@ -86,6 +87,12 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
             tips.show();
         });
 
+        reset_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                answerDisplay.setText("");
+            }
+        });
 
         finishAnswer.setOnClickListener(new View.OnClickListener() {
             @Override

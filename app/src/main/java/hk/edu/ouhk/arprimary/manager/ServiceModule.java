@@ -26,33 +26,33 @@ public class ServiceModule {
         // TODO add data here
         LessonFragment[] animalFragments = {
                 new LessonFragment("Cow", "cow",
-                        " (Noun)\nA large female farm animal kept to produce meat and milk"),
+                        "(Noun)\nA large female farm animal kept to produce meat and milk"),
                 new LessonFragment("Shark", "shark",
-                        " (Noun)\nA large fish that has sharp teeth and a pointed fin on its back"),
+                        "(Noun)\nA large fish that has sharp teeth and a pointed fin on its back"),
                 new LessonFragment("Wolf", "wolf",
-                        " (Noun)\nA wild animal of the dog family")
+                        "(Noun)\nA wild animal of the dog family")
 
         };
 
         LessonFragment[] fruitFragments = {
                 new LessonFragment("Apple", "apple",
-                        " (Noun)\nA round fruit with firm, white flesh and a green, red, or yellow skin"),
+                        "(Noun)\nA round fruit with firm, white flesh and a green, red, or yellow skin"),
                 new LessonFragment("Banana", "banana",
-                        " (Noun)\nA long, curved fruit with a yellow skin and soft, sweet, white flesh inside"),
+                        "(Noun)\nA long, curved fruit with a yellow skin and soft, sweet, white flesh inside"),
                 new LessonFragment("Grape", "grape",
-                        " (Noun)\nA small, round, purple or pale green fruit that you can eat or make into wine"),
+                        "(Noun)\nA small, round, purple or pale green fruit that you can eat or make into wine"),
                 new LessonFragment("Lemon", "lemon",
-                        " (Noun)\nAn oval fruit that has a thick, yellow skin and sour juice")
+                        "(Noun)\nAn oval fruit that has a thick, yellow skin and sour juice")
         };
 
         LessonFragment[] stationeryFragments = {
                 new LessonFragment("Book", "book",
-                        " (Noun)\nA written text that can be published in printed or electronic form"),
+                        "(Noun)\nA written text that can be published in printed or electronic form"),
                 new LessonFragment("Pencil", "pencil",
-                        " (Noun)\nA long, thin object, usually made of wood, for writing or drawing, " +
+                        "(Noun)\nA long, thin object, usually made of wood, for writing or drawing, " +
                                 "with a sharp black or coloured point at one end"),
                 new LessonFragment("Eraser", "eraser",
-                        " (Noun)\nA small piece of rubber used to remove the marks made by a pencil")
+                        "(Noun)\nA small piece of rubber used to remove the marks made by a pencil")
         };
 
         fragmentManager.registerTopicUnit("Animal", 1, animalFragments);

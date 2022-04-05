@@ -65,7 +65,7 @@ public class UnitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unit);
         this.topic = getIntent().getExtras().getString("topic");
-        this.username = Optional.ofNullable(savedInstanceState.getString("username")).orElse("unknown");
+        //this.username = Optional.ofNullable(savedInstanceState.getString("username")).orElse("unknown");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

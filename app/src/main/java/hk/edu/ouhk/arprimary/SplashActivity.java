@@ -56,7 +56,7 @@ public class SplashActivity extends AppCompatActivity {
                 // only if username exists
                 //Toast.makeText(MainActivity.this, "Welcome back, XXXX", Toast.LENGTH_LONG).show();
                 Intent splashIntent = new Intent(SplashActivity.this, HomeActivity.class);
-                savedInstanceState.putString("username", "tester");
+               // savedInstanceState.putString("username", "tester");
                 startActivity(splashIntent);
                 finish();
             }
