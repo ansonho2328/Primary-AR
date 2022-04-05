@@ -47,6 +47,7 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
         finishAnswer = findViewById(R.id.finish_button);
         reset_button = findViewById(R.id.reset_button);
 
+        
         // Leave button handling for leaving the game
         leave.setOnClickListener(view -> {
             AlertDialog.Builder leave = new AlertDialog.Builder(SentenceActivity.this);
