@@ -71,7 +71,6 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
             leave.show();
         });
 
-        
         // Tips button handling for game tips or rules
         tipsBtn.setOnClickListener(view -> {
             AlertDialog.Builder tips = new AlertDialog.Builder(SentenceActivity.this);
