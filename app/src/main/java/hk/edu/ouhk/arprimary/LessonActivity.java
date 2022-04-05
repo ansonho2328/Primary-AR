@@ -7,12 +7,10 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.math.Vector3;
@@ -27,7 +25,6 @@ import java.util.concurrent.CompletableFuture;
 
 import hk.edu.ouhk.arprimary.model.Lesson;
 import hk.edu.ouhk.arprimary.model.LessonFragment;
-import hk.edu.ouhk.arprimary.viewmodel.armodel.practice.SectionViewModel;
 import hk.edu.ouhk.arprimary.viewmodel.armodel.practice.UnitSection;
 
 public class LessonActivity extends ARVocabSectionBased<UnitSection> {
@@ -96,7 +93,7 @@ public class LessonActivity extends ARVocabSectionBased<UnitSection> {
         });
 
         // Microphone for pronouncing word by player
-        microphone.setOnClickListener(LAUNCH_SPEECH_TO_TEXT);
+        microphone.setOnClickListener(onIntentLaunch);
     }
 
 

@@ -20,6 +20,12 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Optional;
 
 import hk.edu.ouhk.arprimary.manager.ApplicationComponent;
@@ -39,6 +45,9 @@ public class UnitActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = UnitActivity.class.getSimpleName();
 
+    FirebaseDatabase database = FirebaseDatabase.getInstance("https://primary-ar-default-rtdb.asia-southeast1.firebasedatabase.app");
+    DatabaseReference myRef = database.getReference("Leaderboard");
+
     UnitViewModel viewModel;
     RecyclerView recyclerView;
     SwipeRefreshLayout refreshLayout;
@@ -47,7 +56,7 @@ public class UnitActivity extends AppCompatActivity {
     LessonFragmentManager lessonFragmentManager;
     QuizFragmentManager quizFragmentManager;
 
-    String topic;
+    String topic, username;
 
     ActivityResultLauncher<Intent> lessonLauncher, quizLauncher;
 
@@ -56,6 +65,7 @@ public class UnitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unit);
         this.topic = getIntent().getExtras().getString("topic");
+        this.username = Optional.ofNullable(savedInstanceState.getString("username")).orElse("unknown");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -183,6 +193,22 @@ public class UnitActivity extends AppCompatActivity {
             int score = result.getData().getIntExtra("scores", 0);
             // passed
             Toast.makeText(this, "You score is: "+score, Toast.LENGTH_LONG).show();
+
+            myRef.child(username).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    User user = Optional
+                            .ofNullable(task.getResult())
+                            .map(r -> r.getValue(User.class))
+                            .orElseGet(() -> new User(username, 0));
+                    user.setScore(user.getScore() + score);
+                    myRef.child(username).setValue(user);
+
+                    Toast.makeText(UnitActivity.this, "You score has been updated to cloud", Toast.LENGTH_LONG).show();
+                }
+            });
+
+
         } else if (result.getResultCode() == RESULT_CANCELED){
             // cancelled
             Toast.makeText(this, "You cancelled the course", Toast.LENGTH_LONG).show();

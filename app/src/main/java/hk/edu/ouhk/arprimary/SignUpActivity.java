@@ -36,6 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
                 new Handler().postDelayed(()->{
                     Toast.makeText(SignUpActivity.this, "Sign up Success", Toast.LENGTH_LONG).show();
                     Intent signUpIntent = new Intent(SignUpActivity.this, HomeActivity.class);
+                    savedInstanceState.putString("username", sigName.getText().toString());
                     startActivity(signUpIntent);
                     finish();
                 }, 3000);
