@@ -1,6 +1,7 @@
 package hk.edu.ouhk.arprimary.manager;
 
-import hk.edu.ouhk.arprimary.model.LessonFragment;
+import hk.edu.ouhk.arprimary.model.Sentence;
+import hk.edu.ouhk.arprimary.model.SentenceFragment;
 
-public class SentenceFragmentManager extends FragmentManager<LessonFragment> {
+public class SentenceFragmentManager extends FragmentManager<SentenceFragment> {
 }

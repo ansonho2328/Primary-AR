@@ -20,15 +20,20 @@ import com.google.ar.sceneform.ux.TransformationSystem;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+import hk.edu.ouhk.arprimary.model.Sentence;
+import hk.edu.ouhk.arprimary.model.SentenceFragment;
 import hk.edu.ouhk.arprimary.viewmodel.armodel.sentence.SentenceSection;
 
 public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
+
+    Sentence sentence;
 
     ImageButton tipsBtn, leave;
 
@@ -142,7 +147,8 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
 
     @Override
     protected CompletableFuture<Void> prepareArModel(TreeSet<SentenceSection> treeSet) {
-        int maxWordsSize = treeSet.stream().mapToInt(s -> s.getFragments().size()).max().orElse(0);
+        SentenceFragment[] fragments = sentence.getFragments();
+        int maxWordsSize = Arrays.stream(fragments).mapToInt(s -> s.getFragments().size()).max().orElse(0);
         viewRenderables = new ViewRenderable[maxWordsSize];
 
         CompletableFuture[] futures = new CompletableFuture[maxWordsSize];

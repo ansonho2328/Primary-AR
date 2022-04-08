@@ -71,13 +71,11 @@ public class ServiceModule {
         SentenceFragmentManager sentencefragmentManager = new SentenceFragmentManager();
         List<String> sentences = new ArrayList();
 
-        SentenceFragment[] animalSenFragments = {
-                new SentenceFragment(sentences, "Farm has cow"),
-
-
+        SentenceFragment[] animalSentence = {
+                new SentenceFragment(sentences, "Frog jumps high"),
         };
 
-       // sentencefragmentManager.registerTopicUnit("Animal", 2, animalSenFragments);
+        sentencefragmentManager.registerTopicUnit("Animal", 2, animalSentence);
         return sentencefragmentManager;
 
     }

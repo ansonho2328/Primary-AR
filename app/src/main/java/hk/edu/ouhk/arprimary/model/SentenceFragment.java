@@ -1,6 +1,7 @@
 package hk.edu.ouhk.arprimary.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 public class SentenceFragment implements Serializable {
@@ -18,5 +19,7 @@ public class SentenceFragment implements Serializable {
         return correctAnswer;
     }
 
-
+    public List<String> getFragments() {
+        return fragments;
+    }
 }
