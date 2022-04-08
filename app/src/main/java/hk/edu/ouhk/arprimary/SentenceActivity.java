@@ -35,7 +35,6 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
     TextView answerDisplay;
 
     Button finishAnswer,reset_button;
-
     TransformableNode wordNode;
 
     @Override
