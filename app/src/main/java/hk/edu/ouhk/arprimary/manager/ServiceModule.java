@@ -68,8 +68,12 @@ public class ServiceModule {
     @Provides
     @Singleton
     public SentenceFragmentManager sentenceFragmentManager() {
+
         SentenceFragmentManager sentencefragmentManager = new SentenceFragmentManager();
-        List<String> sentences = new ArrayList();
+        List<String> sentences = new ArrayList<String>();
+        sentences.add("Frog");
+        sentences.add("jumps");
+        sentences.add("high");
 
         SentenceFragment[] animalSentence = {
                 new SentenceFragment(sentences, "Frog jumps high"),
