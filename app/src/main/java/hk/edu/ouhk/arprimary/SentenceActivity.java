@@ -36,6 +36,8 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
 
     Button finishAnswer,reset_button;
 
+    TransformableNode wordNode;
+
     @Override
     protected void onCreateContent(Bundle bundle) {
         setContentView(R.layout.activity_sentence);
@@ -78,8 +80,8 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
             tips.setIcon(ContextCompat.getDrawable(SentenceActivity.this, R.drawable.tips));
             tips.setTitle("Sentence-Making Game Tips");
             tips.setMessage("Present Tense - Subject(S) + Verb(V)/be e.g I am happy. which 'I' is subject and 'am' is verb.\n\n" +
-                    "1. select the word by order to make sentence in present tense.\n" +
-                    "2. check grammar for the sentence.");
+                    "1. Please select the word by order to make sentence in present tense.\n" +
+                    "2. Please check the grammar for the sentence.");
             tips.setPositiveButton("Got It", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {
@@ -110,7 +112,7 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
     @Override
     protected void placeSceneModel(AnchorNode anchorNode, TransformationSystem transformationSystem) {
         for (ViewRenderable viewRenderable : viewRenderables) {
-            TransformableNode wordNode = new TransformableNode(transformationSystem);
+            wordNode = new TransformableNode(transformationSystem);
             float place = new Random().nextFloat(); // TODO random spread plcaement
             wordNode.setLocalPosition(new Vector3(0f, place, 0));
             wordNode.getScaleController().setMaxScale(1f);
@@ -172,7 +174,8 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
 
     @Override
     protected void beforeFinish(Intent intent) {
-
+        //clear all
+        wordNode.setRenderable(null);
     }
 
     @Override

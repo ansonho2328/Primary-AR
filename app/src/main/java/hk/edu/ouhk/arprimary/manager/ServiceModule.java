@@ -1,11 +1,15 @@
 package hk.edu.ouhk.arprimary.manager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import hk.edu.ouhk.arprimary.model.LessonFragment;
 import hk.edu.ouhk.arprimary.model.QuizFragment;
+import hk.edu.ouhk.arprimary.model.SentenceFragment;
 
 @Module
 public class ServiceModule {
@@ -61,6 +65,22 @@ public class ServiceModule {
         return fragmentManager;
     }
 
+    @Provides
+    @Singleton
+    public SentenceFragmentManager sentenceFragmentManager() {
+        SentenceFragmentManager sentencefragmentManager = new SentenceFragmentManager();
+        List<String> sentences = new ArrayList();
+
+        SentenceFragment[] animalSenFragments = {
+                new SentenceFragment(sentences, "Farm has cow"),
+
+
+        };
+
+       // sentencefragmentManager.registerTopicUnit("Animal", 2, animalSenFragments);
+        return sentencefragmentManager;
+
+    }
 
     @Provides
     @Singleton

@@ -12,6 +12,8 @@ public interface ApplicationComponent {
 
     LessonFragmentManager lessonFragmentManager();
 
+    SentenceFragmentManager sentenceFragmentManager();
+
     QuizFragmentManager quizFragmentManager();
 
 }
