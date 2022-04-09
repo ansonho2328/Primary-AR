@@ -27,6 +27,7 @@ import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+import hk.edu.ouhk.arprimary.model.Lesson;
 import hk.edu.ouhk.arprimary.model.Sentence;
 import hk.edu.ouhk.arprimary.model.SentenceFragment;
 import hk.edu.ouhk.arprimary.viewmodel.armodel.sentence.SentenceSection;
@@ -39,18 +40,20 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
 
     TextView answerDisplay;
 
-    Button finishAnswer,reset_button;
+    Button confirmAnswer,reset_button;
     TransformableNode wordNode;
 
     @Override
     protected void onCreateContent(Bundle bundle) {
         setContentView(R.layout.activity_sentence);
 
+        sentence = (Sentence) getIntent().getSerializableExtra("sentence");
+
         tipsBtn = findViewById(R.id.tipsBtn);
         leave = findViewById(R.id.leave);
 
         answerDisplay = findViewById(R.id.sentence);
-        finishAnswer = findViewById(R.id.finish_button);
+        confirmAnswer = findViewById(R.id.confirm_button);
         reset_button = findViewById(R.id.reset_button);
 
 
@@ -101,7 +104,7 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
             }
         });
 
-        finishAnswer.setOnClickListener(new View.OnClickListener() {
+        confirmAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String txt = (String) answerDisplay.getText();

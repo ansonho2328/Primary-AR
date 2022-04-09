@@ -31,10 +31,13 @@ import java.util.Optional;
 import hk.edu.ouhk.arprimary.manager.ApplicationComponent;
 import hk.edu.ouhk.arprimary.manager.LessonFragmentManager;
 import hk.edu.ouhk.arprimary.manager.QuizFragmentManager;
+import hk.edu.ouhk.arprimary.manager.SentenceFragmentManager;
 import hk.edu.ouhk.arprimary.model.Lesson;
 import hk.edu.ouhk.arprimary.model.LessonFragment;
 import hk.edu.ouhk.arprimary.model.Quiz;
 import hk.edu.ouhk.arprimary.model.QuizFragment;
+import hk.edu.ouhk.arprimary.model.Sentence;
+import hk.edu.ouhk.arprimary.model.SentenceFragment;
 import hk.edu.ouhk.arprimary.viewmodel.ListExtendableAdapter;
 import hk.edu.ouhk.arprimary.viewmodel.ViewListAction;
 import hk.edu.ouhk.arprimary.viewmodel.unit.UnitAdapter;
@@ -54,11 +57,12 @@ public class UnitActivity extends AppCompatActivity {
 
 
     LessonFragmentManager lessonFragmentManager;
+    SentenceFragmentManager sentencefragmentManager;
     QuizFragmentManager quizFragmentManager;
 
     String topic, username;
 
-    ActivityResultLauncher<Intent> lessonLauncher, quizLauncher;
+    ActivityResultLauncher<Intent> lessonLauncher, quizLauncher,sentenceLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,7 @@ public class UnitActivity extends AppCompatActivity {
 
         this.quizFragmentManager = component.quizFragmentManager();
         this.lessonFragmentManager = component.lessonFragmentManager();
+        this.sentencefragmentManager = component.sentenceFragmentManager();
 
 
         refreshLayout = findViewById(R.id.refresh_layout);
@@ -106,22 +111,30 @@ public class UnitActivity extends AppCompatActivity {
                     int pos = recyclerView.getChildAdapterPosition(v);
                     UnitView unitView = unit.list.get(pos);
 
+
                     if (unitView.getType() == UnitView.Type.PRACTICE){
-                        Intent intent = new Intent(UnitActivity.this, LessonActivity.class);
 
                         Optional<LessonFragment[]> fragmentsOpt = lessonFragmentManager.getFragmentsByTopicUnit(topic, unitView.getNo());
+                        Optional<SentenceFragment[]> senFragmentsOpt = sentencefragmentManager.getFragmentsByTopicUnit(topic, unitView.getNo());
 
                         if (fragmentsOpt.isPresent()){
+                            Intent intent = new Intent(UnitActivity.this, LessonActivity.class);
                             LessonFragment[] fragments = fragmentsOpt.get();
 
                             Lesson lesson = new Lesson(fragments);
                             intent.putExtra("lesson", lesson);
                             lessonLauncher.launch(intent);
-                        }else if(unitView.getNo() == 2){
-                            Intent sentence = new Intent(UnitActivity.this, SentenceActivity.class);
-                            startActivity(sentence);
-                        }else{
-                            Toast.makeText(this, "Cannot find lesson fragments on "+topic+"-"+unitView.getNo(), Toast.LENGTH_LONG).show();
+                        } else if (senFragmentsOpt.isPresent()){
+                           Intent senIntent = new Intent(UnitActivity.this, SentenceActivity.class);
+                           SentenceFragment[] fragments = senFragmentsOpt.get();
+
+                           Sentence sentence = new Sentence(fragments);
+                          // Toast.makeText(this, "sentence: "+ sentence, Toast.LENGTH_LONG).show();
+
+                           senIntent.putExtra("sentence", sentence);
+                           sentenceLauncher.launch(senIntent);
+                        } else {
+                            Toast.makeText(this, "Cannot find practice fragments on "+topic+"-"+unitView.getNo(), Toast.LENGTH_LONG).show();
                         }
 
 
@@ -172,6 +185,7 @@ public class UnitActivity extends AppCompatActivity {
         this.onUpdateView();
         lessonLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onLessonResult);
         quizLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onQuizResult);
+        sentenceLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), this::onLessonResult);
     }
 
     public void onLessonResult(ActivityResult result) {
