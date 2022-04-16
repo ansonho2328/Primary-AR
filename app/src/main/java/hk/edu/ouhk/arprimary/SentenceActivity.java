@@ -98,13 +98,6 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
             tips.show();
         });
 
-        reset_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                answerDisplay.setText("");
-            }
-        });
-
         confirmAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,7 +138,18 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
                 }
             });
         }
+
+        reset_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                answerDisplay.setText("");
+                answering.clear();
+            }
+        });
+
     }
+
+
 
     private ViewRenderable[] viewRenderables;
 
@@ -157,11 +161,17 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
 
         CompletableFuture[] futures = new CompletableFuture[maxWordsSize];
         for (int i = 0; i < maxWordsSize; i++) {
+            SentenceFragment fragment = fragments[i];
             int index = i;
             futures[i] = ViewRenderable.builder()
-                    .setView(this, new TextView(this))
+                    .setView(this, R.layout.name_models)
                     .build()
-                    .thenAccept(render -> viewRenderables[index] = render);
+                    .thenAccept(render -> {
+                        viewRenderables[index] = render;
+                        SentenceSection section = new SentenceSection(index, fragment.getFragments(),
+                                fragment.getCorrectAnswer());
+                        treeSet.add(section);
+                    });
         }
 
         return CompletableFuture.allOf(futures);
@@ -194,6 +204,8 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
             TextView tv = ((TextView)viewRenderable.getView());
             tv.setText("");
             tv.setVisibility(View.INVISIBLE);
+            answerDisplay.setText("");
+            answering.clear();
         }
         //assign
         for (int i = 0; i < updated.getFragments().size(); i++) {

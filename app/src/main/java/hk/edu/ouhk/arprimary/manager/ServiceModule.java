@@ -80,7 +80,7 @@ public class ServiceModule {
         };
 
         SentenceFragment[] fruitSentence = {
-                new SentenceFragment(new ArrayList<String>(Arrays.asList("Frog", "jumps", "high")), "Peter eats apple"),
+                new SentenceFragment(new ArrayList<String>(Arrays.asList("Peter", "eats", "apple")), "Peter eats apple"),
                 new SentenceFragment(new ArrayList<String>(Arrays.asList("Tony", "buys", "the","banana")), "Tony buys the banana"),
                 new SentenceFragment(new ArrayList<String>(Arrays.asList("Lemon", "contains", "vitamin")), "Lemon contains vitamin")
         };
