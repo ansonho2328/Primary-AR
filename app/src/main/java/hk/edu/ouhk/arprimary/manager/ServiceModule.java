@@ -1,6 +1,7 @@
 package hk.edu.ouhk.arprimary.manager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Singleton;
@@ -70,16 +71,28 @@ public class ServiceModule {
     public SentenceFragmentManager sentenceFragmentManager() {
 
         SentenceFragmentManager sentencefragmentManager = new SentenceFragmentManager();
-        List<String> sentences = new ArrayList<String>();
-        sentences.add("Frog");
-        sentences.add("jumps");
-        sentences.add("high");
+
 
         SentenceFragment[] animalSentence = {
-                new SentenceFragment(sentences, "Frog jumps high"),
+                new SentenceFragment(new ArrayList<String>(Arrays.asList("Frog", "jumps", "high")), "Frog jumps high"),
+                new SentenceFragment(new ArrayList<String>(Arrays.asList("Farm", "has", "cow")), "Farm has cow"),
+                new SentenceFragment(new ArrayList<String>(Arrays.asList("Shark", "is", "terrible")), "Shark is terrible")
         };
 
+        SentenceFragment[] fruitSentence = {
+                new SentenceFragment(new ArrayList<String>(Arrays.asList("Frog", "jumps", "high")), "Peter eats apple"),
+                new SentenceFragment(new ArrayList<String>(Arrays.asList("Tony", "buys", "the","banana")), "Tony buys the banana"),
+                new SentenceFragment(new ArrayList<String>(Arrays.asList("Lemon", "contains", "vitamin")), "Lemon contains vitamin")
+        };
+
+        SentenceFragment[] stationerySentence = {
+                new SentenceFragment(new ArrayList<String>(Arrays.asList("Mark", "reads", "the","book")), "Mark reads the book"),
+                new SentenceFragment(new ArrayList<String>(Arrays.asList("Eraser", "can", "clear","the","pentrace")), "Eraser can clear the pentrace"),
+                new SentenceFragment(new ArrayList<String>(Arrays.asList("Pencil", "is", "cheaper","thing")), "Pencil is cheaper thing")
+        };
         sentencefragmentManager.registerTopicUnit("Animal", 2, animalSentence);
+        sentencefragmentManager.registerTopicUnit("Fruit", 2, fruitSentence);
+        sentencefragmentManager.registerTopicUnit("Stationery", 2, stationerySentence);
         return sentencefragmentManager;
 
     }
