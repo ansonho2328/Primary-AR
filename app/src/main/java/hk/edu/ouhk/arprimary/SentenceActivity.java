@@ -43,6 +43,7 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
     Button confirmAnswer,reset_button;
     TransformableNode wordNode;
 
+    
     @Override
     protected void onCreateContent(Bundle bundle) {
         setContentView(R.layout.activity_sentence);
