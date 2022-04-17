@@ -160,17 +160,18 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
 
         CompletableFuture[] futures = new CompletableFuture[maxWordsSize];
         for (int i = 0; i < maxWordsSize; i++) {
-            SentenceFragment fragment = fragments[i];
             int index = i;
             futures[i] = ViewRenderable.builder()
                     .setView(this, R.layout.name_models)
                     .build()
-                    .thenAccept(render -> {
-                        viewRenderables[index] = render;
-                        SentenceSection section = new SentenceSection(index, fragment.getFragments(),
-                                fragment.getCorrectAnswer());
-                        treeSet.add(section);
-                    });
+                    .thenAccept(render -> viewRenderables[index] = render);
+        }
+
+        for (int i = 0; i < fragments.length; i++) {
+            SentenceFragment fragment = fragments[i];
+            SentenceSection section = new SentenceSection(i, fragment.getFragments(),
+                    fragment.getCorrectAnswer());
+            treeSet.add(section);
         }
 
         return CompletableFuture.allOf(futures);
