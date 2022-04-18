@@ -4,13 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Documents/StudioProjects/Primary-AR/app/src/main/res/layout/activity_home.xml" value="0.33" />
-        <entry key="..\:/Documents/StudioProjects/Primary-AR/app/src/main/res/layout/activity_lesson.xml" value="0.38697916666666665" />
-        <entry key="..\:/Documents/StudioProjects/Primary-AR/app/src/main/res/layout/name_models.xml" value="0.38697916666666665" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_about.xml" value="0.2957427536231884" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_home.xml" value="0.2957427536231884" />
+        <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_leaderboard.xml" value="0.24818840579710144" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_lesson.xml" value="0.25" />
+        <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_login.xml" value="0.24818840579710144" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_quiz.xml" value="0.33061594202898553" />
+        <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_sentence.xml" value="0.29347826086956524" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_sign_up.xml" value="0.25885416666666666" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_splash.xml" value="0.2957427536231884" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_topic.xml" value="0.2957427536231884" />

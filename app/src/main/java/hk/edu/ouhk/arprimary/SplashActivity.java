@@ -2,7 +2,6 @@ package hk.edu.ouhk.arprimary;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,13 +9,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Handler;
 
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import javax.inject.Inject;
-
-import hk.edu.ouhk.arprimary.manager.SQLiteManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -25,19 +23,15 @@ public class SplashActivity extends AppCompatActivity {
     ImageView aniIcon;
     TextView appTitle;
 
-    SQLiteManager sqLiteManager;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
         aniIcon = findViewById(R.id.imageView);
         appTitle = findViewById(R.id.appTitle);
-
-        sqLiteManager = ((PrimaryARApplication)getApplicationContext()).appComponent.sqliteManager();
-
-        Log.v("SplashEntity", "sqliteManager is null: "+(sqLiteManager == null));
+        firebaseAuth = FirebaseAuth.getInstance();
 
         // make the animation for application icon
         PropertyValuesHolder rotationY = PropertyValuesHolder.ofFloat("rotationY",0.0F,360.0F);
@@ -47,17 +41,18 @@ public class SplashActivity extends AppCompatActivity {
         ObjectAnimator.ofPropertyValuesHolder(appTitle,rotationY,scaleX,scaleY).setDuration(3000).start();
 
 
-        //TODO make loading username from localdb, if found then jump to home activity rather than signup activity.
-
 
         new Handler().postDelayed(new Runnable() {  // set the splash screen timeout.
             @Override
             public void run() {
-                // only if username exists
-                //Toast.makeText(MainActivity.this, "Welcome back, XXXX", Toast.LENGTH_LONG).show();
-                Intent splashIntent = new Intent(SplashActivity.this, HomeActivity.class);
-               // savedInstanceState.putString("username", "tester");
-                startActivity(splashIntent);
+                FirebaseUser session = firebaseAuth.getCurrentUser();
+                if (session != null){
+                    Toast.makeText(SplashActivity.this, "Welcome back, "+session.getDisplayName(), Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+                }else{
+                    Toast.makeText(SplashActivity.this, "Please sign up first", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(SplashActivity.this, AuthenticateActivity.class));
+                }
                 finish();
             }
         },SPLASH_TIME_OUT);

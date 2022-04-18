@@ -16,7 +16,6 @@ public class UnitViewModel extends ListViewModel<UnitView> {
         UNIT_VIEW_LIST.add(new UnitView(1, UnitView.Type.PRACTICE));
         UNIT_VIEW_LIST.add(new UnitView(2, UnitView.Type.PRACTICE));
         UNIT_VIEW_LIST.add(new UnitView(1, UnitView.Type.QUIZ));
-        UNIT_VIEW_LIST.add(new UnitView(2, UnitView.Type.QUIZ));
     }
 
     @Override

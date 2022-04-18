@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:text="Sign Up for an new account."
+            android:text="@string/sign_up_for_an_new_account"
             android:textColor="#fff"
             android:textSize="20sp" />
 
@@ -38,22 +38,56 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:hint="Username"
-            android:inputType="text" />
+            android:hint="@string/username"
+            android:inputType="text"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/sigPassword"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
 
 
-        <android.widget.Button
-            android:id="@+id/signUp"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:background="#2196F3"
-            android:elevation="4dp"
-            android:paddingLeft="35dp"
-            android:paddingRight="30dp"
-            android:text="Sign Up"
-            android:textColor="#FFF" />
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <android.widget.Button
+                android:id="@+id/signUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="30dp"
+                android:layout_marginTop="20dp"
+                android:background="#2196F3"
+                android:elevation="4dp"
+                android:paddingStart="35dp"
+                android:paddingEnd="30dp"
+                android:text="@string/sign_up"
+                android:textColor="#FFF" />
+
+            <android.widget.Button
+                android:id="@+id/signIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="30dp"
+                android:layout_marginTop="20dp"
+                android:background="#2196F3"
+                android:elevation="4dp"
+                android:paddingStart="35dp"
+                android:paddingEnd="30dp"
+                android:text="@string/sign_in"
+                android:textColor="#FFF" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

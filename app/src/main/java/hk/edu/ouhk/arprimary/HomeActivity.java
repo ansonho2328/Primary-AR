@@ -1,28 +1,13 @@
 package hk.edu.ouhk.arprimary;
 
-import static android.content.ContentValues.TAG;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
-
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -54,65 +39,14 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         leaderboardBtn.setOnClickListener(v -> {
-            Intent startIntent = new Intent(this, leaderboard.class);
+            Intent startIntent = new Intent(this, LeaderboardActivity.class);
             startActivity(startIntent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
 
 
         scorebtn.setOnClickListener(v -> {
-            int score = 0;
-            String username = "test";
-            FirebaseDatabase database = FirebaseDatabase.getInstance("https://primary-ar-default-rtdb.asia-southeast1.firebasedatabase.app");
-            DatabaseReference myRef = database.getReference("Leaderboard");
-            ArrayList<User> user = new ArrayList<>();
-            myRef.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    User value = dataSnapshot.getValue(User.class);
-                    user.add(value);
-                    User temp = null;
-                    for (User x : user) {
-                        if(x.getUsername().equals(username)){
-                            temp = x;
-                        }
-                    }
 
-                    if(temp == null){
-                        myRef.child(username).setValue(new User(username,0));
-
-                    }
-
-                    if(temp != null){
-                        temp.setScore(temp.getScore()+10);
-                        Map<String,Object> update = new HashMap<>();
-                        update.put(username,temp);
-                        myRef.updateChildren(update);
-
-                    }
-                }
-
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                }
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.w(TAG, "Failed to read value.", error.toException());
-                }
-            });
         });
 
 

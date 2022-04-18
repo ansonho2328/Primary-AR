@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,12 +22,18 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Optional;
 
+import hk.edu.ouhk.arprimary.firestore.PlayedHistory;
+import hk.edu.ouhk.arprimary.firestore.User;
 import hk.edu.ouhk.arprimary.manager.ApplicationComponent;
 import hk.edu.ouhk.arprimary.manager.LessonFragmentManager;
 import hk.edu.ouhk.arprimary.manager.QuizFragmentManager;
@@ -48,8 +54,7 @@ public class UnitActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = UnitActivity.class.getSimpleName();
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance("https://primary-ar-default-rtdb.asia-southeast1.firebasedatabase.app");
-    DatabaseReference myRef = database.getReference("Leaderboard");
+    CollectionReference scoresRef;
 
     UnitViewModel viewModel;
     RecyclerView recyclerView;
@@ -60,7 +65,11 @@ public class UnitActivity extends AppCompatActivity {
     SentenceFragmentManager sentencefragmentManager;
     QuizFragmentManager quizFragmentManager;
 
-    String topic, username;
+    String topic;
+
+    FirebaseUser session;
+
+    UnitView selected;
 
     ActivityResultLauncher<Intent> lessonLauncher, quizLauncher,sentenceLauncher;
 
@@ -69,11 +78,16 @@ public class UnitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unit);
         this.topic = getIntent().getExtras().getString("topic");
-        //this.username = Optional.ofNullable(savedInstanceState.getString("username")).orElse("unknown");
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        this.session = auth.getCurrentUser();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        FirebaseFirestore store = FirebaseFirestore.getInstance();
+        scoresRef = store.collection("scores");
 
         ApplicationComponent component = ((PrimaryARApplication)getApplicationContext()).appComponent;
 
@@ -108,9 +122,11 @@ public class UnitActivity extends AppCompatActivity {
             } else {
                 refreshLayout.setRefreshing(false);
                 adapter = new UnitAdapter(unit.list, this, v -> {
+
                     int pos = recyclerView.getChildAdapterPosition(v);
                     UnitView unitView = unit.list.get(pos);
 
+                    this.selected = unitView;
 
                     if (unitView.getType() == UnitView.Type.PRACTICE){
 
@@ -120,7 +136,6 @@ public class UnitActivity extends AppCompatActivity {
                         if (fragmentsOpt.isPresent()){
                             Intent intent = new Intent(UnitActivity.this, LessonActivity.class);
                             LessonFragment[] fragments = fragmentsOpt.get();
-
                             Lesson lesson = new Lesson(fragments);
                             intent.putExtra("lesson", lesson);
                             lessonLauncher.launch(intent);
@@ -191,6 +206,24 @@ public class UnitActivity extends AppCompatActivity {
     public void onLessonResult(ActivityResult result) {
         if (result.getResultCode() == RESULT_OK) {
             // passed
+            scoresRef.document(session.getDisplayName()).get().continueWithTask(task -> {
+                User user = Optional
+                        .ofNullable(task.getResult())
+                        .map(r -> r.toObject(User.class))
+                        .orElseGet(User::new);
+                user.addHistory(new PlayedHistory(selected, 0, topic));
+                return scoresRef.document(session.getDisplayName()).set(user);
+            }).addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
+                    Toast.makeText(UnitActivity.this, "You history has been updated to cloud", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(UnitActivity.this, "history update failed.", Toast.LENGTH_LONG).show();
+                    if (task.getException() != null){
+                        task.getException().printStackTrace();
+                    }
+                }
+            });
+
             Toast.makeText(this, "You passed the course!", Toast.LENGTH_LONG).show();
         } else if (result.getResultCode() == RESULT_CANCELED){
             // cancelled
@@ -207,22 +240,24 @@ public class UnitActivity extends AppCompatActivity {
             int score = result.getData().getIntExtra("scores", 0);
             // passed
             Toast.makeText(this, "You score is: "+score, Toast.LENGTH_LONG).show();
-
-            myRef.child(username).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    User user = Optional
-                            .ofNullable(task.getResult())
-                            .map(r -> r.getValue(User.class))
-                            .orElseGet(() -> new User(username, 0));
-                    user.setScore(user.getScore() + score);
-                    myRef.child(username).setValue(user);
-
+            scoresRef.document(session.getDisplayName()).get().continueWithTask(task -> {
+                User user = Optional
+                        .ofNullable(task.getResult())
+                        .map(r -> r.toObject(User.class))
+                        .orElseGet(User::new);
+                user.setScore(user.getScore() + score);
+                user.addHistory(new PlayedHistory(selected, user.getScore(), topic));
+                return scoresRef.document(session.getDisplayName()).set(user);
+            }).addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
                     Toast.makeText(UnitActivity.this, "You score has been updated to cloud", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(UnitActivity.this, "Score upload failed.", Toast.LENGTH_LONG).show();
+                    if (task.getException() != null){
+                        task.getException().printStackTrace();
+                    }
                 }
             });
-
-
         } else if (result.getResultCode() == RESULT_CANCELED){
             // cancelled
             Toast.makeText(this, "You cancelled the course", Toast.LENGTH_LONG).show();
@@ -234,8 +269,6 @@ public class UnitActivity extends AppCompatActivity {
         ListExtendableAdapter<?, ?> adapter = (ListExtendableAdapter<?, ?>) recyclerView.getAdapter();
         if (adapter != null) adapter.resetAll();
         viewModel.reset();
-        // Test Fake load with delay
-        //new Handler().postDelayed(viewModel::reset, 3000);
     }
 
 
