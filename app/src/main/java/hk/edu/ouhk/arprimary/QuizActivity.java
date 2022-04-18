@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 
+import hk.edu.ouhk.arprimary.firestore.User;
 import hk.edu.ouhk.arprimary.model.Quiz;
 import hk.edu.ouhk.arprimary.model.QuizFragment;
 import hk.edu.ouhk.arprimary.viewmodel.armodel.quiz.QuizSection;

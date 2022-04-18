@@ -31,6 +31,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ARPrimary">
         <activity
+            android:name=".ui.login.LoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login" />
+        <activity
             android:name=".SentenceActivity"
             android:exported="false" />
         <activity
@@ -53,9 +57,9 @@
         <activity
             android:name=".LessonActivity"
             android:exported="false" />
-        <activity android:name=".SignUpActivity" />
+        <activity android:name=".AuthenticateActivity" />
         <activity
-            android:name=".leaderboard"
+            android:name=".LeaderboardActivity"
             android:exported="false" />
         <activity
             android:name=".AboutActivity"

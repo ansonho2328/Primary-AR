@@ -17,13 +17,6 @@ public class ServiceModule {
 
     @Provides
     @Singleton
-    public SQLiteManager getSQLiteManager() {
-        return new SQLiteManager();
-    }
-
-
-    @Provides
-    @Singleton
     public LessonFragmentManager lessonFragmentManager() {
         LessonFragmentManager fragmentManager = new LessonFragmentManager();
 

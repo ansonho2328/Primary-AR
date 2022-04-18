@@ -8,8 +8,6 @@ import dagger.Component;
 @Singleton
 public interface ApplicationComponent {
 
-    SQLiteManager sqliteManager();
-
     LessonFragmentManager lessonFragmentManager();
 
     SentenceFragmentManager sentenceFragmentManager();
