@@ -45,7 +45,7 @@ public class AuthenticateActivity extends AppCompatActivity {
                 .setHandleCodeInApp(true)
                 .setAndroidPackageName("hk.edu.ouhk.arprimary", true, "28")
                 .build();
-        
+
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
