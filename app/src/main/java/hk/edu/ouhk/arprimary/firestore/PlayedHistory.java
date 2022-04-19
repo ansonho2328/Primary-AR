@@ -13,7 +13,7 @@ public class PlayedHistory {
         this.topic = "";
     }
 
-    
+
     public PlayedHistory(UnitView unit, int scores, String topic) {
         this.unit = unit;
         this.scores = scores;
