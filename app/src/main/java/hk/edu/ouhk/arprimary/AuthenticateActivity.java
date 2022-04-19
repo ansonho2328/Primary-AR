@@ -29,7 +29,7 @@ public class AuthenticateActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
 
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
