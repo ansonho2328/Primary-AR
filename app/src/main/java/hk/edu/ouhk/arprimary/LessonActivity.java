@@ -116,15 +116,6 @@ public class LessonActivity extends ARVocabSectionBased<UnitSection> {
         nameNode.select();
         txt_name = (TextView) name_models.getView();
 
-//        // set def node
-//        defNode = new TransformableNode(transformationSystem);
-//        defNode.setLocalPosition(new Vector3(0f, modelNode.getLocalPosition().y + 0.43f, 0));
-//        defNode.getScaleController().setMaxScale(1f);
-//        defNode.getScaleController().setMinScale(0.5f);
-//        defNode.setParent(anchorNode);
-//        defNode.setRenderable(definition);
-//        defNode.select();
-//        txt_defin = (TextView) definition.getView();
 
         // set speaker node
         speakerNode = new TransformableNode(transformationSystem);
