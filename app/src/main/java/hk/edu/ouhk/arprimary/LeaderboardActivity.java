@@ -27,6 +27,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     ArrayList<Board> boards = new ArrayList<>();
     ArrayAdapter<Board> arrayAdapter;
 
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
