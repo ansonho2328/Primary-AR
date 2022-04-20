@@ -10,14 +10,13 @@ import android.view.View;
 import android.widget.Button;
 
 public class UserProfile extends AppCompatActivity {
-    Button back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        back = findViewById(R.id.Back);
 
     }
 
