@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class HomeActivity extends AppCompatActivity {
 
     Button journalBtn;
@@ -54,6 +56,14 @@ public class HomeActivity extends AppCompatActivity {
 
     public void onEnterAbout(MenuItem item) {
         Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
+    public void onEnterSignOut(MenuItem item) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth.signOut();
+        Intent intent = new Intent(this, AuthenticateActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
