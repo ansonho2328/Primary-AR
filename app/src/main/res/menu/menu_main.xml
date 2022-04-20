@@ -16,12 +16,6 @@
                 app:showAsAction="ifRoom"
                 android:onClick="onEnterProfile"/>
 
-            <!-- item
-                android:id="@+id/review"
-                android:icon="@drawable/review_icon"
-                android:orderInCategory="100"
-                android:title="Review"
-                app:showAsAction="never" /-->
 
             <item
                 android:id="@+id/about"
@@ -30,6 +24,14 @@
                 android:title="@string/about"
                 app:showAsAction="never"
                 android:onClick="onEnterAbout"/>
+
+             <item
+                android:id="@+id/signout"
+                android:icon="@drawable/signout"
+                android:orderInCategory="100"
+                android:title="Sign Out"
+                 android:onClick="onEnterSignOut"
+                 app:showAsAction="never" />
 
         </menu>
     </item>

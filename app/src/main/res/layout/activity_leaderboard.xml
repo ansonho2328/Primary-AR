@@ -26,13 +26,18 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Top Player"
+        android:textColor="#fff"
         android:textSize="24sp" />
 
 
     <ListView
         android:id="@+id/top_player"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:gravity="center"
+        android:paddingLeft="86dp"
+        android:textSize="85sp"/>
 
     <TextView
         android:id="@+id/topic"
@@ -40,11 +45,17 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Hot Topic"
+        android:layout_marginTop="10dp"
+        android:textColor="#fff"
         android:textSize="24sp" />
 
     <ListView
         android:id="@+id/hot_topic"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:gravity="center"
+        android:paddingLeft="86dp"
+        android:textSize="85sp" />
 
 </LinearLayout>
