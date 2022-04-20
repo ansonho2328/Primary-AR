@@ -22,7 +22,6 @@ import hk.edu.ouhk.arprimary.firestore.User;
 
 public class LeaderboardActivity extends AppCompatActivity {
     FirebaseFirestore store = FirebaseFirestore.getInstance();
-    Button back;
     ListView topUser;
     ArrayList<Board> boards = new ArrayList<>();
     ArrayAdapter<Board> arrayAdapter;
@@ -31,17 +30,13 @@ public class LeaderboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
-        back = findViewById(R.id.Back);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         topUser = (ListView) findViewById(R.id.top_player);
         arrayAdapter = new ArrayAdapter<Board>(this, android.R.layout.simple_list_item_1, boards);
         topUser.setAdapter(arrayAdapter);
 
-        back.setOnClickListener(v -> {
-            Intent startIntent = new Intent(this, HomeActivity.class);
-            startActivity(startIntent);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        });
 
         store.collection("scores").orderBy("scores").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

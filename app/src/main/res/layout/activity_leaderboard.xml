@@ -7,15 +7,16 @@
     android:onClick="Back"
     android:orientation="vertical"
     >
+
     <TextView
         android:id="@+id/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="105dp"
+        android:layout_marginTop="80dp"
         android:layout_marginBottom="20dp"
         android:text="Leaderboard"
-        android:textColor="#C62828"
+        android:textColor="#fff"
         android:textSize="40sp" />
 
 
@@ -45,18 +46,5 @@
         android:id="@+id/hot_topic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <android.widget.Button
-        android:id="@+id/Back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:background="#2196F3"
-        android:elevation="4dp"
-        android:paddingLeft="35dp"
-        android:paddingRight="30dp"
-        android:text="Back"
-        android:textColor="#FFF" />
-
 
 </LinearLayout>
