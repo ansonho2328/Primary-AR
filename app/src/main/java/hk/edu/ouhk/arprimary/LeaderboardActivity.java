@@ -33,7 +33,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        
+
         topUser = (ListView) findViewById(R.id.top_player);
         arrayAdapter = new ArrayAdapter<Board>(this, android.R.layout.simple_list_item_1, boards);
         topUser.setAdapter(arrayAdapter);
