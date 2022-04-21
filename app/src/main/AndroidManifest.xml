@@ -74,7 +74,7 @@
             android:label="Unit"
             android:theme="@style/Theme.ARPrimary.NoActionBar" />
         <activity
-            android:name=".UserProfile"
+            android:name=".UserProfileActivity"
             android:label="Profile" />
         <activity android:name=".HomeActivity" />
         <activity

@@ -4,7 +4,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,13 +19,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -54,7 +50,7 @@ public class UnitActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = UnitActivity.class.getSimpleName();
 
-    CollectionReference scoresRef;
+    CollectionReference historyRef, scoresRef;
 
     UnitViewModel viewModel;
     RecyclerView recyclerView;
@@ -87,7 +83,9 @@ public class UnitActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FirebaseFirestore store = FirebaseFirestore.getInstance();
+        historyRef = store.collection("histories");
         scoresRef = store.collection("scores");
+
 
         ApplicationComponent component = ((PrimaryARApplication)getApplicationContext()).appComponent;
 
@@ -127,6 +125,8 @@ public class UnitActivity extends AppCompatActivity {
                     UnitView unitView = unit.list.get(pos);
 
                     this.selected = unitView;
+
+
 
                     if (unitView.getType() == UnitView.Type.PRACTICE){
 
@@ -191,7 +191,7 @@ public class UnitActivity extends AppCompatActivity {
                     return;
                 if (!recyclerView.canScrollVertically(1)) {
                     loadMore.setVisibility(View.VISIBLE);
-                    viewModel.loadMore();
+                    viewModel.loadMore(session.getDisplayName(), topic);
                 }
             }
         });
@@ -206,13 +206,13 @@ public class UnitActivity extends AppCompatActivity {
     public void onLessonResult(ActivityResult result) {
         if (result.getResultCode() == RESULT_OK) {
             // passed
-            scoresRef.document(session.getDisplayName()).get().continueWithTask(task -> {
+            historyRef.document(session.getDisplayName()).get().continueWithTask(task -> {
                 User user = Optional
                         .ofNullable(task.getResult())
                         .map(r -> r.toObject(User.class))
                         .orElseGet(User::new);
-                user.addHistory(new PlayedHistory(selected, 0, topic));
-                return scoresRef.document(session.getDisplayName()).set(user);
+                user.addHistory(new PlayedHistory(selected.getType(), selected.getNo(), 0, topic));
+                return historyRef.document(session.getDisplayName()).set(user);
             }).addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
                     Toast.makeText(UnitActivity.this, "You history has been updated to cloud", Toast.LENGTH_LONG).show();
@@ -240,19 +240,30 @@ public class UnitActivity extends AppCompatActivity {
             int score = result.getData().getIntExtra("scores", 0);
             // passed
             Toast.makeText(this, "You score is: "+score, Toast.LENGTH_LONG).show();
-            scoresRef.document(session.getDisplayName()).get().continueWithTask(task -> {
+
+            Task<Void> historyTask = historyRef.document(session.getDisplayName()).get().continueWithTask(task -> {
                 User user = Optional
                         .ofNullable(task.getResult())
                         .map(r -> r.toObject(User.class))
                         .orElseGet(User::new);
-                user.setScore(user.getScore() + score);
-                user.addHistory(new PlayedHistory(selected, user.getScore(), topic));
-                return scoresRef.document(session.getDisplayName()).set(user);
-            }).addOnCompleteListener(task -> {
+                user.addHistory(new PlayedHistory(selected.getType(), selected.getNo(), score, topic));
+                return historyRef.document(session.getDisplayName()).set(user);
+            });
+
+            Task<Void> scoreTask = scoresRef.document(session.getDisplayName()).get().continueWithTask(task -> {
+                int scores = Optional
+                        .ofNullable(task.getResult())
+                        .map(r -> r.get("scores", Integer.class))
+                        .orElse(0);
+                scores += score;
+                return scoresRef.document(session.getDisplayName()).update("scores", scores);
+            });
+
+            Tasks.whenAllComplete(historyTask, scoreTask).addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
-                    Toast.makeText(UnitActivity.this, "You score has been updated to cloud", Toast.LENGTH_LONG).show();
+                    Toast.makeText(UnitActivity.this, "You progress has been updated to cloud", Toast.LENGTH_LONG).show();
                 }else{
-                    Toast.makeText(UnitActivity.this, "Score upload failed.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(UnitActivity.this, "progress upload failed.", Toast.LENGTH_LONG).show();
                     if (task.getException() != null){
                         task.getException().printStackTrace();
                     }
@@ -268,7 +279,7 @@ public class UnitActivity extends AppCompatActivity {
         refreshLayout.setRefreshing(true);
         ListExtendableAdapter<?, ?> adapter = (ListExtendableAdapter<?, ?>) recyclerView.getAdapter();
         if (adapter != null) adapter.resetAll();
-        viewModel.reset();
+        viewModel.reset(session.getDisplayName(), topic);
     }
 
 

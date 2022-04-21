@@ -9,14 +9,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.function.Predicate;
 
 import hk.edu.ouhk.arprimary.R;
 import hk.edu.ouhk.arprimary.viewmodel.ListExtendableAdapter;
 
 public class UnitAdapter extends ListExtendableAdapter<UnitView, UnitAdapter.ViewHolder> {
 
-    public UnitAdapter(List<UnitView> list, Context context, View.OnClickListener onClickListener) {
+    private final Predicate<UnitView> disableIf;
+
+    public UnitAdapter(List<UnitView> list, Context context, View.OnClickListener onClickListener, Predicate<UnitView> disableIf) {
         super(list, context, onClickListener);
+        this.disableIf = disableIf;
+    }
+
+    public UnitAdapter(List<UnitView> list, Context context, View.OnClickListener onClickListener){
+        this(list, context, onClickListener, v -> false);
     }
 
     @Override
@@ -34,7 +42,11 @@ public class UnitAdapter extends ListExtendableAdapter<UnitView, UnitAdapter.Vie
         UnitView view = list.get(position);
         String title = view.getType() == UnitView.Type.PRACTICE ? "Unit" : "Quiz";
         String txt = MessageFormat.format("{0}-{1}", title, view.getNo());
-        holder.title.setText(txt);
+        if (disableIf.test(view)){
+            holder.title.setText(txt + "(completed)");
+        }else{
+            holder.title.setText(txt);
+        }
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

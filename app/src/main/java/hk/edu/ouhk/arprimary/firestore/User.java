@@ -5,28 +5,14 @@ import java.util.List;
 
 public class User {
 
-    private int score;
     private final List<PlayedHistory> histories;
 
-    public User(int score, List<PlayedHistory> histories){
-        this.score = score;
+    public User(List<PlayedHistory> histories){
         this.histories = histories;
     }
 
-    public User(int score){
-        this(score, new ArrayList<>());
-    }
-
     public User(){
-        this(0);
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public int getScore() {
-        return score;
+        this(new ArrayList<>());
     }
 
     public List<PlayedHistory> getHistories() {
