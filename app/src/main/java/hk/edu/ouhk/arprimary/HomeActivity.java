@@ -49,7 +49,7 @@ public class HomeActivity extends AppCompatActivity {
 
     
     public void onEnterProfile(MenuItem item) {
-        Intent intent = new Intent(this, UserProfile.class);
+        Intent intent = new Intent(this, UserProfileActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
