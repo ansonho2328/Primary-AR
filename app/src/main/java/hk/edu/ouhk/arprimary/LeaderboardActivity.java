@@ -3,6 +3,7 @@ package hk.edu.ouhk.arprimary;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -35,8 +36,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         topUser = (ListView) findViewById(R.id.top_player);
@@ -84,9 +84,15 @@ public class LeaderboardActivity extends AppCompatActivity {
         @NonNull
         @Override
         public String toString() {
-            return MessageFormat.format("{0}. {1}, scores: {2}", order, username, scores);
+            return MessageFormat.format("{0}. {1}  --  scores: {2}", order, username, scores);
         }
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() != android.R.id.home) return false;
+        onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        return true;
+    }
 }

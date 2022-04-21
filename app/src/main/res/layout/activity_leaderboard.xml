@@ -7,6 +7,15 @@
     android:orientation="vertical"
     >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include android:id="@+id/appbar" layout="@layout/app_bar" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/Title"
         android:layout_width="wrap_content"
@@ -26,7 +35,7 @@
         android:gravity="center"
         android:text="Top Player"
         android:textColor="#fff"
-        android:textSize="24sp" />
+        android:textSize="26sp" />
 
 
     <ListView
@@ -35,26 +44,7 @@
         android:layout_height="wrap_content"
         android:textColor="#fff"
         android:gravity="center"
-        android:paddingLeft="86dp"
-        android:textSize="85sp"/>
-
-    <TextView
-        android:id="@+id/topic"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Hot Topic"
-        android:layout_marginTop="10dp"
-        android:textColor="#fff"
-        android:textSize="24sp" />
-
-    <ListView
-        android:id="@+id/hot_topic"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#fff"
-        android:gravity="center"
-        android:paddingLeft="86dp"
-        android:textSize="85sp" />
+        android:paddingLeft="110dp"
+        android:textSize="110sp"/>
 
 </LinearLayout>

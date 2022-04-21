@@ -30,8 +30,8 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        setSupportActionBar(findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FirebaseUser session = FirebaseAuth.getInstance().getCurrentUser();
@@ -42,7 +42,6 @@ public class UserProfileActivity extends AppCompatActivity {
             return;
         }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ArrayAdapter<PlayedHistory> historyAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
