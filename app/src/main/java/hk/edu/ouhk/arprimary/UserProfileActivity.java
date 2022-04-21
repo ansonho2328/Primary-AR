@@ -2,6 +2,7 @@ package hk.edu.ouhk.arprimary;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,13 +24,15 @@ import hk.edu.ouhk.arprimary.firestore.User;
 
 public class UserProfileActivity extends AppCompatActivity {
 
-    Button back;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FirebaseUser session = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -40,7 +43,6 @@ public class UserProfileActivity extends AppCompatActivity {
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        back = findViewById(R.id.Back);
 
         ArrayAdapter<PlayedHistory> historyAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
