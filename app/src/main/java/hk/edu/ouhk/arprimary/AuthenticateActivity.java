@@ -29,6 +29,7 @@ public class AuthenticateActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,11 +41,6 @@ public class AuthenticateActivity extends AppCompatActivity {
 
         signUp = findViewById(R.id.signUp);
         signIn = findViewById(R.id.signIn);
-
-        ActionCodeSettings settings = ActionCodeSettings.newBuilder()
-                .setHandleCodeInApp(true)
-                .setAndroidPackageName("hk.edu.ouhk.arprimary", true, "28")
-                .build();
 
 
         signUp.setOnClickListener(new View.OnClickListener() {

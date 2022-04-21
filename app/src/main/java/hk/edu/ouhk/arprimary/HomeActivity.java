@@ -9,12 +9,12 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class HomeActivity extends AppCompatActivity {
 
     Button journalBtn;
-    Button multiplayerBtn;
     Button leaderboardBtn;
-    Button speachBtn,scorebtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +22,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         journalBtn = findViewById(R.id.start_journal_button);
-        multiplayerBtn = findViewById(R.id.start_multiplayer_button);
         leaderboardBtn = findViewById(R.id.leaderboard_button);
-//        speachBtn = findViewById(R.id.text_speach_button);
-        scorebtn = findViewById(R.id.score_button);
 
         journalBtn.setOnClickListener(view -> {
             Intent startIntent = new Intent(this, TopicActivity.class);
@@ -33,10 +30,6 @@ public class HomeActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
 
-        multiplayerBtn.setOnClickListener(v -> {
-            //TODO add multiplayer activity
-            Toast.makeText(this, "not finished yet", Toast.LENGTH_LONG).show();
-        });
 
         leaderboardBtn.setOnClickListener(v -> {
             Intent startIntent = new Intent(this, LeaderboardActivity.class);
@@ -44,17 +37,6 @@ public class HomeActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
 
-
-        scorebtn.setOnClickListener(v -> {
-
-        });
-
-
-//        speachBtn.setOnClickListener(v ->{
-//            Intent startIntent = new Intent(this, SpeechToTextActivity.class);
-//            startActivity(startIntent);
-//            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-//        });
     }
 
 
@@ -74,6 +56,14 @@ public class HomeActivity extends AppCompatActivity {
 
     public void onEnterAbout(MenuItem item) {
         Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
+    public void onEnterSignOut(MenuItem item) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth.signOut();
+        Intent intent = new Intent(this, AuthenticateActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
