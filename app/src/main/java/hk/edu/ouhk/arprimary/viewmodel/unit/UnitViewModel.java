@@ -34,42 +34,45 @@ public class UnitViewModel extends ListViewModel<UnitView> {
     }
 
 
-    private Task<List<UnitView>> getFromFireStore(String username, String topic, List<UnitView> list){
+    private Task<List<UnitView>> getFromFireStore(String username, String topic, List<UnitView> list) {
         return FirebaseFirestore
                 .getInstance()
                 .collection("histories")
                 .document(username)
                 .get()
                 .continueWith(task -> {
-                    if (task.isSuccessful() && task.getResult() != null){
+                    if (task.isSuccessful() && task.getResult() != null) {
                         User user = task.getResult().toObject(User.class);
-                        if (user == null){
+                        if (user == null) {
                             return list;
                         }
-                        Stream<UnitView> nonFinishedQuiz = list.stream()
+                        // filter all > finished + 1 units
+                        Stream<UnitView> stream = list
+                                .stream()
                                 .filter(v ->
-                                        v.getType() == UnitView.Type.QUIZ &&
-                                                user.getHistories()
-                                                        .stream()
-                                                        .anyMatch(h ->
-                                                                h.getUnit() == v.getNo() &&
-                                                                        h.getTopic().equals(topic)
-                                                        )
-                                );
-
-                        Stream<UnitView> finishedPractice = nonFinishedQuiz.filter(v ->
-                                v.getType() == UnitView.Type.PRACTICE &&
                                         user.getHistories()
                                                 .stream()
-                                                .noneMatch(h ->
-                                                        h.getUnit() < v.getNo() &&
-                                                                h.getTopic().equals(topic)
+                                                .noneMatch(u ->
+                                                        v.getType() == u.getType() &&
+                                                                u.getUnit() < v.getNo() &&
+                                                                u.getTopic().equals(topic)
                                                 )
-                        );
+                                );
+                        List<UnitView> views = stream.collect(Collectors.toList());
+                        views.forEach(v -> {
+                            // finished unit will become review unit
+                            v.setReview(
+                                    user.getHistories()
+                                            .stream()
+                                            .anyMatch(u -> u.getType() == v.getType() &&
+                                                    u.getUnit() == v.getNo() &&
+                                                    u.getTopic().equals(topic))
+                            );
+                        });
 
-                        return finishedPractice.collect(Collectors.toList());
-                    }else{
-                        if (task.getException() != null){
+                        return views;
+                    } else {
+                        if (task.getException() != null) {
                             task.getException().printStackTrace();
                         }
                         return list;
@@ -81,7 +84,7 @@ public class UnitViewModel extends ListViewModel<UnitView> {
         page = 1;
         List<UnitView> list = readFromDataSource(page);
         getFromFireStore(username, topic, list).addOnCompleteListener(task -> {
-            if (task.getResult() != null){
+            if (task.getResult() != null) {
                 this.viewList.postValue(new ViewListAction<>(task.getResult(), ViewListAction.Action.SET));
             }
         });
@@ -91,7 +94,7 @@ public class UnitViewModel extends ListViewModel<UnitView> {
         page++;
         List<UnitView> list = readFromDataSource(page);
         getFromFireStore(username, topic, list).addOnCompleteListener(task -> {
-            if (task.getResult() != null){
+            if (task.getResult() != null) {
                 this.viewList.postValue(new ViewListAction<>(task.getResult(), ViewListAction.Action.ADD));
             }
         });

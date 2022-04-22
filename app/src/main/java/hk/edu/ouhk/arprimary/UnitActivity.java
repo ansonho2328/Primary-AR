@@ -127,6 +127,11 @@ public class UnitActivity extends AppCompatActivity {
                     this.selected = unitView;
 
 
+                    if (unitView.isReview()){
+                        //TODO add review activity
+                        return;
+                    }
+
 
                     if (unitView.getType() == UnitView.Type.PRACTICE){
 

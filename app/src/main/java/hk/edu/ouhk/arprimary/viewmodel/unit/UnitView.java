@@ -4,14 +4,27 @@ public class UnitView {
 
     private int no;
     private Type type;
+    private boolean isReview;
 
     public UnitView() {
-        this.no = 0;
+        this(0, Type.PRACTICE);
     }
 
     public UnitView(int no, Type type) {
+        this(no, type, false);
+    }
+
+    public UnitView(int no, Type type, boolean isReview) {
         this.no = no;
         this.type = type;
+    }
+
+    public boolean isReview() {
+        return isReview;
+    }
+
+    public void setReview(boolean review) {
+        isReview = review;
     }
 
     public void setNo(int no) {
