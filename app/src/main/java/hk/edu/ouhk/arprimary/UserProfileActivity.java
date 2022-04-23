@@ -36,7 +36,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         FirebaseUser session = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (session != null){
+        if (session == null){
             Toast.makeText(this, "invalid session", Toast.LENGTH_LONG).show();
             finish();
             return;
@@ -59,7 +59,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         store.collection("scores").document(session.getDisplayName()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
-                int scores = task.getResult().get("scores", Integer.class);
+                int scores = task.getResult()== null?task.getResult().get("scores", Integer.class):0;
 
                 // set total scores
                 totalScore.setText(String.valueOf(scores));
@@ -73,7 +73,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         store.collection("histories").document(session.getDisplayName()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
-                User user  = task.getResult().toObject(User.class);
+                User user  = task.getResult()==null?task.getResult().toObject(User.class):new User();
 
                 // set highest score
                 int maxScore = user.getHistories().stream().mapToInt(v -> v.getScores()).max().orElse(0);
