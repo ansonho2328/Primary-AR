@@ -195,6 +195,7 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
     protected void beforeFinish(Intent intent) {
         //clear all
         wordNode.setRenderable(null);
+        setResult(RESULT_OK);
     }
 
     @Override

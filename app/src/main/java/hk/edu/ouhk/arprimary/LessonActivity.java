@@ -190,6 +190,7 @@ public class LessonActivity extends ARVocabSectionBased<UnitSection> {
         modelNode.setRenderable(null);
         speakerNode.setRenderable(null);
         defNode.setRenderable(null);
+        setResult(RESULT_OK);
     }
 
     @Override
