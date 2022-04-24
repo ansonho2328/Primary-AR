@@ -21,6 +21,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import hk.edu.ouhk.arprimary.firestore.Score;
 
 public class AuthenticateActivity extends AppCompatActivity {
 
@@ -28,7 +32,7 @@ public class AuthenticateActivity extends AppCompatActivity {
     Button signUp, signIn;
 
     FirebaseAuth auth;
-
+    CollectionReference scoresRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,8 @@ public class AuthenticateActivity extends AppCompatActivity {
 
         signUp = findViewById(R.id.signUp);
         signIn = findViewById(R.id.signIn);
-
+        FirebaseFirestore store = FirebaseFirestore.getInstance();
+        scoresRef = store.collection("scores");
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +89,7 @@ public class AuthenticateActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 Toast.makeText(AuthenticateActivity.this, "Sign Up Successful", Toast.LENGTH_LONG).show();
+                                scoresRef.document(sigName.getText().toString()).set(new Score(0));
                                 startActivity(new Intent(AuthenticateActivity.this, HomeActivity.class));
                             }
                         });
