@@ -147,6 +147,7 @@ public class QuizActivity extends ARVocabSectionBased<QuizSection> {
     @Override
     protected void beforeFinish(Intent intent) {
         intent.putExtra("scores", score);
+        setResult(RESULT_OK,intent.putExtra("scores", score));
     }
 
     @Override
