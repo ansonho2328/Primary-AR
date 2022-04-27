@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import hk.edu.ouhk.arprimary.firestore.PlayedHistory;
@@ -75,15 +77,18 @@ public class UserProfileActivity extends AppCompatActivity {
 
         store.collection("histories").document(session.getDisplayName()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
-                //List<PlayedHistory> history = task.getResult().get("histories", List.class);
-                User user  = new User();
+                List<PlayedHistory> history = task.getResult()==null?task.getResult().get("histories", List.class):new ArrayList<PlayedHistory>();
+                User user = task.getResult()==null?task.getResult().get("histories", User.class):new User();
+                Toast.makeText(this, "History:"+Arrays.toString(history.toArray()), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "User:"+Arrays.toString(user.getHistories().toArray()), Toast.LENGTH_LONG).show();
+
                 // set highest score
-                int maxScore = user.getHistories().stream().mapToInt(v -> v.getScores()).max().orElse(0);
+                int maxScore = history.stream().mapToInt(v -> v.getScores()).max().orElse(0);
                 highestScore.setText(String.valueOf(maxScore));
 
                 // set played histories
                 historyAdapter.clear();
-                historyAdapter.addAll(user.getHistories());
+                historyAdapter.addAll(history);
                 historyAdapter.notifyDataSetChanged();
 
             }else{
