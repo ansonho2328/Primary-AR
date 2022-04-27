@@ -242,7 +242,7 @@ public class UnitActivity extends AppCompatActivity {
                 Toast.makeText(this, "intent data is null", Toast.LENGTH_LONG).show();
                 return;
             }
-            int score = result.getData().getIntExtra("scores", 0);
+            int score = result.getData().getIntExtra("scores", 0)*10;
             // passed
             Toast.makeText(this, "You score is: "+score, Toast.LENGTH_LONG).show();
 

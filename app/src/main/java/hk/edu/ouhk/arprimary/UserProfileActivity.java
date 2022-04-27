@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.List;
+
 import hk.edu.ouhk.arprimary.firestore.PlayedHistory;
 import hk.edu.ouhk.arprimary.firestore.User;
 
@@ -59,7 +61,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         store.collection("scores").document(session.getDisplayName()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
-                int scores = task.getResult()== null?task.getResult().get("scores", Integer.class):0;
+                int scores = task.getResult().get("scores", Integer.class);
 
                 // set total scores
                 totalScore.setText(String.valueOf(scores));
@@ -73,8 +75,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
         store.collection("histories").document(session.getDisplayName()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
-                User user  = task.getResult()==null?task.getResult().toObject(User.class):new User();
-
+                //List<PlayedHistory> history = task.getResult().get("histories", List.class);
+                User user  = new User();
                 // set highest score
                 int maxScore = user.getHistories().stream().mapToInt(v -> v.getScores()).max().orElse(0);
                 highestScore.setText(String.valueOf(maxScore));
