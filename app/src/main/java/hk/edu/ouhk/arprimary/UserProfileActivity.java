@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -77,8 +78,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
         store.collection("histories").document(session.getDisplayName()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
-                List<PlayedHistory> history = task.getResult()==null?task.getResult().get("histories", List.class):new ArrayList<PlayedHistory>();
-                User user = task.getResult()==null?task.getResult().get("histories", User.class):new User();
+                GenericTypeIndicator<List<PlayedHistory>> t = new GenericTypeIndicator<List<PlayedHistory>>() {};
+                List<PlayedHistory> history = task.getResult().getValue(t)==
+                        null?task.getResult().getValue(t):new ArrayList<PlayedHistory>();
+                User user = task.getResult().get("histories", User.class)==null?task.getResult().get("histories", User.class):new User();
                 Toast.makeText(this, "History:"+Arrays.toString(history.toArray()), Toast.LENGTH_LONG).show();
                 Toast.makeText(this, "User:"+Arrays.toString(user.getHistories().toArray()), Toast.LENGTH_LONG).show();
 
