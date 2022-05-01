@@ -18,7 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
+import com.google.firebase.firestore.Query.Direction;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -44,7 +44,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<Board>(this, android.R.layout.simple_list_item_1, boards);
         topUser.setAdapter(arrayAdapter);
 
-        store.collection("scores").orderBy("scores").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        store.collection("scores").orderBy("scores",Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
