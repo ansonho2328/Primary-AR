@@ -23,7 +23,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import hk.edu.ouhk.arprimary.firestore.PlayedHistories;
 import hk.edu.ouhk.arprimary.firestore.PlayedHistory;
 import hk.edu.ouhk.arprimary.firestore.User;
 
@@ -79,8 +81,7 @@ public class UserProfileActivity extends AppCompatActivity {
         store.collection("histories").document(session.getDisplayName()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 GenericTypeIndicator<List<PlayedHistory>> t = new GenericTypeIndicator<List<PlayedHistory>>() {};
-                List<PlayedHistory> history = task.getResult().getValue(t)==
-                        null?task.getResult().getValue(t):new ArrayList<PlayedHistory>();
+                List<PlayedHistory> history = Optional.ofNullable(task.getResult()).map(r -> r.toObject(PlayedHistories.class)).map(h -> h.getHistories()).orElseGet(ArrayList::new);
                 User user = task.getResult().get("histories", User.class)==null?task.getResult().get("histories", User.class):new User();
                 Toast.makeText(this, "History:"+Arrays.toString(history.toArray()), Toast.LENGTH_LONG).show();
                 Toast.makeText(this, "User:"+Arrays.toString(user.getHistories().toArray()), Toast.LENGTH_LONG).show();
