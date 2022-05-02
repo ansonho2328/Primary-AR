@@ -31,6 +31,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ARPrimary">
         <activity
+            android:name=".ReviewActivity"
+            android:exported="false" />
+        <activity
             android:name=".SentenceActivity"
             android:exported="false" />
         <activity
@@ -56,9 +59,9 @@
         <activity android:name=".AuthenticateActivity" />
         <activity
             android:name=".LeaderboardActivity"
-            android:label="Leaderboard"
             android:exported="false"
-            android:theme="@style/Theme.ARPrimary.NoActionBar"/>
+            android:label="Leaderboard"
+            android:theme="@style/Theme.ARPrimary.NoActionBar" />
         <activity
             android:name=".AboutActivity"
             android:label="About"
@@ -74,7 +77,7 @@
         <activity
             android:name=".UserProfileActivity"
             android:label="Profile"
-            android:theme="@style/Theme.ARPrimary.NoActionBar"/>
+            android:theme="@style/Theme.ARPrimary.NoActionBar" />
         <activity android:name=".HomeActivity" />
         <activity
             android:name=".SplashActivity"

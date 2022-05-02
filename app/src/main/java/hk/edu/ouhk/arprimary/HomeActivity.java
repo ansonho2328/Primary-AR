@@ -15,7 +15,7 @@ public class HomeActivity extends AppCompatActivity {
 
     Button journalBtn;
     Button leaderboardBtn;
-
+    Button reviewBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +23,7 @@ public class HomeActivity extends AppCompatActivity {
 
         journalBtn = findViewById(R.id.start_journal_button);
         leaderboardBtn = findViewById(R.id.leaderboard_button);
+        reviewBtn = findViewById(R.id.review_button);
 
         journalBtn.setOnClickListener(view -> {
             Intent startIntent = new Intent(this, TopicActivity.class);
@@ -37,6 +38,11 @@ public class HomeActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
 
+        reviewBtn.setOnClickListener(v -> {
+            Intent startIntent = new Intent(this, ReviewActivity.class);
+            startActivity(startIntent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        });
     }
 
 

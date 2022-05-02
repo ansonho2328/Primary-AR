@@ -81,17 +81,18 @@ public class UserProfileActivity extends AppCompatActivity {
         store.collection("histories").document(session.getDisplayName()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 GenericTypeIndicator<List<PlayedHistory>> t = new GenericTypeIndicator<List<PlayedHistory>>() {};
-                List<PlayedHistory> history = Optional.ofNullable(task.getResult()).map(r -> r.toObject(PlayedHistories.class)).map(h -> h.getHistories()).orElseGet(ArrayList::new);
-
-                Toast.makeText(this, "History:"+Arrays.toString(history.toArray()), Toast.LENGTH_LONG).show();
+                List<PlayedHistory> list = Optional.ofNullable(task.getResult()).map(r -> r.toObject(PlayedHistories.class)).map(h -> h.getHistories()).orElseGet(ArrayList::new);
+                User user = task.getResult().get("histories", User.class)==null?task.getResult().get("histories", User.class):new User();
+                Toast.makeText(this, "History:"+Arrays.toString(list.toArray()), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "User:"+Arrays.toString(user.getHistories().toArray()), Toast.LENGTH_LONG).show();
 
                 // set highest score
-                int maxScore = history.stream().mapToInt(v -> v.getScores()).max().orElse(0);
+                int maxScore = list.stream().mapToInt(v -> v.getScores()).max().orElse(0);
                 highestScore.setText(String.valueOf(maxScore));
 
                 // set played histories
                 historyAdapter.clear();
-                historyAdapter.addAll(history);
+                historyAdapter.addAll(list);
                 historyAdapter.notifyDataSetChanged();
 
             }else{
