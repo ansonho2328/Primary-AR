@@ -1,5 +1,6 @@
 package hk.edu.ouhk.arprimary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -48,7 +49,9 @@ public class ReviewActivity extends AppCompatActivity {
         if (this.session == null){
             Toast.makeText(this, "Not Login", Toast.LENGTH_LONG).show();
             //TODO maybe jump tp AuthenticateActivity?
-            return;
+            Intent startIntent = new Intent(this, AuthenticateActivity.class);
+            startActivity(startIntent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
 
         ApplicationComponent component = ((PrimaryARApplication)getApplicationContext()).appComponent;
@@ -68,23 +71,20 @@ public class ReviewActivity extends AppCompatActivity {
 
             List<PlayedHistory> playedHistory = user.getHistories();
             ArrayList<String> show = new ArrayList<String>();
-
             playedHistory.forEach((e) -> {
-
-                if (e.getType() == UnitView.Type.PRACTICE) {
-
                     Optional<LessonFragment[]> lessonFragments = lessonFragmentManager.getFragmentsByTopicUnit(e.getTopic(), e.getUnit());
                     Optional<SentenceFragment[]> sentenceFragments = sentencefragmentManager.getFragmentsByTopicUnit(e.getTopic(), e.getUnit());
 
                     if (lessonFragments.isPresent()) {
                         LessonFragment[] fragments = lessonFragments.get();
-                        show.add(MessageFormat.format("Topic: {0} ({1}", e.getTopic(), "Vocab"));
+                        //show.add(MessageFormat.format("Topic: {0} ({1}", e.getTopic(), "Vocab"));
                         for (LessonFragment fragment : fragments) {
-                            show.add(MessageFormat.format("{0}: {1}", fragment.getModelName(), fragment.getDefinition()));
+                            //show.add(MessageFormat.format("{0}: {1}", fragment.getModelName(), fragment.getDefinition()));
+                            show.add(fragment.getModelName());
                         }
                     }else if (sentenceFragments.isPresent()){
                         SentenceFragment[] fragments = sentenceFragments.get();
-                        show.add(MessageFormat.format("Topic: {0} ({1}", e.getTopic(), "Sentence"));
+                        //show.add(MessageFormat.format("Topic: {0} ({1}", e.getTopic(), "Sentence"));
                         for (SentenceFragment fragment : fragments) {
                             show.add(fragment.getCorrectAnswer());
                         }
@@ -92,7 +92,6 @@ public class ReviewActivity extends AppCompatActivity {
                         Toast.makeText(this, MessageFormat.format("Topic {0}-{1}-{2} does not exist.", e.getTopic(), e.getType(), e.getUnit()), Toast.LENGTH_LONG).show();
                     }
 
-                }
             });
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, show);
             listReview.setAdapter(adapter);

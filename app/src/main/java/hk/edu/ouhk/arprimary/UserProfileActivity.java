@@ -82,7 +82,7 @@ public class UserProfileActivity extends AppCompatActivity {
             if (task.isSuccessful()){
                 GenericTypeIndicator<List<PlayedHistory>> t = new GenericTypeIndicator<List<PlayedHistory>>() {};
                 List<PlayedHistory> list = Optional.ofNullable(task.getResult()).map(r -> r.toObject(PlayedHistories.class)).map(h -> h.getHistories()).orElseGet(ArrayList::new);
-                User user = task.getResult().get("histories", User.class)==null?task.getResult().get("histories", User.class):new User();
+                User user = task.getResult().toObject(User.class)==null?task.getResult().toObject(User.class):new User();
                 Toast.makeText(this, "History:"+Arrays.toString(list.toArray()), Toast.LENGTH_LONG).show();
                 Toast.makeText(this, "User:"+Arrays.toString(user.getHistories().toArray()), Toast.LENGTH_LONG).show();
 
