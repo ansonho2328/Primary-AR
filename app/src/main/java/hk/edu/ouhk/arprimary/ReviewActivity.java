@@ -2,10 +2,12 @@ package hk.edu.ouhk.arprimary;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,6 +47,8 @@ public class ReviewActivity extends AppCompatActivity {
         FirebaseFirestore store = FirebaseFirestore.getInstance();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         this.session = auth.getCurrentUser();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (this.session == null){
             Toast.makeText(this, "Not Login", Toast.LENGTH_LONG).show();
@@ -101,5 +105,13 @@ public class ReviewActivity extends AppCompatActivity {
                 task.getException().printStackTrace();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() != android.R.id.home) return false;
+        onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        return true;
     }
 }

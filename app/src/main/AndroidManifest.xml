@@ -32,6 +32,8 @@
         android:theme="@style/Theme.ARPrimary">
         <activity
             android:name=".ReviewActivity"
+            android:label="Review"
+
             android:exported="false" />
         <activity
             android:name=".SentenceActivity"
