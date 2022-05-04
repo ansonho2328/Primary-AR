@@ -82,8 +82,7 @@ public class UserProfileActivity extends AppCompatActivity {
             if (task.isSuccessful()){
                 GenericTypeIndicator<List<PlayedHistory>> t = new GenericTypeIndicator<List<PlayedHistory>>() {};
                 List<PlayedHistory> list = Optional.ofNullable(task.getResult()).map(r -> r.toObject(PlayedHistories.class)).map(h -> h.getHistories()).orElseGet(ArrayList::new);
-
-
+                
                 // set highest score
                 int maxScore = list.stream().mapToInt(v -> v.getScores()).max().orElse(0);
                 highestScore.setText(String.valueOf(maxScore));
