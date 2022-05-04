@@ -48,7 +48,7 @@ public class ReviewActivity extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         this.session = auth.getCurrentUser();
 
-        
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (this.session == null){
