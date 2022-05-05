@@ -54,7 +54,7 @@ public class UnitViewModel extends ListViewModel<UnitView> {
                                                 .stream()
                                                 .noneMatch(u ->
                                                         v.getType() == u.getType() &&
-                                                                u.getUnit() < v.getNo() &&
+                                                                u.getUnit() < v.getNo()-1 &&
                                                                 u.getTopic().equals(topic)
                                                 )
                                 );

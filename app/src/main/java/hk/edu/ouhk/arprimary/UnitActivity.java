@@ -211,6 +211,7 @@ public class UnitActivity extends AppCompatActivity {
     }
 
     public void onLessonResult(ActivityResult result) {
+        viewModel.reset(session.getDisplayName(),topic);
         if (result.getResultCode() == RESULT_OK) {
             // passed
             historyRef.document(session.getDisplayName()).get().continueWithTask(task -> {
@@ -239,6 +240,7 @@ public class UnitActivity extends AppCompatActivity {
     }
 
     public void onQuizResult(ActivityResult result){
+        viewModel.reset(session.getDisplayName(),topic);
         if (result.getResultCode() == RESULT_OK) {
             if (result.getData() == null){
                 Toast.makeText(this, "intent data is null", Toast.LENGTH_LONG).show();

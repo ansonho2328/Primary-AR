@@ -186,11 +186,11 @@ public class LessonActivity extends ARVocabSectionBased<UnitSection> {
     @Override
     protected void beforeFinish(Intent intent) {
         // clear all
+        setResult(RESULT_OK);
         nameNode.setRenderable(null);
         modelNode.setRenderable(null);
         speakerNode.setRenderable(null);
-        defNode.setRenderable(null);
-        setResult(RESULT_OK);
+
     }
 
     @Override
