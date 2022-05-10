@@ -28,7 +28,7 @@ import hk.edu.ouhk.arprimary.viewmodel.armodel.quiz.QuizSection;
  * status bar and navigation/system bar) with user interaction.
  */
 public class QuizActivity extends ARVocabSectionBased<QuizSection> {
-    
+
     Quiz quiz;
 
     ImageButton tipsBtn, microphone, leave;
