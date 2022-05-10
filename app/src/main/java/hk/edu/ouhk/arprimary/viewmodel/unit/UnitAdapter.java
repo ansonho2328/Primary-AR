@@ -1,6 +1,7 @@
 package hk.edu.ouhk.arprimary.viewmodel.unit;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
@@ -37,7 +38,9 @@ public class UnitAdapter extends ListExtendableAdapter<UnitView, UnitAdapter.Vie
         String title = view.getType() == UnitView.Type.PRACTICE ? "Unit" : "Quiz";
         String txt = MessageFormat.format("{0}-{1}", title, view.getNo());
         if (view.isReview()){
-            holder.title.setText("<font color='#ee0000'>"+ txt + "</font>");
+            holder.title.setText(txt);
+            holder.title.setTextColor(Color.WHITE);
+            holder.title.setBackgroundColor(Color.GRAY);
         }else{
             holder.title.setText(txt);
         }
