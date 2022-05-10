@@ -37,7 +37,7 @@ public class UnitAdapter extends ListExtendableAdapter<UnitView, UnitAdapter.Vie
         String title = view.getType() == UnitView.Type.PRACTICE ? "Unit" : "Quiz";
         String txt = MessageFormat.format("{0}-{1}", title, view.getNo());
         if (view.isReview()){
-            holder.title.setText(txt + "(completed)");
+            holder.title.setText("<font color='#ee0000'>"+ txt + "</font>");
         }else{
             holder.title.setText(txt);
         }
