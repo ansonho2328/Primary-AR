@@ -138,8 +138,8 @@ public class QuizActivity extends ARVocabSectionBased<QuizSection> {
             ArrayList<User> user = new ArrayList<>();
         } else {
             builder.setIcon(ContextCompat.getDrawable(QuizActivity.this, R.drawable.unhappy));
-            builder.setTitle("Unfortunately!");
-            builder.setMessage("You answered wrong and get no marks!");
+            builder.setTitle("Sorry!");
+            builder.setMessage("You answered wrong. Please try again!");
         }
         return true; // no matter correct or incorrect, still need to move into next section
     }

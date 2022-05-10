@@ -67,13 +67,13 @@ public class ServiceModule {
 
 
         SentenceFragment[] animalSentence = {
-                new SentenceFragment(new ArrayList<String>(Arrays.asList("Frog", "jumps", "high")), "Frog jumps high"),
+                new SentenceFragment(new ArrayList<String>(Arrays.asList("Frog", "is", "cute")), "Frog is cute"),
                 new SentenceFragment(new ArrayList<String>(Arrays.asList("Farm", "has", "cow")), "Farm has cow"),
                 new SentenceFragment(new ArrayList<String>(Arrays.asList("Shark", "is", "terrible")), "Shark is terrible")
         };
 
         SentenceFragment[] fruitSentence = {
-                new SentenceFragment(new ArrayList<String>(Arrays.asList("Peter", "eats", "apple")), "Peter eats apple"),
+                new SentenceFragment(new ArrayList<String>(Arrays.asList("Peter", "eats", "an","apple")), "Peter eats an apple"),
                 new SentenceFragment(new ArrayList<String>(Arrays.asList("Tony", "buys", "the","banana")), "Tony buys the banana"),
                 new SentenceFragment(new ArrayList<String>(Arrays.asList("Lemon", "contains", "vitamin")), "Lemon contains vitamin")
         };

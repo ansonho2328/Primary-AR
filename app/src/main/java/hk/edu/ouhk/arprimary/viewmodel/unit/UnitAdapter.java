@@ -36,7 +36,7 @@ public class UnitAdapter extends ListExtendableAdapter<UnitView, UnitAdapter.Vie
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         UnitView view = list.get(position);
         String title = view.getType() == UnitView.Type.PRACTICE ? "Unit" : "Quiz";
-        String txt = MessageFormat.format("{0}-{1}", title, view.getNo());
+        String txt = MessageFormat.format("{0} {1}", title, view.getNo());
         if (view.isReview()){
             holder.title.setText(txt);
             holder.title.setTextColor(Color.WHITE);

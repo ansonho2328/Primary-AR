@@ -223,7 +223,7 @@ public class UnitActivity extends AppCompatActivity {
                 return historyRef.document(session.getDisplayName()).set(user);
             }).addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
-                    Toast.makeText(UnitActivity.this, "You history has been updated to cloud", Toast.LENGTH_LONG).show();
+                    Toast.makeText(UnitActivity.this, "Your history has been updated to cloud", Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(UnitActivity.this, "history update failed.", Toast.LENGTH_LONG).show();
                     if (task.getException() != null){
@@ -270,7 +270,7 @@ public class UnitActivity extends AppCompatActivity {
 
             Tasks.whenAllComplete(historyTask, scoreTask).addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
-                    Toast.makeText(UnitActivity.this, "You progress has been updated to cloud", Toast.LENGTH_LONG).show();
+                    Toast.makeText(UnitActivity.this, "Your progress has been updated to cloud", Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(UnitActivity.this, "progress upload failed.", Toast.LENGTH_LONG).show();
                     if (task.getException() != null){

@@ -185,8 +185,8 @@ public class SentenceActivity extends ARVocabSectionBased<SentenceSection> {
             answer.setMessage("You answered right!");
         } else {
             answer.setIcon(ContextCompat.getDrawable(SentenceActivity.this, R.drawable.unhappy));
-            answer.setTitle("Unfortunately!");
-            answer.setMessage("You answered wrong, please try again!");
+            answer.setTitle("Sorry!");
+            answer.setMessage("You answered wrong. Please try again!");
         }
         return result;
     }
