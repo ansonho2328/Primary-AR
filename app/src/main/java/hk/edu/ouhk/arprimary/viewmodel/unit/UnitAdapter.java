@@ -41,6 +41,7 @@ public class UnitAdapter extends ListExtendableAdapter<UnitView, UnitAdapter.Vie
             holder.title.setText(txt);
             holder.title.setTextColor(Color.WHITE);
             holder.title.setBackgroundColor(Color.GRAY);
+
         }else{
             holder.title.setText(txt);
         }

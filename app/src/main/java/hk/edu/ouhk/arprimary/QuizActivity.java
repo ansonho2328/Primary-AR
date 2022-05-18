@@ -35,6 +35,8 @@ public class QuizActivity extends ARVocabSectionBased<QuizSection> {
 
     TransformableNode modelNode;
 
+    ArrayList<String> vocabTF = new ArrayList<String>();
+
     int score = 0;
 
     @Override
@@ -133,20 +135,34 @@ public class QuizActivity extends ARVocabSectionBased<QuizSection> {
             builder.setIcon(ContextCompat.getDrawable(QuizActivity.this, R.drawable.happy));
             builder.setTitle("Congratulations!");
             builder.setMessage("You answered right and get 10 marks!");
+            vocabTF.add("Correct");
             //insert to firebase data
             ArrayList<User> user = new ArrayList<>();
         } else {
             builder.setIcon(ContextCompat.getDrawable(QuizActivity.this, R.drawable.unhappy));
             builder.setTitle("Sorry!");
-            builder.setMessage("You answered wrong. Please try again!");
+            builder.setMessage("You answered wrong.");
+            vocabTF.add("Incorrect");
         }
         return true; // no matter correct or incorrect, still need to move into next section
     }
 
     @Override
     protected void beforeFinish(Intent intent) {
+        QuizFragment[] fragments = quiz.getQuizFragments();
+        int length = fragments.length;
+
+        ArrayList<String> vocab = new ArrayList<String>();
+        for(int i=0;i < length;i++){
+            vocab.add(fragments[i].getVocab());
+        }
+        intent.putExtra("vocab",vocab);
+        intent.putExtra("vocabTF", vocabTF);
+
         intent.putExtra("scores", score);
         setResult(RESULT_OK,intent.putExtra("scores", score));
+        setResult(RESULT_OK,intent.putExtra("vocab", vocab));
+        setResult(RESULT_OK,intent.putExtra("vocabTF", vocabTF));
     }
 
     @Override

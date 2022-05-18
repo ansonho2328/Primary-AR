@@ -31,10 +31,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ARPrimary">
         <activity
-            android:name=".ReviewActivity"
-            android:label="Review"
-
+            android:name=".SummaryActivity"
             android:exported="false" />
+        <activity
+            android:name=".ReviewActivity"
+            android:exported="false"
+            android:label="Review" />
         <activity
             android:name=".SentenceActivity"
             android:exported="false" />
