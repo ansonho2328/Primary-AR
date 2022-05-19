@@ -2,7 +2,11 @@ package hk.edu.ouhk.arprimary;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -18,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import hk.edu.ouhk.arprimary.firestore.PlayedHistory;
@@ -39,6 +44,7 @@ public class ReviewActivity extends AppCompatActivity {
     LessonFragmentManager lessonFragmentManager;
     SentenceFragmentManager sentencefragmentManager;
     QuizFragmentManager quizFragmentManager;
+    private TextToSpeech mTTS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +56,21 @@ public class ReviewActivity extends AppCompatActivity {
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = mTTS.setLanguage(Locale.ENGLISH);
 
+                    if (result == TextToSpeech.LANG_MISSING_DATA
+                            || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "Language not supported");
+                    }
+                } else {
+                    Log.e("TTS", "Initialization failed");
+                }
+            }
+        });
         if (this.session == null){
             Toast.makeText(this, "Not Login", Toast.LENGTH_LONG).show();
             //TODO maybe jump tp AuthenticateActivity?
@@ -67,6 +87,13 @@ public class ReviewActivity extends AppCompatActivity {
 
         historyRef = store.collection("histories");
         ListView listReview = (ListView) findViewById(R.id.list_review);
+
+        listReview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                mTTS.speak(listReview.getItemAtPosition(i).toString(), TextToSpeech.QUEUE_FLUSH, null);
+            }
+        });
         historyRef.document(session.getDisplayName()).get().continueWithTask(task -> {
             User user = Optional
                     .ofNullable(task.getResult())
