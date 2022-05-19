@@ -19,11 +19,11 @@ public class SummaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary);
-        Integer s = getIntent().getIntExtra("scores",0);
+        int s = getIntent().getIntExtra("scores",0);
         ArrayList<String> summary = getIntent().getStringArrayListExtra("summary");
         ListView list_summary = findViewById(R.id.list_summary);
         txtScore.setText(s);
-        ArrayAdapter adapter = new ArrayAdapter(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 summary);
         list_summary.setAdapter(adapter);
