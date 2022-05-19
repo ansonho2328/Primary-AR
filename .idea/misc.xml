@@ -5,7 +5,7 @@
       <map>
         <entry key="..\:/Documents/StudioProjects/Primary-AR/app/src/main/res/layout/activity_home.xml" value="0.33" />
         <entry key="..\:/Documents/StudioProjects/Primary-AR/app/src/main/res/layout/activity_leaderboard.xml" value="0.12760416666666666" />
-        <entry key="..\:/Documents/StudioProjects/Primary-AR/app/src/main/res/layout/activity_user_profile.xml" value="0.33" />
+        <entry key="..\:/Documents/StudioProjects/Primary-AR/app/src/main/res/layout/activity_user_profile.xml" value="0.12760416666666666" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_about.xml" value="0.2957427536231884" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_home.xml" value="0.2957427536231884" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_leaderboard.xml" value="0.24818840579710144" />
@@ -16,6 +16,7 @@
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_sentence.xml" value="0.29347826086956524" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_sign_up.xml" value="0.25885416666666666" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_splash.xml" value="0.2957427536231884" />
+        <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_summary.xml" value="0.22291666666666668" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_topic.xml" value="0.2957427536231884" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/activity_user_profile.xml" value="0.2477355072463768" />
         <entry key="..\:/Mobile/Primary-AR/app/src/main/res/layout/app_bar.xml" value="0.2957427536231884" />
@@ -34,7 +35,6 @@
         <entry key="..\:/Users/anson/AndroidStudioProjects/Primary-AR/app/src/main/res/layout/activity_leaderboard.xml" value="0.22871376811594202" />
         <entry key="..\:/Users/anson/AndroidStudioProjects/Primary-AR/app/src/main/res/layout/activity_review.xml" value="0.1390625" />
         <entry key="..\:/Users/anson/AndroidStudioProjects/Primary-AR/app/src/main/res/layout/activity_sentence.xml" value="0.1757852077001013" />
-        <entry key="..\:/Users/anson/AndroidStudioProjects/Primary-AR/app/src/main/res/layout/activity_summary.xml" value="0.25" />
         <entry key="..\:/Users/anson/AndroidStudioProjects/Primary-AR/app/src/main/res/layout/activity_topic.xml" value="0.2223731884057971" />
         <entry key="..\:/Users/anson/AndroidStudioProjects/Primary-AR/app/src/main/res/layout/activity_unit.xml" value="0.2223731884057971" />
         <entry key="..\:/Users/anson/AndroidStudioProjects/Primary-AR/app/src/main/res/layout/activity_user_profile.xml" value="0.17806484295845998" />
