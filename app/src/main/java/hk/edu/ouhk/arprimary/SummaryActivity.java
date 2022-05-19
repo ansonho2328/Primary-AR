@@ -24,7 +24,7 @@ public class SummaryActivity extends AppCompatActivity {
         ListView list_summary = findViewById(R.id.list_summary);
         txtScore = findViewById(R.id.txtScore);
         btnFinish = findViewById(R.id.btnFinish);
-        txtScore.setText(s);
+        txtScore.setText(String.valueOf(s));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 summary);
