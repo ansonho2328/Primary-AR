@@ -271,19 +271,7 @@ public class UnitActivity extends AppCompatActivity {
 
             Tasks.whenAllComplete(historyTask, scoreTask).addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
-                    //Toast.makeText(UnitActivity.this, "Your progress has been updated to cloud", Toast.LENGTH_LONG).show();
-                    Intent summaryIntent = new Intent(this,SummaryActivity.class);
-                    Integer s = result.getData().getIntExtra("scores",0);
-                    ArrayList<String> vocab = result.getData().getStringArrayListExtra("vocab");
-                    ArrayList<String> vocabTF = result.getData().getStringArrayListExtra("vocabTF");
-                    ArrayList<String> summary = new ArrayList<String>();
-                    for(int i=0;i<vocab.size();i++){
-                        summary.add(vocab.get(i) + ": " + vocabTF.get(i));
-                    }
-                    summaryIntent.putExtra("scores",s);
-                    summaryIntent.putExtra("summary",summary);
-                    startActivity(summaryIntent);
-
+                    Toast.makeText(UnitActivity.this, "Your progress has been updated to cloud", Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(UnitActivity.this, "progress upload failed.", Toast.LENGTH_LONG).show();
                     if (task.getException() != null){
@@ -291,6 +279,19 @@ public class UnitActivity extends AppCompatActivity {
                     }
                 }
             });
+
+            Intent summaryIntent = new Intent(this, SummaryActivity.class);
+            Integer s = result.getData().getIntExtra("scores",0);
+            ArrayList<String> vocab = result.getData().getStringArrayListExtra("vocab");
+            ArrayList<String> vocabTF = result.getData().getStringArrayListExtra("vocabTF");
+            ArrayList<String> summary = new ArrayList<String>();
+            for(int i=0;i<vocab.size();i++){
+                summary.add(vocab.get(i) + ": " + vocabTF.get(i));
+            }
+            summaryIntent.putExtra("scores",s);
+            summaryIntent.putExtra("summary",summary);
+            startActivity(summaryIntent);
+
         } else if (result.getResultCode() == RESULT_CANCELED){
             // cancelled
             Toast.makeText(this, "You cancelled the course", Toast.LENGTH_LONG).show();
